@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
     //! -------------------------------------------------------------------------------------------
     QApplication analyser(argc, argv);
     analyser.setOrganizationName("CAS - SIAT");
-    analyser.setApplicationName("igss");
+    analyser.setApplicationName("piss");
     analyser.setWindowIcon(QIcon(":/images/icon.png"));
 
     //! -------------------------------------------------------------------------------------------
