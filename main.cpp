@@ -11,7 +11,7 @@
 
 
 /**
- * @brief main
+ * @brief main procedure to generate application
  * @param argc
  * @param argv
  * @return
