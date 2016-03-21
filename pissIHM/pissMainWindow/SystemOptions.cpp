@@ -28,6 +28,9 @@ void SystemOptions::initVariable(){
 //!
 void SystemOptions::constructIHM(){
     systemOptionsLayout = new QGridLayout(this);
+
+    systemBackgroundColorOptionsLabel = new QLabel("System Background-color: ");
+
     systemBackgroundColorOptions = new QComboBox();
     fillColorList(systemBackgroundColorOptions);
     systemBackgroundColorOptions->setStyleSheet(comboBoxStyle);
@@ -40,9 +43,10 @@ void SystemOptions::constructIHM(){
     confirmButton = new QPushButton("ok");
     cancelButton = new QPushButton("cancel");
 
-    systemOptionsLayout->addWidget(systemBackgroundColorOptions, 0, 0);
-    systemOptionsLayout->addWidget(confirmButton, 0, 1);
-    systemOptionsLayout->addWidget(cancelButton, 0, 2);
+    systemOptionsLayout->addWidget(systemBackgroundColorOptionsLabel, 0, 0);
+    systemOptionsLayout->addWidget(systemBackgroundColorOptions, 0, 1);
+    systemOptionsLayout->addWidget(confirmButton, 1, 0);
+    systemOptionsLayout->addWidget(cancelButton, 1, 1);
 }
 
 //! ------------------------------------------------------------------------------------------------------------------------

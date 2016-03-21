@@ -182,8 +182,6 @@ private:
     QSpacerItem *spacer_1;
     QSpacerItem *spacer_2;
 
-
-
     QFrame *patientClinicalWidgetsContainer;
     QHBoxLayout *patientClinicalWidgetsContainerLayout;
     QWidget *patientMRAImageOptionWidget;

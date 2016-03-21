@@ -57,15 +57,6 @@ void PatientsWidget::setControlConsoleWindow(ControlConsoleWindow * controlConso
 
 //!----------------------------------------------------------------------------------------------------
 //!
-//! \brief PatientsWidget::setParentWidget
-//! \param mainWindow
-//!
-//void PatientsWidget::setParentWidget(pissMainWindow* mainWindow){
-//    this->mainWindow = mainWindow;
-//}
-
-//!----------------------------------------------------------------------------------------------------
-//!
 //! \brief PatientsWidget::displayLastFiveOrLess
 //!
 void PatientsWidget::displayLastFiveOrLess(){
@@ -502,9 +493,6 @@ void PatientsWidget::constructIHM(){
     this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid aliceblue;color:aliceblue");
     this->surgeryLaunchButton->setFixedSize(this->appWidth*0.846*0.15,this->appHeight*0.846*0.15*0.3);
 
-    //this->surgeryTerminateButton = new QPushButton("Terminate");
-    //this->surgeryTerminateButton->setFixedSize(0,0);
-
     this->surgeryHandlingWidget = new QWidget();
     this->surgeryHandlingWidgetLayout = new QHBoxLayout(surgeryHandlingWidget);
     this->surgeryHandlingWidgetLayout->addWidget(surgeryLaunchButton);
@@ -516,7 +504,6 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     //!current patient widget
     //!--------------------------------------------------------------------------------------
-
     this->pictureLeftArea = new QWidget();
 
     this->currentPatientInfo = new QLabel();
@@ -590,7 +577,6 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     //!the information of the current patient
     //!--------------------------------------------------------------------------------------
-
     this->patientResume = new QLabel(QString::fromLocal8Bit("病人基本信息"));
     this->patientResume->setFont(QFont("Times",16,QFont::AnyStyle, false));
     this->patientResume->setStyleSheet("border: 0px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent;;color: AliceBlue");
@@ -814,7 +800,7 @@ void PatientsWidget::constructIHM(){
     this->addPatientButton->setStyleSheet("background-color:transparent");
     this->addPatientButton->setFixedSize(this->appWidth*0.020, this->appWidth*0.020);
 
-    controlBarSpacer = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->controlBarSpacer = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->patientsWidgetToolBarLayout->addWidget(this->cdRomParseButton);
     this->patientsWidgetToolBarLayout->addWidget(this->addPatientButton);
@@ -823,16 +809,16 @@ void PatientsWidget::constructIHM(){
     this->patientsWidgetToolBarLayout->setSpacing(0);
     this->patientsWidgetToolBarLayout->setMargin(0);
 
-    patientsPhotoAndMedicaleImageContainerWidget = new QFrame();
-    patientsPhotoAndMedicaleImageContainerWidgetLayout = new QVBoxLayout(patientsPhotoAndMedicaleImageContainerWidget);
-    patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientsPhotoWidget);
-    patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientImageLoaded);
-    patientsPhotoAndMedicaleImageContainerWidgetLayout->setSpacing(0);
-    patientsPhotoAndMedicaleImageContainerWidgetLayout->setMargin(0);
+    this->patientsPhotoAndMedicaleImageContainerWidget = new QFrame();
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout = new QVBoxLayout(patientsPhotoAndMedicaleImageContainerWidget);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientsPhotoWidget);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientImageLoaded);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setSpacing(0);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setMargin(0);
 
-    //!--------------------------------------------------------------------------------------
-    //!the total information of patient and doctors
-    //!--------------------------------------------------------------------------------------
+    //! --------------------------------------------------------------------------------------
+    //! the total information of patient and doctors
+    //! --------------------------------------------------------------------------------------
     this->totalInformation = new QWidget();
     this->totalInformationLayout = new QHBoxLayout(this->totalInformation);
     this->totalInformationLayout->addWidget(patientsPhotoAndMedicaleImageContainerWidget);
@@ -844,21 +830,20 @@ void PatientsWidget::constructIHM(){
     this->surgeryLoadingWidget->setFixedHeight(this->appHeight*0.02);
     this->surgeryLoadingWidgetLayout = new QHBoxLayout(this->surgeryLoadingWidget);
 
-
     this->surgeryLoadingBar = new QProgressBar();
-    surgeryLoadingBar->setStyleSheet("background-color:transparent");
-    surgeryLoadingBar->setFixedSize(this->appWidth*0.846*0.5,this->appHeight*0.02);
-    surgeryLoadingBar->setMaximum(100);
-    surgeryLoadingBar->setMinimum(0);
+    this->surgeryLoadingBar->setStyleSheet("background-color:transparent");
+    this->surgeryLoadingBar->setFixedSize(this->appWidth*0.846*0.5,this->appHeight*0.02);
+    this->surgeryLoadingBar->setMaximum(100);
+    this->surgeryLoadingBar->setMinimum(0);
 
-    surgeryLoadingIndicationLabel = new QLabel("hello, welcome");
-    surgeryLoadingIndicationLabel->setFixedSize(this->appWidth*0.846*0.5,this->appHeight*0.02);
-
+    this->surgeryLoadingIndicationLabel = new QLabel("hello, welcome");
+    this->surgeryLoadingIndicationLabel->setFixedSize(this->appWidth*0.846*0.5,this->appHeight*0.02);
 
     this->surgeryLoadingWidgetLayout->addWidget(this->surgeryLoadingBar);
     this->surgeryLoadingWidgetLayout->addWidget(this->surgeryLoadingIndicationLabel);
     this->surgeryLoadingWidgetLayout->setSpacing(0);
     this->surgeryLoadingWidgetLayout->setMargin(0);
+
     //!--------------------------------------------------------------------------------------
     //!the layout of patients widget
     //!--------------------------------------------------------------------------------------
@@ -868,7 +853,7 @@ void PatientsWidget::constructIHM(){
     this->patientsWidgetLayout->addWidget(surgeryLoadingWidget);
     this->patientsWidgetLayout->setSpacing(0);
     this->patientsWidgetLayout->setMargin(0);
-    surgeryLoadingWidget->close();
+    this->surgeryLoadingWidget->close();
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -877,9 +862,7 @@ void PatientsWidget::constructIHM(){
 //! \param patients
 //!
 void PatientsWidget::addPatientToWidget(QString path){
-
     QListWidgetItem *patientItem = new QListWidgetItem();
-    qDebug()<<path;
     patientItem->setIcon(QIcon(path));
 
 }

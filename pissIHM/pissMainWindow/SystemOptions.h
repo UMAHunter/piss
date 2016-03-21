@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QColor>
 #include <QPushButton>
+#include <QLabel>
 
 
 class SystemOptions : public QFrame
@@ -14,8 +15,11 @@ class SystemOptions : public QFrame
 
 private:
     QGridLayout *systemOptionsLayout;
+
     QComboBox *systemBackgroundColorOptions;
     QComboBox *systemWorkSpaceColor;
+
+    QLabel *systemBackgroundColorOptionsLabel;
 
     QPushButton *confirmButton;
     QPushButton * cancelButton;
