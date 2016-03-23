@@ -39,6 +39,7 @@ void pissMainWindow::initVariable(){
     this->flag = 0;
     this->englishCaracterStyle = new QFont("Helvetica", 8, QFont::AnyStyle, true);
     this->globalBackgroundColor = "aliceBlue";
+    this->globalWorkSpaceColor = "teal";
 
     //! -------------------------------------------------------
     //! Des procedure afin de recuperer les tailles des ¨¦crans;
@@ -95,6 +96,8 @@ void pissMainWindow::globalBackgroundColorSetting(){
     configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     controlBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     this->algorithmTestPlatform->setBackgroundColor(this->globalBackgroundColor);
+    widgetOptionContainer->setStyleSheet("background-color: " + this->globalWorkSpaceColor);
+    drawBackground();
 }
 
 //!---------------------------------------------------------------------------------------
@@ -120,7 +123,8 @@ void pissMainWindow::constructIHM(){
                                         this->surgeryTimer,
                                         this->englishCaracterStyle,
                                         this->primary_screen_width,
-                                        this->primary_screen_height);
+                                        this->primary_screen_height,
+                                        this->globalWorkSpaceColor);
 
     if(this->screen_count == 3){
         this->patientsWidget->setSurgeryPlanWindow(this->surgeryPlanWindow);
@@ -168,7 +172,7 @@ void pissMainWindow::constructIHM(){
     appIndicationLabel->setFixedWidth(primary_screen_width*0.246);
 
     widgetOptionContainer = new QFrame();
-    widgetOptionContainer->setStyleSheet("background-color: rgb(58, 89, 92)");
+
     widgetOptionContainer->setFixedHeight(primary_screen_height*0.03);
     widgetOptionContainerLayout = new QHBoxLayout(widgetOptionContainer);
     widgetOptionContainerLayout->addWidget(patientsWidgetOption);
@@ -258,15 +262,7 @@ void pissMainWindow::findPatientExisted(){
 //! \brief AnalyserMainWindow::drawBackground
 //!
 void pissMainWindow::drawBackground(){
-    this->setStyleSheet("background:rgb(58, 89, 92);");
-
-//    pixmap = new QPixmap(":/images/background.png");
-//    QPalette p =  this->palette();
-
-//    p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(this->primary_screen_width, this->primary_screen_height), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-//    this->setPalette(p);
-//    this->setMask(pixmap->mask());
+    this->setStyleSheet("background:"+this->globalWorkSpaceColor);
 }
 
 //!------------------------------------------------------------------------------------------------------------------------------------------------
@@ -306,6 +302,7 @@ void pissMainWindow::setConnections(){
 void pissMainWindow::updateIHM(){
 
     this->globalBackgroundColor = this->systemOptionWindow->getSystemGlobalBackgroundColor();
+    this->globalWorkSpaceColor = this->systemOptionWindow->getSystemGlobalWorkSpaceColor();
 
     globalBackgroundColorSetting();
 
@@ -318,6 +315,8 @@ void pissMainWindow::updateIHM(){
     else if(mainOptionStates.systemWidgetOptionState){
         this->onSystemWidgetOptionReleased();
     }
+
+    patientsWidget->setWorkSpaceColor(this->globalWorkSpaceColor);
 
 }
 
@@ -460,9 +459,9 @@ void pissMainWindow::onPatientsWidgetOptionClicked(){
 //! \brief pissMainWindow::onPatientsWidgetOptionReleased
 //!
 void pissMainWindow::onPatientsWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color:" + this->globalBackgroundColor );
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color: rgb(58, 89, 92)  "  );
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";  min-width: 0px; color: rgb(58, 89, 92)  "  );
+    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor+";  min-width: 0px; color:" + this->globalBackgroundColor );
+    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color: "+ this->globalWorkSpaceColor );
+    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";  min-width: 0px; color: "+ this->globalWorkSpaceColor );
 
     patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::DemiBold, true));
     systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
@@ -483,10 +482,10 @@ void pissMainWindow::onPatientsWidgetOptionReleased(){
 //!
 void pissMainWindow::onPatientsWidgetOptionLeaved(){
     if(mainOptionStates.patientsWidgetOptionState){
-        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color:"+this->globalBackgroundColor );
+        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor );
     }
     else{
-        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color: rgb(58, 89, 92) " );
+        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color:" + this->globalWorkSpaceColor  );
     }
 }
 
@@ -513,9 +512,9 @@ void pissMainWindow::onSystemWidgetOptionClicked(){
 //! \brief pissMainWindow::onSystemWidgetOptionReleased
 //!
 void pissMainWindow::onSystemWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color: rgb(58, 89, 92)  "  );
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color: "+this->globalBackgroundColor );
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: rgb(58, 89, 92)  "  );
+    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color:" + this->globalWorkSpaceColor);
+    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalWorkSpaceColor +";  min-width: 0px; color: "+this->globalBackgroundColor);
+    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
 
     patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
     systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::DemiBold, true));
@@ -537,10 +536,10 @@ void pissMainWindow::onSystemWidgetOptionReleased(){
 //!
 void pissMainWindow::onSystemWidgetOptionLeaved(){
     if(mainOptionStates.systemWidgetOptionState){
-        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color: "+this->globalBackgroundColor );
+        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color: "+this->globalBackgroundColor);
     }
     else{
-        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: rgb(58, 89, 92) " );
+        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
     }
 }
 
@@ -568,9 +567,9 @@ void pissMainWindow::onHistoryWidgetOptionClicked(){
 //! \brief pissMainWindow::onHistoryWidgetOptionReleased
 //!
 void pissMainWindow::onHistoryWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: rgb(58, 89, 92)  "  );
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: rgb(58, 89, 92)  "  );
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color:"+this->globalBackgroundColor);
+    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor  );
+    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: " + this->globalWorkSpaceColor   );
+    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor);
 
     patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
     systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
@@ -579,7 +578,7 @@ void pissMainWindow::onHistoryWidgetOptionReleased(){
     mainOptionStates.patientsWidgetOptionState = false;
     mainOptionStates.systemWidgetOptionState = false;
     mainOptionStates.historyWidgetOptionState = true;
-    widgetOptionContainer->setStyleSheet("background-color: rgb(58, 89, 92)");
+    widgetOptionContainer->setStyleSheet("background-color:" + this->globalWorkSpaceColor);
 
     patientsWidget->close();
     surgerySystemWidget->close();
@@ -592,10 +591,10 @@ void pissMainWindow::onHistoryWidgetOptionReleased(){
 //!
 void pissMainWindow::onHistoryWidgetOptionLeaved(){
     if(mainOptionStates.historyWidgetOptionState){
-        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: rgb(58, 89, 92);  min-width: 0px; color:"+this->globalBackgroundColor);
+        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor);
     }
     else{
-        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: rgb(58, 89, 92) " );
+        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
     }
 }
 

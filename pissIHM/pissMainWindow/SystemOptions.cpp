@@ -29,24 +29,27 @@ void SystemOptions::initVariable(){
 void SystemOptions::constructIHM(){
     systemOptionsLayout = new QGridLayout(this);
 
-    systemBackgroundColorOptionsLabel = new QLabel("System Background-color: ");
+    systemBackgroundColorOptionsLabel = new QLabel("System background color: ");
 
     systemBackgroundColorOptions = new QComboBox();
     fillColorList(systemBackgroundColorOptions);
     systemBackgroundColorOptions->setStyleSheet(comboBoxStyle);
 
-    systemWorkSpaceColor = new QComboBox();
-    fillColorList(systemWorkSpaceColor);
-    systemWorkSpaceColor->setStyleSheet(comboBoxStyle);
+    systemWorkSpaceColorOptionsLabel = new QLabel("System workspace color: ");
 
+    systemWorkSpaceColorOptions = new QComboBox();
+    fillColorList(systemWorkSpaceColorOptions);
+    systemWorkSpaceColorOptions->setStyleSheet(comboBoxStyle);
 
     confirmButton = new QPushButton("ok");
     cancelButton = new QPushButton("cancel");
 
     systemOptionsLayout->addWidget(systemBackgroundColorOptionsLabel, 0, 0);
     systemOptionsLayout->addWidget(systemBackgroundColorOptions, 0, 1);
-    systemOptionsLayout->addWidget(confirmButton, 1, 0);
-    systemOptionsLayout->addWidget(cancelButton, 1, 1);
+    systemOptionsLayout->addWidget(systemWorkSpaceColorOptionsLabel, 1, 0);
+    systemOptionsLayout->addWidget(systemWorkSpaceColorOptions, 1, 1);
+    systemOptionsLayout->addWidget(confirmButton, 2, 0);
+    systemOptionsLayout->addWidget(cancelButton, 2, 1);
 }
 
 //! ------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +60,7 @@ void SystemOptions::setConnections(){
     this->connect(confirmButton, SIGNAL(clicked()), this, SLOT(onConfirmButtonClicked()));
     this->connect(cancelButton, SIGNAL(clicked()), this, SLOT(onCancelButtonClicked()));
     this->connect(systemBackgroundColorOptions, SIGNAL(currentIndexChanged(int)), this,  SLOT(systemColorOptionChanged()));
+    this->connect(systemWorkSpaceColorOptions, SIGNAL(currentIndexChanged(int)), this, SLOT(workspaceColorOptionChanged()));
 }
 
 //! ------------------------------------------------------------------------------------------------------------------------
@@ -70,10 +74,27 @@ QString SystemOptions::getSystemGlobalBackgroundColor(){
 
 //! ------------------------------------------------------------------------------------------------------------------------
 //!
+//! \brief SystemOptions::getSystemGlobalWorkSpaceColor
+//! \return
+//!
+QString SystemOptions::getSystemGlobalWorkSpaceColor(){
+    return this->systemGlobalWorkSpaceColor;
+}
+
+//! ------------------------------------------------------------------------------------------------------------------------
+//!
 //! \brief SystemOptions::systemColorOptionChanged
 //!
 void SystemOptions::systemColorOptionChanged(){
     systemGlobalBackgroundColor = systemBackgroundColorOptions->currentText();
+}
+
+//! ------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SystemOptions::workspaceColorOptionChanged
+//!
+void SystemOptions::workspaceColorOptionChanged(){
+    systemGlobalWorkSpaceColor = systemWorkSpaceColorOptions->currentText();
 }
 
 //! ------------------------------------------------------------------------------------------------------------------------

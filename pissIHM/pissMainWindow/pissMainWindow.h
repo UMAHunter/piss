@@ -54,10 +54,6 @@ class pissMainWindow : public QWidget{
     Q_OBJECT
 
 public:
-    pissMainWindow(SystemDispatcher *systemDispatcher);
-#ifdef win32
-    ~Widget();
-#endif
     void findPatientExisted();
     void initVariable();
     void initVisualizationComponents();
@@ -77,6 +73,8 @@ public:
 private:
 
     QString globalBackgroundColor;
+    QString globalWorkSpaceColor;
+
     SystemOptions *systemOptionWindow;
     MainOptionStates mainOptionStates;
 
@@ -112,6 +110,7 @@ private:
     CPushButton *patientsWidgetOption;
     CPushButton *systemWidgetOption;
     CPushButton *historyWidgetOption;
+
     QLabel *appIndicationLabel;
 
     QFrame *widgetOptionContainer;
@@ -121,8 +120,6 @@ private:
     QHBoxLayout *widgetsContainerLayout;
 
     QTabWidget *systemInformationBoard;
-
-
 
     QVTKWidget* mraImageDisplayWindow;
 
@@ -156,13 +153,12 @@ private:
     int flag;
     int primary_screen_width;
     int primary_screen_height;
-    //int patientsWidget_width;
-    //int patientsWidge_height;
     int screen_count;
     int primary_screen;
 
     QPoint mousePosition;
     QPoint mouseMovingPosition;
+
     bool buttonGaucheDuSourisClique;
     bool pickInformationBoardButtonIsClicked;
 
@@ -172,8 +168,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
-    void closeSystem();
-    void configurerLeSysteme();
+
     void onPatientsWidgetOptionHovered();
     void onPatientsWidgetOptionClicked();
     void onPatientsWidgetOptionReleased();
@@ -189,9 +184,14 @@ private slots:
     void onHistoryWidgetOptionReleased();
     void onHistoryWidgetOptionLeaved();
 
+    void closeSystem();
+    void configurerLeSysteme();
     void surgeryTerminated();
     void updateIHM();
 
+public:
+    pissMainWindow(SystemDispatcher *systemDispatcher);
+    //~pissMainWindow();
 };
 
 #endif // WIDGET_H

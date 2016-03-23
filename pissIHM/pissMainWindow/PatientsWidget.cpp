@@ -7,7 +7,8 @@ PatientsWidget::PatientsWidget(int screen_count,
                                QTime* surgeryTimer,
                                QFont *caracterStyle,
                                int appWidth,
-                               int appHeight) : QWidget(){
+                               int appHeight,
+                               QString workspaceColor) : QWidget(){
 
     this->screen_count = screen_count;
 
@@ -20,12 +21,15 @@ PatientsWidget::PatientsWidget(int screen_count,
     this->caracterStyle = caracterStyle;
     this->appWidth = appWidth;
     this->appHeight = appHeight;
+    this->workspaceColor = workspaceColor;
+
 
     this->initVariable();
     this->constructIHM();
     this->setConnections();
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFixedWidth(this->appWidth*0.846);
+    setWorkSpaceColor(this->workspaceColor);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -387,8 +391,26 @@ bool PatientsWidget::loadMRAImageFile(const QString &fileName){
     return true;
 }
 
+//! --------------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::setWorkSpaceColor
+//! \param workspaceColor
+//!
+void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
+    QColor *qworkspaceColor = new QColor(workspaceColor);
 
+    workspaceRed = qworkspaceColor->red();
+    workspaceGreen = qworkspaceColor->green();
+    workspaceBlue = qworkspaceColor->blue();
 
+    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+}
+
+//! --------------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::display
+//! \param imgToBeDisplayed
+//!
 void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
 
     //!---------------------------------------------------------------
@@ -400,11 +422,12 @@ void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
     this->volume->SetProperty(volumeProperty);
 
     this->renderer->AddVolume(volume);
-    this->renderer->SetBackground(58.0/255, 89.0/255, 92.0/255);
+
 
     this->renderWindow->AddRenderer(renderer);
 
     this->patientImageLoaded->SetRenderWindow(renderWindow);
+    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 
     this->renderer->ResetCamera();
     this->renderWindow->Render();

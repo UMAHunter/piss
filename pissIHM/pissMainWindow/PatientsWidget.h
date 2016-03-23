@@ -15,6 +15,8 @@
 #include <QLineEdit>
 #include <QTime>
 #include <QMouseEvent>
+#include <QColor>
+
 #include "DicomCDRomReader.h"
 #include "SurgeryPlanWindow.h"
 #include "GuidewareTrackingWindow.h"
@@ -36,7 +38,8 @@ public:
                    QTime* surgeryTimer,
                    QFont *caracterStyle,
                    int appWidth,
-                   int appHeight);
+                   int appHeight,
+                   QString workspaceColor);
 
     void setSurgeryPlanWindow(SurgeryPlanWindow* surgeryPlanWindow);
     void setGuidewareTrackingWindow(GuidewareTrackingWindow* guidewareTrackingWindow);
@@ -54,6 +57,7 @@ public:
     void displayBrainSegImage();
     void display(vtkImageData *imgToBeDisplayed);
     void setPatientHandling(Patient *patientHandling);
+    void setWorkSpaceColor(QString workspaceColor);
 
     bool loadMRAImageFile(const QString &fileName);
     void update();
@@ -62,7 +66,11 @@ public:
     int testY();
 
 private:
-    //pissMainWindow* mainWindow;
+    QString workspaceColor;
+
+    int workspaceRed;
+    int workspaceGreen;
+    int workspaceBlue;
 
     ControlConsoleWindow * controlConsoleWindow;
     SystemDispatcher* dispatcher;

@@ -17,9 +17,10 @@ private:
     QGridLayout *systemOptionsLayout;
 
     QComboBox *systemBackgroundColorOptions;
-    QComboBox *systemWorkSpaceColor;
+    QComboBox *systemWorkSpaceColorOptions;
 
     QLabel *systemBackgroundColorOptionsLabel;
+    QLabel *systemWorkSpaceColorOptionsLabel;
 
     QPushButton *confirmButton;
     QPushButton * cancelButton;
@@ -27,6 +28,7 @@ private:
     QString comboBoxStyle;
 
     QString systemGlobalBackgroundColor;
+    QString systemGlobalWorkSpaceColor;
 
 public:
     void initVariable();
@@ -34,6 +36,7 @@ public:
     void setConnections();
     void fillColorList(QComboBox *systemBackgroundColorOptions);
     QString getSystemGlobalBackgroundColor();
+    QString getSystemGlobalWorkSpaceColor();
 
 signals:
     void confirm();
@@ -43,6 +46,7 @@ public slots:
     void onConfirmButtonClicked();
     void onCancelButtonClicked();
     void systemColorOptionChanged();
+    void workspaceColorOptionChanged();
 
 public:
     SystemOptions();

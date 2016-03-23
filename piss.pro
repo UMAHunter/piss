@@ -88,32 +88,32 @@ SOURCES +=  main.cpp\
             pissDiskImageReaderFactory/ImageFileInterface.cpp \
             pissDiskImageReaderFactory/ImageFileInterface_Dicomdir.cpp \
             pissDiskImageReaderFactory/ImageFileInterface_RawMhd.cpp \
-    pissIHM/pissMainWindow/PatientItem.cpp \
-    pissSystemDataWare/BidimensionnelImage.cpp \
-    pissIHM/pissMainWindow/pissMainWindow.cpp \
-    pissIHM/SuperviseWindow/SuperviseWindow.cpp \
-    pissDiskImageReaderFactory/ImageFileInterface_Mat.cpp \
-    pissDiskImageReaderFactory/CenterLineReader.cpp \
-    pissConnectionFactory/pissNetworkEnvironment.cpp \
-    pissConnectionFactory/ModuleIpConfig.cpp \
-    pissIHM/ControlConsoleWindow/ControlConsoleWindow.cpp \
-    pissIHM/pissMainWindow/SurgeryLoadingWindow.cpp \
-    pissConnectionFactory/pissServer.cpp \
-    pissConnectionFactory/CDatagramme.cpp \
-    pissConnectionFactory/InputQueue.cpp \
-    pissConnectionFactory/OutputQueue.cpp \
-    pissConnectionFactory/DatagrammeAnalyser.cpp \
-    pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.cxx \
-    pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.cxx \
-    pissConnectionFactory/pissReceptionTask.cpp \
-    pissConnectionFactory/pissTransmissionTask.cpp \
-    pissConnectionFactory/pissInputInformationDecoder.cpp \
-    pissConnectionFactory/pissOutputInformationEncoder.cpp \
-    pissConnectionFactory/GlobalTime.cpp \
-    pissConnectionFactory/pissCommunicationStack.cpp \
-    pissSystemDataWare/CArm.cpp \
-    pissSystemDataWare/InterventionalTool.cpp \
-    pissIHM/pissMainWindow/SystemOptions.cpp
+            pissIHM/pissMainWindow/PatientItem.cpp \
+            pissSystemDataWare/BidimensionnelImage.cpp \
+            pissIHM/pissMainWindow/pissMainWindow.cpp \
+            pissIHM/SuperviseWindow/SuperviseWindow.cpp \
+            pissDiskImageReaderFactory/ImageFileInterface_Mat.cpp \
+            pissDiskImageReaderFactory/CenterLineReader.cpp \
+            pissConnectionFactory/pissNetworkEnvironment.cpp \
+            pissConnectionFactory/ModuleIpConfig.cpp \
+            pissIHM/ControlConsoleWindow/ControlConsoleWindow.cpp \
+            pissIHM/pissMainWindow/SurgeryLoadingWindow.cpp \
+            pissConnectionFactory/pissServer.cpp \
+            pissConnectionFactory/CDatagramme.cpp \
+            pissConnectionFactory/InputQueue.cpp \
+            pissConnectionFactory/OutputQueue.cpp \
+            pissConnectionFactory/DatagrammeAnalyser.cpp \
+            pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.cxx \
+            pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.cxx \
+            pissConnectionFactory/pissReceptionTask.cpp \
+            pissConnectionFactory/pissTransmissionTask.cpp \
+            pissConnectionFactory/pissInputInformationDecoder.cpp \
+            pissConnectionFactory/pissOutputInformationEncoder.cpp \
+            pissConnectionFactory/GlobalTime.cpp \
+            pissConnectionFactory/pissCommunicationStack.cpp \
+            pissSystemDataWare/CArm.cpp \
+            pissSystemDataWare/InterventionalTool.cpp \
+            pissIHM/pissMainWindow/SystemOptions.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -157,31 +157,31 @@ HEADERS  += \
             pissDiskImageReaderFactory/ImageFileInterface_RawMhd.h \
             pissIHM/SurgeryPlanWindow/digitalSurgeryTime.h \
             pissIHM/pissMainWindow/PatientItem.h \
-    pissSystemDataWare/BidimensionnelImage.h \
-    pissIHM/pissMainWindow/pissMainWindow.h \
-    pissIHM/SuperviseWindow/SuperviseWindow.h \
-    pissDiskImageReaderFactory/ImageFileInterface_Mat.h \
-    pissDiskImageReaderFactory/CenterLineReader.h \
-    pissConnectionFactory/pissNetworkEnvironment.h \
-    pissConnectionFactory/ModuleIpConfig.h \
-    pissIHM/ControlConsoleWindow/ControlConsoleWindow.h \
-    pissIHM/pissMainWindow/SurgeryLoadingWindow.h \
-    pissConnectionFactory/pissServer.h \
-    pissConnectionFactory/CDatagramme.h \
-    pissConnectionFactory/InputQueue.h \
-    pissConnectionFactory/OutputQueue.h \
-    pissConnectionFactory/DatagrammeAnalyser.h \
-    pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.h \
-    pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.h \
-    pissConnectionFactory/pissReceptionTask.h \
-    pissConnectionFactory/pissTransmissionTask.h \
-    pissConnectionFactory/pissInputInformationDecoder.h \
-    pissConnectionFactory/pissOutputInformationEncoder.h \
-    pissConnectionFactory/GlobalTime.h \
-    pissConnectionFactory/pissCommunicationStack.h \
-    pissSystemDataWare/CArm.h \
-    pissSystemDataWare/InterventionalTool.h \
-    pissIHM/pissMainWindow/SystemOptions.h
+            pissSystemDataWare/BidimensionnelImage.h \
+            pissIHM/pissMainWindow/pissMainWindow.h \
+            pissIHM/SuperviseWindow/SuperviseWindow.h \
+            pissDiskImageReaderFactory/ImageFileInterface_Mat.h \
+            pissDiskImageReaderFactory/CenterLineReader.h \
+            pissConnectionFactory/pissNetworkEnvironment.h \
+            pissConnectionFactory/ModuleIpConfig.h \
+            pissIHM/ControlConsoleWindow/ControlConsoleWindow.h \
+            pissIHM/pissMainWindow/SurgeryLoadingWindow.h \
+            pissConnectionFactory/pissServer.h \
+            pissConnectionFactory/CDatagramme.h \
+            pissConnectionFactory/InputQueue.h \
+            pissConnectionFactory/OutputQueue.h \
+            pissConnectionFactory/DatagrammeAnalyser.h \
+            pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.h \
+            pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.h \
+            pissConnectionFactory/pissReceptionTask.h \
+            pissConnectionFactory/pissTransmissionTask.h \
+            pissConnectionFactory/pissInputInformationDecoder.h \
+            pissConnectionFactory/pissOutputInformationEncoder.h \
+            pissConnectionFactory/GlobalTime.h \
+            pissConnectionFactory/pissCommunicationStack.h \
+            pissSystemDataWare/CArm.h \
+            pissSystemDataWare/InterventionalTool.h \
+            pissIHM/pissMainWindow/SystemOptions.h
 
 
 # CTK lib.....
