@@ -50,6 +50,9 @@ struct MainOptionStates{
     bool historyWidgetOptionState;
 };
 
+/**
+ * @brief The pissMainWindow class
+ */
 class pissMainWindow : public QWidget{
     Q_OBJECT
 
@@ -125,7 +128,7 @@ private:
 
     QString systemInformationBoardStyleSheet;
 
-    PatientsWidget* patientsWidget;
+    PatientsWidget* ecranDesMaladies;
     ReplaysWidget*replaysWidget;
     SurgerySystemWidget* surgerySystemWidget;
 

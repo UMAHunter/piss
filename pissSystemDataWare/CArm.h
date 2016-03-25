@@ -4,6 +4,12 @@
 
 class CArm
 {
+
+private:
+    //------attributes------
+
+
+
 public:
     CArm();
 };

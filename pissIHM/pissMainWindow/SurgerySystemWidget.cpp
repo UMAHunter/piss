@@ -24,20 +24,33 @@ void SurgerySystemWidget::initVariable(){
 //! \brief SurgerySystemWidget::constructIHM
 //!
 void SurgerySystemWidget::constructIHM(){
+    //!-----------------------------------------------------------------------------------------
+    surgerySystemControlBar = new QWidget();
+    surgerySystemControlBar->setFixedHeight(this->height*0.05);
+    surgerySystemControlBar->setStyleSheet("background-color:pink");
+
+    //!-----------------------------------------------------------------------------------------
+    surgerySystemComponents = new QWidget();
 
     systemComponentsContainer = new QFrame();
-    systemComponentsContainer->setFixedHeight(height*0.5);
+    systemComponentsContainer->setFixedWidth(width*0.5);
     systemComponentsContainer->setStyleSheet("background-color:cyan");
 
     communicationStatesContainer = new QFrame();
     communicationStatesContainer->setStyleSheet("background-color:skyblue");
 
+    surgerySystemComponentsLayout = new QHBoxLayout(surgerySystemComponents);
+    surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
+    surgerySystemComponentsLayout->addWidget(communicationStatesContainer);
+    surgerySystemComponentsLayout->setSpacing(0);
+    surgerySystemComponentsLayout->setMargin(0);
 
-    surgerySystemWidgetLayout = new QVBoxLayout(this);
-    surgerySystemWidgetLayout->addWidget(systemComponentsContainer);
-    surgerySystemWidgetLayout->addWidget(communicationStatesContainer);
-    surgerySystemWidgetLayout->setSpacing(0);
-    surgerySystemWidgetLayout->setMargin(0);
+
+    myLayout = new QVBoxLayout(this);
+    myLayout->addWidget(surgerySystemControlBar);
+    myLayout->addWidget(surgerySystemComponents);
+    myLayout->setSpacing(0);
+    myLayout->setMargin(0);
 }
 
 //! ----------------------------------------------------------------------------------------------

@@ -61,7 +61,6 @@ public:
 
     QStringList getMriStatisticsList();
     QVector<HistogramPoint*> getMriHistogramfrequencies();
-
     QVector<HistogramPoint*> getGrayScaleValuefrequencies();
     QVector<TransferPoint*> getOpacityTransferPoints();
     QVector<ColorPoint*> getColorTransferPoints();

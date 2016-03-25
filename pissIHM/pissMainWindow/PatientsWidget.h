@@ -212,6 +212,7 @@ private:
 
     QString labelStyleSheet;
     QString photoLabelStyleSheet;
+    QString textEditStyleSheet;
     QTime* surgeryTimer;
 
 signals:

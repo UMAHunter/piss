@@ -10,7 +10,11 @@ class SurgerySystemWidget:public QWidget
 {
     Q_OBJECT
 private:
-    QVBoxLayout *surgerySystemWidgetLayout;
+    QWidget *surgerySystemControlBar;
+    QWidget *surgerySystemComponents;
+
+    QVBoxLayout *myLayout;
+    QHBoxLayout *surgerySystemComponentsLayout;
     QFrame *systemComponentsContainer;
     QFrame *communicationStatesContainer;
 

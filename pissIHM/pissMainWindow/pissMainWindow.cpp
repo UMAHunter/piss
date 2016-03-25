@@ -16,6 +16,7 @@ pissMainWindow::pissMainWindow(SystemDispatcher* dispatcher): QWidget(){
     this->setConnections();
     this->drawBackground();
     this->onPatientsWidgetOptionReleased();
+    //this->onSystemWidgetOptionReleased();
 }
 
 //!---------------------------------------------------------------------------------------
@@ -112,25 +113,24 @@ void pissMainWindow::constructIHM(){
     configurationBoard = new QWidget();
     configurationBoard->setFixedWidth(this->primary_screen_width*0.13);
 
-
     //!----------------------------------------------------------------------------------------------------------------------------
     //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th¨¦rapy
     //!----------------------------------------------------------------------------------------------------------------------------
-    patientsWidget = new PatientsWidget(this->screen_count,
+    ecranDesMaladies = new PatientsWidget(this->screen_count,
                                         this->systemDispatcher,
                                         this->algorithmTestPlatform,
                                         this->patientInformationWidget,
                                         this->surgeryTimer,
                                         this->englishCaracterStyle,
-                                        this->primary_screen_width,
-                                        this->primary_screen_height,
+                                        this->primary_screen_width*0.846,
+                                        this->primary_screen_height*0.79,
                                         this->globalWorkSpaceColor);
 
     if(this->screen_count == 3){
-        this->patientsWidget->setSurgeryPlanWindow(this->surgeryPlanWindow);
-        this->patientsWidget->setGuidewareTrackingWindow(this->guidewareTrackingWindow);
-        this->patientsWidget->setControlConsoleWindow(this->controlConsoleWindow);
-        this->patientsWidget->setParent(this);
+        this->ecranDesMaladies->setSurgeryPlanWindow(this->surgeryPlanWindow);
+        this->ecranDesMaladies->setGuidewareTrackingWindow(this->guidewareTrackingWindow);
+        this->ecranDesMaladies->setControlConsoleWindow(this->controlConsoleWindow);
+        this->ecranDesMaladies->setParent(this);
     }
 
     //!----------------------------------------------------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ void pissMainWindow::constructIHM(){
     widgetsContainer = new QWidget();
     widgetsContainer->setFixedHeight(primary_screen_height*0.79);
     widgetsContainerLayout = new QHBoxLayout(widgetsContainer);
-    widgetsContainerLayout->addWidget(patientsWidget);
+    widgetsContainerLayout->addWidget(ecranDesMaladies);
     widgetsContainerLayout->addWidget(surgerySystemWidget);
     widgetsContainerLayout->addWidget(replaysWidget);
     widgetsContainerLayout->setSpacing(0);
@@ -254,7 +254,7 @@ void pissMainWindow::constructIHM(){
 //! \brief IgssMainWindow::findPatientExisted
 //!
 void pissMainWindow::findPatientExisted(){
-   patientsWidget->findPatientExisted();
+   ecranDesMaladies->findPatientExisted();
 }
 
 //! -----------------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ void pissMainWindow::drawBackground(){
 //!
 void pissMainWindow::setConnections(){
 
-    this->connect(this->patientsWidget, SIGNAL(surgeryLaunchButtonCicked()), this, SLOT(close()));
+    this->connect(this->ecranDesMaladies, SIGNAL(surgeryLaunchButtonCicked()), this, SLOT(close()));
 
     this->connect(closeButton, SIGNAL(clicked()), this, SLOT(closeSystem()));
     this->connect(systemConfigurationButton, SIGNAL(clicked()), this, SLOT(configurerLeSysteme()));
@@ -316,7 +316,7 @@ void pissMainWindow::updateIHM(){
         this->onSystemWidgetOptionReleased();
     }
 
-    patientsWidget->setWorkSpaceColor(this->globalWorkSpaceColor);
+    ecranDesMaladies->setWorkSpaceColor(this->globalWorkSpaceColor);
 
 }
 
@@ -338,7 +338,7 @@ void pissMainWindow::surgeryTerminated(){
 
     this->controlConsoleWindow->close();
 
-    this->patientsWidget->terminateSurgery();
+    this->ecranDesMaladies->terminateSurgery();
 
     this->showFullScreen();
 }
@@ -471,7 +471,11 @@ void pissMainWindow::onPatientsWidgetOptionReleased(){
     mainOptionStates.systemWidgetOptionState = false;
     mainOptionStates.historyWidgetOptionState = false;
 
-    patientsWidget->show();
+    ecranDesMaladies->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
+    surgerySystemWidget->setFixedSize(0,0);
+    replaysWidget->setFixedSize(0,0);
+
+    ecranDesMaladies->show();
     surgerySystemWidget->close();
     replaysWidget->close();
 }
@@ -524,10 +528,13 @@ void pissMainWindow::onSystemWidgetOptionReleased(){
     mainOptionStates.systemWidgetOptionState = true;
     mainOptionStates.historyWidgetOptionState = false;
 
-    patientsWidget->close();
+    ecranDesMaladies->setFixedSize(0,0);
+    surgerySystemWidget->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
+    replaysWidget->setFixedSize(0,0);
+
+    ecranDesMaladies->close();
     surgerySystemWidget->show();
     replaysWidget->close();
-
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -580,7 +587,11 @@ void pissMainWindow::onHistoryWidgetOptionReleased(){
     mainOptionStates.historyWidgetOptionState = true;
     widgetOptionContainer->setStyleSheet("background-color:" + this->globalWorkSpaceColor);
 
-    patientsWidget->close();
+    ecranDesMaladies->setFixedSize(0,0);
+    surgerySystemWidget->setFixedSize(0,0);
+    replaysWidget->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
+
+    ecranDesMaladies->close();
     surgerySystemWidget->close();
     replaysWidget->show();
 }
