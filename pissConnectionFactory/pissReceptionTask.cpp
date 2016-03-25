@@ -62,7 +62,6 @@ void pissReceptionTask::lecture()
     datagramme->setValue(&input);
 
     this->mutexInputqueueManager.lock();
-    qDebug()<<"push into inputqueue at"<< this->id<<input.length();
     this->inputQueueManager->at(this->id)->append(datagramme);
     this->mutexInputqueueManager.unlock();
 }

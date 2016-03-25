@@ -1,8 +1,10 @@
 #ifndef OUTPUTQUEUE_H
 #define OUTPUTQUEUE_H
 
-#include<QList>
-#include"CDatagramme.h"
+#include <QList>
+#include <QMutex>
+#include "CDatagramme.h"
+
 
 class OutputQueue
 {
@@ -17,6 +19,7 @@ public:
     int getLength();
 private:
     QList <CDatagramme*> outputqueue;
+    QMutex oqMutex;
 };
 
 #endif // OUTPUTQUEUE_H

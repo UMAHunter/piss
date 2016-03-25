@@ -5,7 +5,7 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
     this->globalTime = globalTime;
 
     networkEnvironment = new pissNetworkEnvironment();
-    networkEnvironment->append("self", 10703);
+    networkEnvironment->append(0, 10703);
 
     datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,networkEnvironment,globalTime);
     informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,networkEnvironment,datagrammeAnalyser);

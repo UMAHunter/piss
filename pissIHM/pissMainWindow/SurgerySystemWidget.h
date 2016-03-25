@@ -4,8 +4,13 @@
 #include <QWidget>
 #include <QFrame>
 #include <QHBoxLayout>
+#include "CommunicationStatesContainer.h"
+#include "SystemComponentsContainer.h"
 
 
+/**
+ * @brief The SurgerySystemWidget class
+ */
 class SurgerySystemWidget:public QWidget
 {
     Q_OBJECT
@@ -15,8 +20,8 @@ private:
 
     QVBoxLayout *myLayout;
     QHBoxLayout *surgerySystemComponentsLayout;
-    QFrame *systemComponentsContainer;
-    QFrame *communicationStatesContainer;
+    SystemComponentsContainer *systemComponentsContainer;
+    CommunicationStatesContainer *communicationStatesContainer;
 
     int width;
     int height;

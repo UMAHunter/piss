@@ -8,7 +8,7 @@ GlobalTime::GlobalTime()
     {
         assert(FALSE);
     }
-    m_frequency = fc.QuadPart;  //计时器的频率
+    m_frequency = fc.QuadPart;
 
 }
 

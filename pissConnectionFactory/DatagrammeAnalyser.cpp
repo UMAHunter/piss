@@ -43,22 +43,35 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
     qDebug()<<"end decoding process";
 }
 
+//! ----------------------------------------------------------------------------------------
+//!
+//! \brief DatagrammeAnalyser::decodeHelloMessage
+//! \param id
+//! \param datagramme
+//!
 void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
-
-    //datagramme.modiferTimestamp(ccfgdfgfd)
-    //globalTime->GetMicroS()
-
+    datagramme->modifierTimestamp(globalTime->GetMicroS());
     oq->at(id)->append(datagramme);
-
 }
 
+//! ----------------------------------------------------------------------------------------
+//!
+//! \brief DatagrammeAnalyser::decodeHandShakeMessage
+//! \param id
+//! \param datagramme
+//!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
     QString moduleIpAddress;
     int port;
     int moduleNumber = id;
 
 
-    moduleIpAddress = QString("%1.%2.%3.%4").arg(quint8(datagramme->getValue()->at(8))).arg(quint8(datagramme->getValue()->at(9))).arg(quint8(datagramme->getValue()->at(10))).arg(quint8(datagramme->getValue()->at(11)));
+    moduleIpAddress = QString("%1.%2.%3.%4").
+            arg(quint8(datagramme->getValue()->at(8))).
+            arg(quint8(datagramme->getValue()->at(9))).
+            arg(quint8(datagramme->getValue()->at(10))).
+            arg(quint8(datagramme->getValue()->at(11)));
+
     port = datagramme->getValue()->at(12)*100 + datagramme->getValue()->at(13);
     mNetworkEnvironment->append(moduleNumber, port, moduleIpAddress, 0, 0, 1);
 
@@ -66,6 +79,11 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
     transmissionTask->connectTo(moduleNumber);
 }
 
+//! ----------------------------------------------------------------------------------------
+//!
+//! \brief DatagrammeAnalyser::decodeCTImage
+//! \param datagramme
+//!
 void DatagrammeAnalyser::decodeCTImage(CDatagramme *datagramme){
 
 }

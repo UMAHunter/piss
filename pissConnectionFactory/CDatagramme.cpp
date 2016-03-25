@@ -27,6 +27,11 @@ void CDatagramme::setValue(QByteArray* value){
     this->totalLength = this->value->length();
 }
 
+//!-------------------------------------------------------------
+//!
+//! \brief CDatagramme::getValue
+//! \return
+//!
 QByteArray* CDatagramme::getValue(){
     return this->value;
 }

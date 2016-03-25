@@ -30,15 +30,15 @@ void SurgerySystemWidget::constructIHM(){
     surgerySystemControlBar->setStyleSheet("background-color:pink");
 
     //!-----------------------------------------------------------------------------------------
+    //!
+    //!  - luo jia ming
+    //!
+    systemComponentsContainer = new SystemComponentsContainer(width*0.5, this->height*0.95);
+
+    //!  - fan de yuan
+    communicationStatesContainer = new CommunicationStatesContainer(width*0.5, this->height*0.95);
+
     surgerySystemComponents = new QWidget();
-
-    systemComponentsContainer = new QFrame();
-    systemComponentsContainer->setFixedWidth(width*0.5);
-    systemComponentsContainer->setStyleSheet("background-color:cyan");
-
-    communicationStatesContainer = new QFrame();
-    communicationStatesContainer->setStyleSheet("background-color:skyblue");
-
     surgerySystemComponentsLayout = new QHBoxLayout(surgerySystemComponents);
     surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
     surgerySystemComponentsLayout->addWidget(communicationStatesContainer);

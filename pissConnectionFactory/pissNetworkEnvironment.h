@@ -14,6 +14,7 @@ class pissNetworkEnvironment
 public:
     pissNetworkEnvironment();
     void append(QString ModuleName, int Port);
+    void append(int ModuleNumber, int Port);
     void append(QString ModuleName, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
     void append(int ModuleNumber, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
 

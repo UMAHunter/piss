@@ -113,7 +113,9 @@ SOURCES +=  main.cpp\
             pissConnectionFactory/pissCommunicationStack.cpp \
             pissSystemDataWare/CArm.cpp \
             pissSystemDataWare/InterventionalTool.cpp \
-            pissIHM/pissMainWindow/SystemOptions.cpp
+            pissIHM/pissMainWindow/SystemOptions.cpp \
+    pissIHM/pissMainWindow/SystemComponentsContainer.cpp \
+    pissIHM/pissMainWindow/CommunicationStatesContainer.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -181,7 +183,9 @@ HEADERS  += \
             pissConnectionFactory/pissCommunicationStack.h \
             pissSystemDataWare/CArm.h \
             pissSystemDataWare/InterventionalTool.h \
-            pissIHM/pissMainWindow/SystemOptions.h
+            pissIHM/pissMainWindow/SystemOptions.h \
+    pissIHM/pissMainWindow/SystemComponentsContainer.h \
+    pissIHM/pissMainWindow/CommunicationStatesContainer.h
 
 
 # CTK lib.....

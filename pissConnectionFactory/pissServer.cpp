@@ -34,7 +34,7 @@ pissServer::~pissServer(){
 //! \brief pissServer::launchServer
 //!
 void pissServer::launchServer(){
-    serverStatus = this->listen(QHostAddress::Any, this->networkEnvironment->getPortByModule("self"));
+    serverStatus = this->listen(QHostAddress::Any, this->networkEnvironment->getPortByModule(0));
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------

@@ -60,6 +60,23 @@ void pissNetworkEnvironment::append(QString ModuleName, int Port)
 
 //--------------------------------------------------------------------------------------------------------------------------------
 //!
+//! \brief pissNetworkEnvironment::append
+//! \param ModuleNumber
+//! \param Port
+//!
+void pissNetworkEnvironment::append(int ModuleNumber, int Port){
+    ModuleIpConfig* selfIpConfig = new ModuleIpConfig();
+    selfIpConfig->setIpAddress(this->selfDetectIP());
+    selfIpConfig->setPort(Port);
+    selfIpConfig->setModuleNumber(ModuleNumber);
+    selfIpConfig->setCode(0);
+    mutex.lock();
+    this->modules.append(selfIpConfig);
+    mutex.unlock();
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------
+//!
 //! \brief pissNetworkEnvironment::init
 //! \param ModuleName
 //! \param Port
