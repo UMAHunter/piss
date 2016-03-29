@@ -15,6 +15,7 @@ public:
                                 DatagrammeAnalyser *datagrammeAnalyser);
     ~pissInputInformationDecoder();
     void run();
+    void stop();
 
 private:
     pissNetworkEnvironment *networkEnvironment;
@@ -22,6 +23,8 @@ private:
     DatagrammeAnalyser *datagrammeAnalyser;
     CDatagramme data;
     QMutex inputMutex;
+
+    bool flag;
 };
 
 #endif // PISSINPUTINFORMATIONDECODER_H

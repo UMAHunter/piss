@@ -77,6 +77,8 @@ private:
     QString labelStyleSheet;
     QString progressBarStyleSheet;
 
+    QString systemMessage;
+
     int appWidth;
     int appHeight;
 

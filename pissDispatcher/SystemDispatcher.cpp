@@ -19,6 +19,28 @@ Patient* SystemDispatcher::getPatientById(int id){
     return this->database->getPatientById(id);
 }
 
+//!---------------------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDispatcher::startPissServer
+//!
+bool SystemDispatcher::startPissServer(){
+    return communicationStack->launch();
+}
+
+//!---------------------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDispatcher::stopPissServer
+//! \return
+//!
+bool SystemDispatcher::stopPissServer(){
+    return communicationStack->closeServer();
+}
+
+//!---------------------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDispatcher::setMessageDisplayWindow
+//! \param msgDisplay
+//!
 void SystemDispatcher::setMessageDisplayWindow(QTextEdit *msgDisplay){
 
 }

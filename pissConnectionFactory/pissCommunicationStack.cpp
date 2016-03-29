@@ -1,5 +1,9 @@
 #include "pissCommunicationStack.h"
 
+/**
+ * @brief pissCommunicationStack::pissCommunicationStack
+ * @param globalTime
+ */
 pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
 {
     this->globalTime = globalTime;
@@ -12,20 +16,48 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
     server = new pissServer(&inputQueueManager,&outputQueueManager,networkEnvironment, datagrammeAnalyser,globalTime);
 }
 
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::clearBuffer
+//!
 void pissCommunicationStack::clearBuffer(){
     inputQueueManager.clear();
     outputQueueManager.clear();
 }
 
-void pissCommunicationStack::launch(){
-    informationDecodeTask->start();
-    server->launchServer();
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::closeServer
+//! \return
+//!
+bool pissCommunicationStack::closeServer(){
+    informationDecodeTask->stop();
+    return server->stopServer();
 }
 
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::launch
+//!
+bool pissCommunicationStack::launch(){
+    informationDecodeTask->start();
+    return server->launchServer();
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::setPatientHandling
+//! \param patientHandling
+//!
 void pissCommunicationStack::setPatientHandling(Patient *patientHandling){
     this->patientHandling = patientHandling;
 }
 
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::setSystemMetaData
+//! \param systemMetaData
+//!
 void pissCommunicationStack::setSystemMetaData(SystemMetaData *systemMetaData){
     this->systemMetaData = systemMetaData;
 }

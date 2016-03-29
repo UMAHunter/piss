@@ -1,5 +1,6 @@
 #include "pissServer.h"
 
+
 /**
  * @brief pissServer::pissServer
  * @param inputQueueManager
@@ -31,10 +32,40 @@ pissServer::~pissServer(){
 
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
+//! \brief pissServer::stopServer
+//! \return
+//!
+bool pissServer::stopServer(){
+    if(serverStatus){
+
+        //! TODO stop task related and queues...........
+
+        this->close();
+        return true;
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setText("server do not need to stop, hasn't been launched");
+        msgBox.exec();
+        return false;
+    }
+    return false;
+}
+
+//!--------------------------------------------------------------------------------------------------------------------------------
+//!
 //! \brief pissServer::launchServer
 //!
-void pissServer::launchServer(){
+bool pissServer::launchServer(){
+    if(serverStatus){
+        QMessageBox msgBox;
+        msgBox.setText("Server already in listening...");
+        msgBox.exec();
+        return false;
+    }
+
     serverStatus = this->listen(QHostAddress::Any, this->networkEnvironment->getPortByModule(0));
+    return serverStatus;
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------

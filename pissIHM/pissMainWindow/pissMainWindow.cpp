@@ -116,15 +116,15 @@ void pissMainWindow::constructIHM(){
     //!----------------------------------------------------------------------------------------------------------------------------
     //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th¨¦rapy
     //!----------------------------------------------------------------------------------------------------------------------------
-    ecranDesMaladies = new PatientsWidget(this->screen_count,
-                                        this->systemDispatcher,
-                                        this->algorithmTestPlatform,
-                                        this->patientInformationWidget,
-                                        this->surgeryTimer,
-                                        this->englishCaracterStyle,
-                                        this->primary_screen_width*0.846,
-                                        this->primary_screen_height*0.79,
-                                        this->globalWorkSpaceColor);
+    ecranDesMaladies = new PatientsWidget(  this->screen_count,
+                                            this->systemDispatcher,
+                                            this->algorithmTestPlatform,
+                                            this->patientInformationWidget,
+                                            this->surgeryTimer,
+                                            this->englishCaracterStyle,
+                                            this->primary_screen_width*0.846,
+                                            this->primary_screen_height*0.79,
+                                            this->globalWorkSpaceColor);
 
     if(this->screen_count == 3){
         this->ecranDesMaladies->setSurgeryPlanWindow(this->surgeryPlanWindow);
@@ -136,7 +136,10 @@ void pissMainWindow::constructIHM(){
     //!----------------------------------------------------------------------------------------------------------------------------
     //! surveillance sur les ¨¦tats du system
     //!----------------------------------------------------------------------------------------------------------------------------
-    surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.846,primary_screen_height*0.79);
+    surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.846,
+                                                  primary_screen_height*0.79,
+                                                  this->systemDispatcher,
+                                                  this->algorithmTestPlatform);
 
     //!----------------------------------------------------------------------------------------------------------------------------
     //! historique
@@ -219,7 +222,6 @@ void pissMainWindow::constructIHM(){
     controlAreaItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     controlBoard = new QWidget();
-
     controlBoard->setFixedWidth(this->primary_screen_width*0.024);
     controlBoardLayout = new QVBoxLayout(controlBoard);
     controlBoardLayout->addWidget(closeButton);

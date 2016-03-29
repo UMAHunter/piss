@@ -60,12 +60,8 @@ int main(int argc, char *argv[]){
     //! -------------------------------------------------------------------------------------------
     dispatcher->setSystemDataBase(database);
     dispatcher->setImageProcessingFactory(imageProcessingFactory);
+    dispatcher->setCommunicationStack(communicationStack);
     database->setImageProcessingFactory(imageProcessingFactory);
-
-    //! -------------------------------------------------------------------------------------------
-    //! Lancer le serveur
-    //! -------------------------------------------------------------------------------------------
-    communicationStack->launch();
 
     //! -------------------------------------------------------------------------------------------
     //! Chercher les maladies existants

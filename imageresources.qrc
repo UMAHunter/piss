@@ -76,5 +76,7 @@
         <file>images/title.png</file>
         <file>images/fileunloaded.png</file>
         <file>images/system_configuration.png</file>
+	  <file>images/init.png</file>
+        <file>images/start.png</file>
     </qresource>
 </RCC>

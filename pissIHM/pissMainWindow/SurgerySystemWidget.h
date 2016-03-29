@@ -3,9 +3,14 @@
 
 #include <QWidget>
 #include <QFrame>
+#include <QPushButton>
 #include <QHBoxLayout>
+#include <QSpacerItem>
+
 #include "CommunicationStatesContainer.h"
 #include "SystemComponentsContainer.h"
+#include "SystemDispatcher.h"
+#include "AlgorithmTestPlatform.h"
 
 
 /**
@@ -18,6 +23,12 @@ private:
     QWidget *surgerySystemControlBar;
     QWidget *surgerySystemComponents;
 
+    QPushButton *startServerButton;
+    QPushButton *stopServerButton;
+
+    QSpacerItem *surgerySystemControlBarItem;
+
+    QHBoxLayout *surgerySystemControlBarLayout;
     QVBoxLayout *myLayout;
     QHBoxLayout *surgerySystemComponentsLayout;
     SystemComponentsContainer *systemComponentsContainer;
@@ -26,13 +37,23 @@ private:
     int width;
     int height;
 
+    SystemDispatcher* systemDispatcher;
+    AlgorithmTestPlatform* algorithmTestPlatform;
+
 public:
     void initVariable();
     void constructIHM();
     void setConnections();
 
+public slots:
+    void onStartServerButtonClicked();
+    void onStopServerButtonClicked();
+
 public:
-     explicit SurgerySystemWidget(int width, int height);
+     explicit SurgerySystemWidget(int width,
+                                  int height,
+                                  SystemDispatcher* systemDispatcher,
+                                  AlgorithmTestPlatform* algorithmTestPlatform);
 };
 
 #endif // SURGERYSYSTEMWIDGET_H

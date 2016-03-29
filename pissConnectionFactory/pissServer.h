@@ -3,12 +3,16 @@
 
 #include <QTcpServer>
 #include <QVector>
+#include <QMessageBox>
+
 #include "pissNetworkEnvironment.h"
 #include "pissReceptionTask.h"
 #include "DatagrammeAnalyser.h"
 #include "pissInputInformationDecoder.h"
 
-
+/**
+ * @brief The pissServer class
+ */
 class pissServer : public QTcpServer
 {
     Q_OBJECT
@@ -20,7 +24,8 @@ public:
                GlobalTime *globalTime);
 
     ~pissServer();
-    void launchServer();
+    bool launchServer();
+    bool stopServer();
     bool getConnectionState();
 
 private:

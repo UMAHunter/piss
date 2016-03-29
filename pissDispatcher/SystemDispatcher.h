@@ -15,19 +15,23 @@ class SystemDispatcher
 {
 public:
     SystemDispatcher();
-    QString get_username();
-    void setMessageDisplayWindow(QTextEdit *msgDisplay);
-    void initializeSystemPaths();
-    int findPatientExisted();
-    void setSystemDataBase(SystemDataBase* database);
-    void setImageProcessingFactory(ImageProcessingFactory *imageProcessingFactory);
-    void setCommunicationStack(pissCommunicationStack *communicationStack);
-    QString getImageCenterPath();
 
     Patient* getPatientById(int id);
 
+    QString get_username();
+    QString getImageCenterPath();
     QStringList getPatientsStatus();
     QString doImageProcessingByMethodType(int id, int dim, QString method);
+
+    bool startPissServer();
+    bool stopPissServer();
+    void setSystemDataBase(SystemDataBase* database);
+    void setImageProcessingFactory(ImageProcessingFactory *imageProcessingFactory);
+    void setCommunicationStack(pissCommunicationStack *communicationStack);
+    void setMessageDisplayWindow(QTextEdit *msgDisplay);
+    void initializeSystemPaths();
+
+    int findPatientExisted();
 
 private:
     SystemDataBase* database;

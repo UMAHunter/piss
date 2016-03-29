@@ -27,9 +27,10 @@ private:
     SystemMetaData *systemMetaData;
 
 public:
-    void clearBuffer();
-    void launch();
+    bool launch();
+    bool closeServer();
 
+    void clearBuffer();
     void setPatientHandling(Patient *patientHandling);
     void setSystemMetaData(SystemMetaData *systemMetaData);
 
