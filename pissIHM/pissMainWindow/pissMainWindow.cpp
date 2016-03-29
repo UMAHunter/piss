@@ -435,6 +435,7 @@ void pissMainWindow::closeSystem(){
         this->guidewareTrackingWindow->close();
         this->surgeryPlanWindow->close();
         systemOptionWindow->close();
+        this->surgerySystemWidget->closeSystem();
     }
 }
 

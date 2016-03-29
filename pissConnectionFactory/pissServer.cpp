@@ -41,6 +41,7 @@ bool pissServer::stopServer(){
         //! TODO stop task related and queues...........
 
         this->close();
+        serverStatus = false;
         return true;
     }
     else{

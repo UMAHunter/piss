@@ -44,6 +44,7 @@ public:
     void initVariable();
     void constructIHM();
     void setConnections();
+    void closeSystem();
 
 public slots:
     void onStartServerButtonClicked();
