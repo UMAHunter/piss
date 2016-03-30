@@ -94,8 +94,6 @@ private:
     QHBoxLayout* patientsWidgetToolBarLayout;
     QVBoxLayout* personalInformationLayout;
     QGridLayout* patientInfoContainerLayout;
-    QGridLayout* doctorInfoContainerLayout;
-    QVBoxLayout* doctorCommentLayout;
     QVBoxLayout* currentPatientBreifInformationWidgetLayout;
     QVBoxLayout* firstPatientPhotoWidgetLayout;
     QVBoxLayout* secondPatientPhotoWidgetLayout;
@@ -124,8 +122,6 @@ private:
     QWidget* leftBlackArea;
     QWidget* rightBlackArea;
     QWidget* patientInfoContainer;
-    QWidget* doctorComment;
-    QWidget* doctorInfoContainer;
     QWidget* surgeryLoadingWidget;
 
     PatientItem* firstPatientPhotoWidget;
@@ -142,7 +138,6 @@ private:
 
     QTextEdit* commentTextEdit;
 
-    QLabel* patientResume;
     QLabel* nameLabel;
     QLabel* birthdayLabel;
     QLabel* sexualLabel;
@@ -151,10 +146,10 @@ private:
     QLabel* marryLabel;
     QLabel* nationLabel;
     QLabel* professionalLabel;
-    QLabel* leadDoctorLabel;
-    QLabel* therapyTimeLabel;
     QLabel* drugAllergyLabel;
     QLabel* remarksLabel;
+    QLabel* leadDoctorLabel;
+    QLabel* therapyTimeLabel;
 
     QLineEdit* nameLineEdit;
     QLineEdit* birthdayLineEdit;
@@ -164,10 +159,10 @@ private:
     QLineEdit* marryLineEdit;
     QLineEdit* nationLineEdit;
     QLineEdit* professionalLineEdit;
-    QLineEdit* leadDoctorEdit;
-    QLineEdit* therapyTimeEdit;
     QLineEdit* drugAllergyLineEdit;
     QLineEdit* remarksLineEdit;
+    QLineEdit * leadDoctorEdit;
+    QLineEdit* therapyTimeEdit;
 
     QFont *caracterStyle;
     QFont *caracterFontStyle;

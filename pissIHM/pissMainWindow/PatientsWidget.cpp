@@ -23,12 +23,12 @@ PatientsWidget::PatientsWidget(int screen_count,
     this->appHeight = appHeight;
     this->workspaceColor = workspaceColor;
 
-
     this->initVariable();
     this->constructIHM();
     this->setConnections();
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFixedSize(this->appWidth, this->appHeight);
+
     setWorkSpaceColor(this->workspaceColor);
 }
 
@@ -624,69 +624,75 @@ void PatientsWidget::constructIHM(){
     this->patientsPhotoWidgetLayout->setSpacing(0);
     this->patientsPhotoWidgetLayout->setMargin(0);
 
+    this->patientImageLoaded = new QVTKWidget();
+    this->patientImageLoaded->setFixedHeight(this->appHeight/0.79*0.52);
+
+    this->patientsPhotoAndMedicaleImageContainerWidget = new QFrame();
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout = new QVBoxLayout(patientsPhotoAndMedicaleImageContainerWidget);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientsPhotoWidget);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientImageLoaded);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setSpacing(0);
+    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setMargin(0);
+
     //!--------------------------------------------------------------------------------------
     //!the information of the current patient
     //!--------------------------------------------------------------------------------------
-    this->patientResume = new QLabel(QString::fromLocal8Bit("病人基本信息"));
-    this->patientResume->setFont(QFont("Times",16,QFont::AnyStyle, false));
-    this->patientResume->setStyleSheet("border: 0px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent;;color: AliceBlue");
-
-    this->nameLabel = new QLabel(QString::fromLocal8Bit("姓名:"));
+    this->nameLabel = new QLabel("name: ");
     this->nameLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->nameLabel->setFont(*this->caracterFontStyle);
     this->nameLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->birthdayLabel = new QLabel(QString::fromLocal8Bit("出生年月:"));
+    this->birthdayLabel = new QLabel("birth: ");
     this->birthdayLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->birthdayLabel->setFont(*this->caracterFontStyle);
     this->birthdayLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->sexualLabel = new QLabel(QString::fromLocal8Bit("性别:"));
+    this->sexualLabel = new QLabel("sex: ");
     this->sexualLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->sexualLabel->setFont(*this->caracterFontStyle);
     this->sexualLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->ageLabel = new QLabel(QString::fromLocal8Bit("年龄:"));
+    this->ageLabel = new QLabel("age: ");
     this->ageLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->ageLabel->setFont(*this->caracterFontStyle);
     this->ageLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->idNumberLabel = new QLabel(QString::fromLocal8Bit("编号:"));
+    this->idNumberLabel = new QLabel("number: ");
     this->idNumberLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->idNumberLabel->setFont(*this->caracterFontStyle);
     this->idNumberLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->marryLabel = new QLabel(QString::fromLocal8Bit("婚姻:"));
+    this->marryLabel = new QLabel("marriage: ");
     this->marryLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->marryLabel->setFont(*this->caracterFontStyle);
     this->marryLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->nationLabel = new QLabel(QString::fromLocal8Bit("民族:"));
+    this->nationLabel = new QLabel("nationality: ");
     this->nationLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->nationLabel->setFont(*this->caracterFontStyle);
     this->nationLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->professionalLabel = new QLabel(QString::fromLocal8Bit("职业:"));
+    this->professionalLabel = new QLabel("professionnel: ");
     this->professionalLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->professionalLabel->setFont(*this->caracterFontStyle);
     this->professionalLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->leadDoctorLabel = new QLabel(QString::fromLocal8Bit("主治医生:"));
+    this->leadDoctorLabel = new QLabel("doctor: ");
     this->leadDoctorLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->leadDoctorLabel->setFont(*this->caracterFontStyle);
     this->leadDoctorLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->therapyTimeLabel = new QLabel(QString::fromLocal8Bit("日期:"));
+    this->therapyTimeLabel = new QLabel("therapy date: ");
     this->therapyTimeLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->therapyTimeLabel->setFont(*this->caracterFontStyle);
     this->therapyTimeLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->drugAllergyLabel = new QLabel(QString::fromLocal8Bit("药物过敏史:"));
+    this->drugAllergyLabel = new QLabel("drug allergy: ");
     this->drugAllergyLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->drugAllergyLabel->setFont(*this->caracterFontStyle);
     this->drugAllergyLabel->setStyleSheet(this->labelStyleSheet);
 
-    this->remarksLabel = new QLabel(QString::fromLocal8Bit("备注:"));
+    this->remarksLabel = new QLabel("ps: ");
     this->remarksLabel->setFixedSize(appWidth*0.055,appHeight*0.03);
     this->remarksLabel->setFont(*this->caracterFontStyle);
     this->remarksLabel->setStyleSheet(this->labelStyleSheet);
@@ -753,7 +759,6 @@ void PatientsWidget::constructIHM(){
 
     this->patientInfoContainer = new QWidget();
     this->patientInfoContainerLayout = new QGridLayout(patientInfoContainer);
-    this->patientInfoContainerLayout->addWidget(patientResume,0, 0, 1, 4, Qt::AlignCenter);
     this->patientInfoContainerLayout->addWidget(nameLabel, 1, 0);
     this->patientInfoContainerLayout->addWidget(nameLineEdit, 1, 1);
     this->patientInfoContainerLayout->addWidget(birthdayLabel, 1, 2);
@@ -778,51 +783,15 @@ void PatientsWidget::constructIHM(){
     this->patientInfoContainerLayout->addWidget(drugAllergyLineEdit, 6, 1, 1, 3, Qt::AlignVCenter);
     this->patientInfoContainerLayout->addWidget(remarksLabel, 7, 0);
     this->patientInfoContainerLayout->addWidget(remarksLineEdit, 7, 1, 1, 3, Qt::AlignVCenter);
-    //this->patientInfoContainerLayout->addWidget();
-    //this->patientInfoContainerLayout->addItem(patientInfoContainerSpacer, 6, 0);
-
     this->patientInfoContainerLayout->setSpacing(0);
     this->patientInfoContainerLayout->setMargin(0);
-
-//    this->leadDoctorLabel = new QLabel("Doctor:");
-//    this->leadDoctorLabel->setFont(*this->caracterStyle);
-//    this->leadDoctorLabel->setStyleSheet(this->labelStyleSheet);
-
-//    this->therapyTimeLabel = new QLabel("Time:");
-//    this->therapyTimeLabel->setFont(*this->caracterStyle);
-//    this->therapyTimeLabel->setStyleSheet(this->labelStyleSheet);
-
-//    this->leadDoctorEdit = new QLineEdit();
-//    this->leadDoctorEdit->setFont(*this->caracterStyle);
-//    this->leadDoctorEdit->setStyleSheet(this->labelStyleSheet);
-
-//    this->therapyTimeEdit = new QLineEdit();
-//    this->therapyTimeEdit->setFont(*this->caracterStyle);
-//    this->therapyTimeEdit->setStyleSheet(this->labelStyleSheet);
-
-    //this->doctorInfoContainer = new QWidget();
-//    this->doctorInfoContainerLayout = new QGridLayout(doctorInfoContainer);
-//    this->doctorInfoContainerLayout->addWidget(leadDoctorLabel, 0, 0);
-//    this->doctorInfoContainerLayout->addWidget(therapyTimeLabel, 1, 0);
-//    this->doctorInfoContainerLayout->addWidget(leadDoctorEdit, 0, 1);
-//    this->doctorInfoContainerLayout->addWidget(therapyTimeEdit, 1, 1);
-//    this->doctorInfoContainerLayout->setSpacing(2);
-//    this->doctorInfoContainerLayout->setMargin(0);
 
     this->commentTextEdit = new QTextEdit();
     this->commentTextEdit->setFixedHeight(appHeight*0.52);
     this->commentTextEdit->setFont(*this->caracterStyle);
     this->commentTextEdit->setStyleSheet(this->textEditStyleSheet);
 
-//    this->doctorComment = new QWidget();
-//    this->doctorCommentLayout = new QVBoxLayout(doctorComment);
-//    //this->doctorCommentLayout->addWidget(doctorInfoContainer);
-//    this->doctorCommentLayout->addWidget(commentTextEdit);
-//    this->doctorCommentLayout->setSpacing(2);
-//    this->doctorCommentLayout->setMargin(0);
-
     this->personalInformation = new QWidget();
-    this->patientInfoContainer->setStyleSheet("background-color:beige");
     this->personalInformation->setFixedWidth(this->appWidth*0.4);
     this->personalInformation->setStyleSheet("border: 0px solid white;background-color:transparent");
     this->personalInformationLayout = new QVBoxLayout(personalInformation);
@@ -830,16 +799,6 @@ void PatientsWidget::constructIHM(){
     this->personalInformationLayout->addWidget(commentTextEdit);
     this->personalInformationLayout->setSpacing(0);
     this->personalInformationLayout->setMargin(0);
-
-    this->patientImageLoaded = new QVTKWidget();
-    this->patientImageLoaded->setFixedHeight(this->appHeight/0.79*0.52);
-
-    this->patientsPhotoAndMedicaleImageContainerWidget = new QFrame();
-    this->patientsPhotoAndMedicaleImageContainerWidgetLayout = new QVBoxLayout(patientsPhotoAndMedicaleImageContainerWidget);
-    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientsPhotoWidget);
-    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientImageLoaded);
-    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setSpacing(0);
-    this->patientsPhotoAndMedicaleImageContainerWidgetLayout->setMargin(0);
 
     //! --------------------------------------------------------------------------------------
     //! the total information of patient and doctors
@@ -861,7 +820,7 @@ void PatientsWidget::constructIHM(){
     this->surgeryLoadingBar->setMaximum(100);
     this->surgeryLoadingBar->setMinimum(0);
 
-    this->surgeryLoadingIndicationLabel = new QLabel("hello, welcome");
+    this->surgeryLoadingIndicationLabel = new QLabel("...........................");
     this->surgeryLoadingIndicationLabel->setFixedSize(this->appWidth*0.5,this->appHeight/0.79*0.02);
 
     this->surgeryLoadingWidgetLayout->addWidget(this->surgeryLoadingBar);

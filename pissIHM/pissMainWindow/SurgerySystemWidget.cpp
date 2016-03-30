@@ -67,8 +67,8 @@ void SurgerySystemWidget::constructIHM(){
 
     surgerySystemComponents = new QWidget();
     surgerySystemComponentsLayout = new QHBoxLayout(surgerySystemComponents);
-    surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
     surgerySystemComponentsLayout->addWidget(communicationStatesContainer);
+    surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
     surgerySystemComponentsLayout->setSpacing(0);
     surgerySystemComponentsLayout->setMargin(0);
 
