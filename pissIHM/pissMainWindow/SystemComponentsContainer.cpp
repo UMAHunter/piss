@@ -2,7 +2,7 @@
 
 SystemComponentsContainer::SystemComponentsContainer(int width, int height) : QFrame()
 {
-    setStyleSheet("background-color:cyan");
+    //setStyleSheet("background-color:cyan");
     this->width = width;
     this->height = height;
 

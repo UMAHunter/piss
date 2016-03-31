@@ -78,5 +78,6 @@
         <file>images/system_configuration.png</file>
 	  <file>images/init.png</file>
         <file>images/start.png</file>
+	  <file>images/patientWidgetConfiguration.png</file>
     </qresource>
 </RCC>

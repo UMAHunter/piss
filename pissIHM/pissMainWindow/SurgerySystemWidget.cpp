@@ -31,20 +31,20 @@ void SurgerySystemWidget::initVariable(){
 void SurgerySystemWidget::constructIHM(){
     startServerButton = new QPushButton();
     startServerButton->setIcon(QIcon(":/images/start.png"));
-    startServerButton->setIconSize(QSize(this->width*0.025, this->height*0.04));
-    startServerButton->setFixedSize(this->width*0.03, this->height*0.05);
+    startServerButton->setIconSize(QSize(this->width*0.02, this->height*0.03));
+    startServerButton->setFixedSize(this->width*0.02, this->height*0.03);
     startServerButton->setFlat(true);
 
     stopServerButton = new QPushButton();
     stopServerButton->setIcon(QIcon(":/images/stop.png"));
-    stopServerButton->setIconSize(QSize(this->width*0.025, this->height*0.04));
-    stopServerButton->setFixedSize(this->width*0.03, this->height*0.05);
+    stopServerButton->setIconSize(QSize(this->width*0.02, this->height*0.03));
+    stopServerButton->setFixedSize(this->width*0.02, this->height*0.03);
     stopServerButton->setFlat(true);
 
     surgerySystemControlBarItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     surgerySystemControlBar = new QWidget();
-    surgerySystemControlBar->setFixedHeight(this->height*0.05);
+    surgerySystemControlBar->setFixedHeight(this->height*0.03);
     //surgerySystemControlBar->setStyleSheet("background-color:pink");
     surgerySystemControlBarLayout = new QHBoxLayout(surgerySystemControlBar);
     surgerySystemControlBarLayout->addWidget(startServerButton);
@@ -57,21 +57,21 @@ void SurgerySystemWidget::constructIHM(){
     //!
     //!  - luo jia ming
     //!
-    systemComponentsContainer = new SystemComponentsContainer(width*0.5, this->height*0.95);
+    systemComponentsContainer = new SystemComponentsContainer(width*0.5, this->height*0.97);
 
     //!----------------------------------------------------------------------------------------------
     //!
     //!  - fan de yuan
     //!
-    communicationStatesContainer = new CommunicationStatesContainer(width*0.5, this->height*0.95);
+    communicationStatesContainer = new CommunicationStatesContainer(width*0.5, this->height*0.97);
 
     surgerySystemComponents = new QWidget();
+    surgerySystemComponents->setStyleSheet("background-color:transparent; border: 1px solid gainsboro; ");
     surgerySystemComponentsLayout = new QHBoxLayout(surgerySystemComponents);
     surgerySystemComponentsLayout->addWidget(communicationStatesContainer);
     surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
     surgerySystemComponentsLayout->setSpacing(0);
     surgerySystemComponentsLayout->setMargin(0);
-
 
     myLayout = new QVBoxLayout(this);
     myLayout->addWidget(surgerySystemControlBar);

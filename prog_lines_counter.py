@@ -6,7 +6,7 @@
 """
 import sys,os
 
-extens = [".cpp",".h"]
+extens = [".cpp",".h", ".pro", ".qrc"]
 linesCount = 0
 filesCount = 0
 

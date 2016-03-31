@@ -16,7 +16,6 @@ pissMainWindow::pissMainWindow(SystemDispatcher* dispatcher): QWidget(){
     this->setConnections();
     this->drawBackground();
     this->onPatientsWidgetOptionReleased();
-    //this->onSystemWidgetOptionReleased();
 }
 
 //!---------------------------------------------------------------------------------------
@@ -39,7 +38,7 @@ void pissMainWindow::initVariable(){
     this->buttonGaucheDuSourisClique = false;
     this->flag = 0;
     this->englishCaracterStyle = new QFont("Helvetica", 8, QFont::AnyStyle, true);
-    this->globalBackgroundColor = "aliceBlue";
+    this->globalBackgroundColor = "beige";
     this->globalWorkSpaceColor = "teal";
 
     //! -------------------------------------------------------
@@ -48,6 +47,7 @@ void pissMainWindow::initVariable(){
     this->desktop = QApplication::desktop();
     this->screen_count = desktop->screenCount();
     this->primary_screen = desktop->primaryScreen();
+
     this->screen = new Screen[screen_count];
     for(unsigned char i = 0; i < screen_count; i++){
         screen[i].screenIndex = primary_screen + i;
@@ -97,6 +97,7 @@ void pissMainWindow::globalBackgroundColorSetting(){
     configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     controlBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     this->algorithmTestPlatform->setBackgroundColor(this->globalBackgroundColor);
+    appIndicationLabel->setStyleSheet("background-color:"+this->globalBackgroundColor);
     widgetOptionContainer->setStyleSheet("background-color: " + this->globalWorkSpaceColor);
     drawBackground();
 }
@@ -145,7 +146,6 @@ void pissMainWindow::constructIHM(){
     //! historique
     //!----------------------------------------------------------------------------------------------------------------------------
     replaysWidget = new ReplaysWidget();
-    replaysWidget->setStyleSheet("background-color:red");
 
     patientsWidgetOption = new CPushButton();
     patientsWidgetOption->setText("Patients");
@@ -173,6 +173,7 @@ void pissMainWindow::constructIHM(){
 
     appIndicationLabel = new QLabel();
     appIndicationLabel->setFixedWidth(primary_screen_width*0.246);
+    appIndicationLabel->setStyleSheet("background-color:"+this->globalBackgroundColor);
 
     widgetOptionContainer = new QFrame();
 
@@ -201,7 +202,7 @@ void pissMainWindow::constructIHM(){
     systemInformationBoardWidgetLayout = new QVBoxLayout(systemInformationBoardWidget);
     systemInformationBoardWidgetLayout->addWidget(widgetOptionContainer);
     systemInformationBoardWidgetLayout->addWidget(widgetsContainer);
-    systemInformationBoardWidgetLayout->setSpacing(0);
+    systemInformationBoardWidgetLayout->setSpacing(5);
     systemInformationBoardWidgetLayout->setMargin(0);
 
     //!------------------------------------------------------------------------------------------

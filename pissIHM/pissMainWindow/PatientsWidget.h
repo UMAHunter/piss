@@ -5,7 +5,6 @@
 #include <QObject>
 #include <QListWidget>
 #include <QVBoxLayout>
-#include <SystemDispatcher.h>
 #include <Patients.h>
 #include <QDebug>
 #include <QTextEdit>
@@ -16,7 +15,12 @@
 #include <QTime>
 #include <QMouseEvent>
 #include <QColor>
+#include <QPalette>
+#include <QBrush>
+#include <QPixmap>
+#include <QBitmap>
 
+#include "SystemDispatcher.h"
 #include "DicomCDRomReader.h"
 #include "SurgeryPlanWindow.h"
 #include "GuidewareTrackingWindow.h"
@@ -25,8 +29,13 @@
 #include "PatientItem.h"
 #include "SuperviseWindow.h"
 #include "Patient.h"
+#include "vtkPiecewiseFunction.h"
+#include "vtkColorTransferFunction.h"
 
 
+/**
+ * @brief The PatientsWidget class
+ */
 class PatientsWidget : public QWidget
 {
     Q_OBJECT
@@ -41,6 +50,7 @@ public:
                    int appHeight,
                    QString workspaceColor);
 
+    void drawBackground(QWidget *widget, QString path, int w, int h);
     void setSurgeryPlanWindow(SurgeryPlanWindow* surgeryPlanWindow);
     void setGuidewareTrackingWindow(GuidewareTrackingWindow* guidewareTrackingWindow);
     void setControlConsoleWindow(ControlConsoleWindow * controlConsoleWindow);
@@ -90,7 +100,6 @@ private:
     QVBoxLayout* waittingPatientsAndBlackAreaWindowLayout;
     QHBoxLayout* waittingPatientPhotoesLayout;
     QVBoxLayout* patientHandlingWidgetLayout;
-    QHBoxLayout* pictureInfoAreaLayout;
     QHBoxLayout* patientsWidgetToolBarLayout;
     QVBoxLayout* personalInformationLayout;
     QGridLayout* patientInfoContainerLayout;
@@ -99,7 +108,6 @@ private:
     QVBoxLayout* secondPatientPhotoWidgetLayout;
     QVBoxLayout* thirdPatientPhotoWidgetLayout;
     QVBoxLayout* fourthPatientPhotoWidgetLayout;
-    QHBoxLayout* surgeryHandlingWidgetLayout;
     QHBoxLayout *surgeryLoadingWidgetLayout;
 
     QWidget* patientsWidgetToolBar;
@@ -111,11 +119,7 @@ private:
     QVBoxLayout *patientsPhotoAndMedicaleImageContainerWidgetLayout;
 
     QWidget* patientHandlingWidget;
-    QWidget* pictureInfoArea;
     QWidget* currentPatientBreifInformationWidget;
-    QWidget* pictureLeftArea;
-    QWidget* pictureRightArea;
-    QWidget* surgeryHandlingWidget;
     QWidget* upBlackArea;
     QWidget* waittingPatientPhotoes;
     QWidget* downBlackArea;
@@ -174,7 +178,8 @@ private:
     QPushButton* cdRomParseButton;
     QPushButton* addPatientButton;
     QPushButton* surgeryLaunchButton;
-    //QPushButton* surgeryTerminateButton;
+    QPushButton* patientsWidgetConfigurationButton;
+    QPushButton* simpleModeButton;
 
 
     AlgorithmTestPlatform *algorithmTestPlatform;
@@ -212,6 +217,7 @@ private:
 
 signals:
     void surgeryLaunchButtonCicked();
+
 public slots:
     void doParseCdRom();
     void launchSurgery();
