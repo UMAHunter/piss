@@ -9,7 +9,6 @@ PatientsWidget::PatientsWidget(int screen_count,
                                int appWidth,
                                int appHeight,
                                QString workspaceColor) : QWidget(){
-
     this->screen_count = screen_count;
 
     this->dispatcher = dispatcher;
@@ -491,6 +490,8 @@ void PatientsWidget::constructIHM(){
 
     //! ---------------------------------------------------------------------------------------------------------------------
     this->patientsWidgetToolBar = new QWidget();
+
+    this->patientsWidgetToolBar->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsWidgetToolBar->setFixedHeight(this->appHeight*0.03);
 
     this->simpleModeButton =  new QPushButton();
@@ -661,6 +662,7 @@ void PatientsWidget::constructIHM(){
     this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.64);
 
     this->patientsPhotoAndMedicaleImageContainerWidget = new QFrame();
+    this->patientsPhotoAndMedicaleImageContainerWidget->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsPhotoAndMedicaleImageContainerWidget->setFixedWidth(this->appWidth*0.6);
     this->patientsPhotoAndMedicaleImageContainerWidgetLayout = new QVBoxLayout(patientsPhotoAndMedicaleImageContainerWidget);
     this->patientsPhotoAndMedicaleImageContainerWidgetLayout->addWidget(patientsPhotoWidget);

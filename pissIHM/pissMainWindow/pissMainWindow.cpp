@@ -79,7 +79,7 @@ void pissMainWindow::initVariable(){
     primary_screen_height = screen[0].rect.height();
 
     the_tab_style =   "QTabBar::tab { background: beige; color: teal; padding: "
-                      "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.2)+"px;  } "
+                      "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
                       "QTabBar::tab:selected {background: teal; color: beige; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
                       "QTabWidget::pane { border: 0; } ";;
 
@@ -122,6 +122,7 @@ void pissMainWindow::globalBackgroundColorSetting(){
     configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     controlBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     this->algorithmTestPlatform->setBackgroundColor(this->globalBackgroundColor);
+    systemInformationBoardWidget->setStyleSheet("background-color:"+this->globalBackgroundColor);
     drawBackground();
 }
 
@@ -135,7 +136,7 @@ void pissMainWindow::constructIHM(){
     //! configurationBoard:
     //!------------------------------------------------------------------------------------------
     configurationBoard = new QWidget();
-    configurationBoard->setFixedWidth(this->primary_screen_width*0.13);
+    configurationBoard->setFixedWidth(this->primary_screen_width*0.22);
 
     //!----------------------------------------------------------------------------------------------------------------------------
     //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th¨¦rapy
@@ -171,6 +172,7 @@ void pissMainWindow::constructIHM(){
     replaysWidget = new ReplaysWidget();
 
     widgetsContainer = new QTabWidget();
+    widgetsContainer->setFont(QFont("Helvetica", 11, QFont::AnyStyle, false));
     //widgetsContainer->installEventFilter(new ResizeFilter(widgetsContainer));
 
     widgetsContainer->setStyleSheet(the_tab_style);
@@ -190,20 +192,20 @@ void pissMainWindow::constructIHM(){
     //!------------------------------------------------------------------------------------------
     closeButton = new QPushButton();
     closeButton->setIcon(QIcon(":/images/close.png"));
-    closeButton->setIconSize(QSize(this->primary_screen_width*0.019,this->primary_screen_width*0.019));
+    closeButton->setIconSize(QSize(this->primary_screen_width*0.015,this->primary_screen_width*0.015));
     closeButton->setStyleSheet("background-color:transparent");
-    closeButton->setFixedSize(this->primary_screen_width*0.023, this->primary_screen_width*0.023);
+    closeButton->setFixedSize(this->primary_screen_width*0.015, this->primary_screen_width*0.015);
 
     systemConfigurationButton = new QPushButton();
     systemConfigurationButton->setIcon(QIcon(":/images/system_configuration.png"));
-    systemConfigurationButton->setIconSize(QSize(this->primary_screen_width*0.019,this->primary_screen_width*0.019));
+    systemConfigurationButton->setIconSize(QSize(this->primary_screen_width*0.015,this->primary_screen_width*0.015));
     systemConfigurationButton->setStyleSheet("background-color:transparent");
-    systemConfigurationButton->setFixedSize(this->primary_screen_width*0.023, this->primary_screen_width*0.023);
+    systemConfigurationButton->setFixedSize(this->primary_screen_width*0.015, this->primary_screen_width*0.015);
 
     controlAreaItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     controlBoard = new QWidget();
-    controlBoard->setFixedWidth(this->primary_screen_width*0.024);
+    controlBoard->setFixedWidth(this->primary_screen_width*0.015);
     controlBoardLayout = new QVBoxLayout(controlBoard);
     controlBoardLayout->addWidget(closeButton);
     controlBoardLayout->addWidget(systemConfigurationButton);

@@ -77,7 +77,7 @@ void SurgerySystemWidget::constructIHM(){
     myLayout->addWidget(surgerySystemControlBar);
     myLayout->addWidget(surgerySystemComponents);
     myLayout->setSpacing(0);
-    myLayout->setMargin(0);
+    myLayout->setMargin(5);
 }
 
 //! ----------------------------------------------------------------------------------------------
