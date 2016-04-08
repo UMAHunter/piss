@@ -1,6 +1,27 @@
 #include "pissMainWindow.h"
 #include "vtkImageData.h"
 
+// Sets the style sheet of the QTabWidget to expand the tabs.
+static void expandingTabsStyleSheet(QTabWidget *tw)
+{
+    tw->setStyleSheet(QString("QTabBar::tab { width: %1px; } ")
+                      .arg(tw->size().width()/tw->count()));
+}
+
+// On resize events, reapply the expanding tabs style sheet
+class ResizeFilter : public QObject
+{
+    QTabWidget *target;
+public:
+    ResizeFilter(QTabWidget *target) : QObject(target), target(target) {}
+
+    bool eventFilter(QObject *object, QEvent *event)
+    {
+        if (event->type() == QEvent::Resize)
+            expandingTabsStyleSheet(target);
+        return false;
+    }
+};
 
 /**
  * @brief pissMainWindow::pissMainWindow
@@ -15,7 +36,7 @@ pissMainWindow::pissMainWindow(SystemDispatcher* dispatcher): QWidget(){
     this->globalBackgroundColorSetting();
     this->setConnections();
     this->drawBackground();
-    this->onPatientsWidgetOptionReleased();
+    this->onSystemWidgetOptionReleased();
 }
 
 //!---------------------------------------------------------------------------------------
@@ -57,6 +78,10 @@ void pissMainWindow::initVariable(){
     primary_screen_width = screen[0].rect.width();
     primary_screen_height = screen[0].rect.height();
 
+    the_tab_style =   "QTabBar::tab { background: beige; color: teal; padding: "
+                      "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.2)+"px;  } "
+                      "QTabBar::tab:selected {background: teal; color: beige; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
+                      "QTabWidget::pane { border: 0; } ";;
 
     //!----------------------------------------------------------------------------------------------------
     //! status bar area
@@ -97,8 +122,6 @@ void pissMainWindow::globalBackgroundColorSetting(){
     configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     controlBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     this->algorithmTestPlatform->setBackgroundColor(this->globalBackgroundColor);
-    appIndicationLabel->setStyleSheet("background-color:"+this->globalBackgroundColor);
-    widgetOptionContainer->setStyleSheet("background-color: " + this->globalWorkSpaceColor);
     drawBackground();
 }
 
@@ -147,62 +170,19 @@ void pissMainWindow::constructIHM(){
     //!----------------------------------------------------------------------------------------------------------------------------
     replaysWidget = new ReplaysWidget();
 
-    patientsWidgetOption = new CPushButton();
-    patientsWidgetOption->setText("Patients");
-    patientsWidgetOption->setFixedSize(primary_screen_width*0.2, primary_screen_height*0.03);
-    patientsWidgetOption->setFixedWidth(primary_screen_width*0.2);
-    patientsWidgetOption->setStyleSheet( "border: 1px solid gainsboro;  border-radius: 0px; background-color: transparent;  min-width: 0px; color: gainsboro");
-    patientsWidgetOption->setFlat(true);
-    patientsWidgetOption->setFont(QFont("Segoe UI",12, QFont::AnyStyle, true));
+    widgetsContainer = new QTabWidget();
+    //widgetsContainer->installEventFilter(new ResizeFilter(widgetsContainer));
 
-    systemWidgetOption = new CPushButton();
-    systemWidgetOption->setText("System");
-    systemWidgetOption->setFixedSize(primary_screen_width*0.2, primary_screen_height*0.03);
-    systemWidgetOption->setFixedWidth(primary_screen_width*0.2);
-    systemWidgetOption->setStyleSheet( "border: 1px solid gainsboro;  border-radius: 0px; background-color: transparent;  min-width: 0px; color: gainsboro");
-    systemWidgetOption->setFlat(true);
-    systemWidgetOption->setFont(QFont("Segoe UI",12, QFont::AnyStyle, true));
-
-    historyWidgetOption = new CPushButton();
-    historyWidgetOption->setText("History");
-    historyWidgetOption->setFixedSize(primary_screen_width*0.2, primary_screen_height*0.03);
-    historyWidgetOption->setFixedWidth(primary_screen_width*0.2);
-    historyWidgetOption->setStyleSheet( "border: 1px solid gainsboro;  border-radius: 0px; background-color: transparent;  min-width: 0px; color: gainsboro");
-    historyWidgetOption->setFlat(true);
-    historyWidgetOption->setFont(QFont("Segoe UI",12, QFont::AnyStyle, true));
-
-    appIndicationLabel = new QLabel();
-    appIndicationLabel->setFixedWidth(primary_screen_width*0.246);
-    appIndicationLabel->setStyleSheet("background-color:"+this->globalBackgroundColor);
-
-    widgetOptionContainer = new QFrame();
-
-    widgetOptionContainer->setFixedHeight(primary_screen_height*0.03);
-    widgetOptionContainerLayout = new QHBoxLayout(widgetOptionContainer);
-    widgetOptionContainerLayout->addWidget(patientsWidgetOption);
-    widgetOptionContainerLayout->addWidget(systemWidgetOption);
-    widgetOptionContainerLayout->addWidget(historyWidgetOption);
-    widgetOptionContainerLayout->addWidget(appIndicationLabel);
-    widgetOptionContainerLayout->setSpacing(0);
-    widgetOptionContainerLayout->setMargin(0);
-
-    widgetsContainer = new QWidget();
-    widgetsContainer->setFixedHeight(primary_screen_height*0.79);
-    widgetsContainerLayout = new QHBoxLayout(widgetsContainer);
-    widgetsContainerLayout->addWidget(ecranDesMaladies);
-    widgetsContainerLayout->addWidget(surgerySystemWidget);
-    widgetsContainerLayout->addWidget(replaysWidget);
-    widgetsContainerLayout->setSpacing(0);
-    widgetsContainerLayout->setMargin(0);
-
-    surgerySystemWidget->close();
-    replaysWidget->close();
+    widgetsContainer->setStyleSheet(the_tab_style);
+    widgetsContainer->setFixedHeight(primary_screen_height*0.82);
+    widgetsContainer->insertTab(0,ecranDesMaladies, "patient");
+    widgetsContainer->insertTab(1,surgerySystemWidget, "system");
+    widgetsContainer->insertTab(2,replaysWidget, "history");
 
     systemInformationBoardWidget = new QWidget();
     systemInformationBoardWidgetLayout = new QVBoxLayout(systemInformationBoardWidget);
-    systemInformationBoardWidgetLayout->addWidget(widgetOptionContainer);
     systemInformationBoardWidgetLayout->addWidget(widgetsContainer);
-    systemInformationBoardWidgetLayout->setSpacing(5);
+    systemInformationBoardWidgetLayout->setSpacing(0);
     systemInformationBoardWidgetLayout->setMargin(0);
 
     //!------------------------------------------------------------------------------------------
@@ -278,21 +258,6 @@ void pissMainWindow::setConnections(){
 
     this->connect(closeButton, SIGNAL(clicked()), this, SLOT(closeSystem()));
     this->connect(systemConfigurationButton, SIGNAL(clicked()), this, SLOT(configurerLeSysteme()));
-
-    this->connect(this->patientsWidgetOption, SIGNAL(mouseHover()), this, SLOT(onPatientsWidgetOptionHovered()));
-    this->connect(this->patientsWidgetOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(onPatientsWidgetOptionClicked()));
-    this->connect(this->patientsWidgetOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(onPatientsWidgetOptionReleased()));
-    this->connect(this->patientsWidgetOption, SIGNAL(mouseLeaved()), this, SLOT(onPatientsWidgetOptionLeaved()));
-
-    this->connect(this->systemWidgetOption, SIGNAL(mouseHover()), this, SLOT(onSystemWidgetOptionHovered()));
-    this->connect(this->systemWidgetOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(onSystemWidgetOptionClicked()));
-    this->connect(this->systemWidgetOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(onSystemWidgetOptionReleased()));
-    this->connect(this->systemWidgetOption, SIGNAL(mouseLeaved()), this, SLOT(onSystemWidgetOptionLeaved()));
-
-    this->connect(this->historyWidgetOption, SIGNAL(mouseHover()), this, SLOT(onHistoryWidgetOptionHovered()));
-    this->connect(this->historyWidgetOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(onHistoryWidgetOptionClicked()));
-    this->connect(this->historyWidgetOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(onHistoryWidgetOptionReleased()));
-    this->connect(this->historyWidgetOption, SIGNAL(mouseLeaved()), this, SLOT(onHistoryWidgetOptionLeaved()));
 
     this->connect(this->systemOptionWindow, SIGNAL(confirm()), this, SLOT(updateIHM()));
 
@@ -445,9 +410,6 @@ void pissMainWindow::closeSystem(){
 //! \brief pissMainWindow::onPatientsWidgetOptionHovered
 //!
 void pissMainWindow::onPatientsWidgetOptionHovered(){
-    if(!mainOptionStates.patientsWidgetOptionState){
-        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: gainsboro;  min-width: 0px; color:"+this->globalBackgroundColor );
-    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -455,7 +417,6 @@ void pissMainWindow::onPatientsWidgetOptionHovered(){
 //! \brief pissMainWindow::onPatientsWidgetOptionClicked
 //!
 void pissMainWindow::onPatientsWidgetOptionClicked(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: transparent;  min-width: 0px; color:"+this->globalBackgroundColor );
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -463,25 +424,7 @@ void pissMainWindow::onPatientsWidgetOptionClicked(){
 //! \brief pissMainWindow::onPatientsWidgetOptionReleased
 //!
 void pissMainWindow::onPatientsWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor+";  min-width: 0px; color:" + this->globalBackgroundColor );
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color: "+ this->globalWorkSpaceColor );
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";  min-width: 0px; color: "+ this->globalWorkSpaceColor );
 
-    patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::DemiBold, true));
-    systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-    historyWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-
-    mainOptionStates.patientsWidgetOptionState = true;
-    mainOptionStates.systemWidgetOptionState = false;
-    mainOptionStates.historyWidgetOptionState = false;
-
-    ecranDesMaladies->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
-    surgerySystemWidget->setFixedSize(0,0);
-    replaysWidget->setFixedSize(0,0);
-
-    ecranDesMaladies->show();
-    surgerySystemWidget->close();
-    replaysWidget->close();
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -489,12 +432,7 @@ void pissMainWindow::onPatientsWidgetOptionReleased(){
 //! \brief pissMainWindow::onPatientsWidgetOptionLeaved
 //!
 void pissMainWindow::onPatientsWidgetOptionLeaved(){
-    if(mainOptionStates.patientsWidgetOptionState){
-        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor );
-    }
-    else{
-        patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color:" + this->globalWorkSpaceColor  );
-    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -502,9 +440,7 @@ void pissMainWindow::onPatientsWidgetOptionLeaved(){
 //! \brief pissMainWindow::onSystemWidgetOptionHovered
 //!
 void pissMainWindow::onSystemWidgetOptionHovered(){
-    if(!mainOptionStates.systemWidgetOptionState){
-        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: gainsboro;  min-width: 0px; color:"+this->globalBackgroundColor );
-    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -512,7 +448,7 @@ void pissMainWindow::onSystemWidgetOptionHovered(){
 //! \brief pissMainWindow::onSystemWidgetOptionClicked
 //!
 void pissMainWindow::onSystemWidgetOptionClicked(){
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: transparent;  min-width: 0px; color:"+this->globalBackgroundColor );
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -520,25 +456,7 @@ void pissMainWindow::onSystemWidgetOptionClicked(){
 //! \brief pissMainWindow::onSystemWidgetOptionReleased
 //!
 void pissMainWindow::onSystemWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color:"+this->globalBackgroundColor+";  min-width: 0px; color:" + this->globalWorkSpaceColor);
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalWorkSpaceColor +";  min-width: 0px; color: "+this->globalBackgroundColor);
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
 
-    patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-    systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::DemiBold, true));
-    historyWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-
-    mainOptionStates.patientsWidgetOptionState = false;
-    mainOptionStates.systemWidgetOptionState = true;
-    mainOptionStates.historyWidgetOptionState = false;
-
-    ecranDesMaladies->setFixedSize(0,0);
-    surgerySystemWidget->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
-    replaysWidget->setFixedSize(0,0);
-
-    ecranDesMaladies->close();
-    surgerySystemWidget->show();
-    replaysWidget->close();
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -546,12 +464,7 @@ void pissMainWindow::onSystemWidgetOptionReleased(){
 //! \brief pissMainWindow::onSystemWidgetOptionLeaved
 //!
 void pissMainWindow::onSystemWidgetOptionLeaved(){
-    if(mainOptionStates.systemWidgetOptionState){
-        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color: "+this->globalBackgroundColor);
-    }
-    else{
-        systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
-    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -559,9 +472,7 @@ void pissMainWindow::onSystemWidgetOptionLeaved(){
 //! \brief pissMainWindow::onHistoryWidgetOptionHovered
 //!
 void pissMainWindow::onHistoryWidgetOptionHovered(){
-    if(!mainOptionStates.historyWidgetOptionState){
-        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: gainsboro;  min-width: 0px; color:"+this->globalBackgroundColor );
-    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -570,7 +481,6 @@ void pissMainWindow::onHistoryWidgetOptionHovered(){
 //!
 //!
 void pissMainWindow::onHistoryWidgetOptionClicked(){
-   historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: transparent;  min-width: 0px; color: "+this->globalBackgroundColor );
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -578,26 +488,7 @@ void pissMainWindow::onHistoryWidgetOptionClicked(){
 //! \brief pissMainWindow::onHistoryWidgetOptionReleased
 //!
 void pissMainWindow::onHistoryWidgetOptionReleased(){
-    patientsWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor  );
-    systemWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color: " + this->globalWorkSpaceColor   );
-    historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+ this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor);
 
-    patientsWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-    systemWidgetOption->setFont(QFont("Segoe UI", 12, QFont::AnyStyle, true));
-    historyWidgetOption->setFont(QFont("Segoe UI", 12, QFont::DemiBold, true));
-
-    mainOptionStates.patientsWidgetOptionState = false;
-    mainOptionStates.systemWidgetOptionState = false;
-    mainOptionStates.historyWidgetOptionState = true;
-    widgetOptionContainer->setStyleSheet("background-color:" + this->globalWorkSpaceColor);
-
-    ecranDesMaladies->setFixedSize(0,0);
-    surgerySystemWidget->setFixedSize(0,0);
-    replaysWidget->setFixedSize(primary_screen_width*0.846,primary_screen_height*0.79);
-
-    ecranDesMaladies->close();
-    surgerySystemWidget->close();
-    replaysWidget->show();
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -605,12 +496,7 @@ void pissMainWindow::onHistoryWidgetOptionReleased(){
 //! \brief pissMainWindow::onHistoryWidgetOptionLeaved
 //!
 void pissMainWindow::onHistoryWidgetOptionLeaved(){
-    if(mainOptionStates.historyWidgetOptionState){
-        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalWorkSpaceColor +";  min-width: 0px; color:"+this->globalBackgroundColor);
-    }
-    else{
-        historyWidgetOption->setStyleSheet( "border-bottom: 1px solid orange;  border-radius: 0px; background-color: "+this->globalBackgroundColor+";   min-width: 0px; color:" + this->globalWorkSpaceColor);
-    }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------

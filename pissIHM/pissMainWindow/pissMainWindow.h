@@ -110,23 +110,14 @@ private:
     QPushButton *closeButton;
     QPushButton *systemConfigurationButton;
 
-    CPushButton *patientsWidgetOption;
-    CPushButton *systemWidgetOption;
-    CPushButton *historyWidgetOption;
-
-    QLabel *appIndicationLabel;
-
-    QFrame *widgetOptionContainer;
-    QHBoxLayout *widgetOptionContainerLayout;
-
-    QWidget *widgetsContainer;
+    QTabWidget  *widgetsContainer;
     QHBoxLayout *widgetsContainerLayout;
 
     QTabWidget *systemInformationBoard;
 
     QVTKWidget* mraImageDisplayWindow;
 
-    QString systemInformationBoardStyleSheet;
+    QString the_tab_style;
 
     PatientsWidget* ecranDesMaladies;
     ReplaysWidget*replaysWidget;
