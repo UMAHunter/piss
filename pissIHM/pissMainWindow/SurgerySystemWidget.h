@@ -6,6 +6,9 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QSpacerItem>
+#include <QPixmap>
+#include <QBrush>
+#include <QBitmap>
 
 #include "CommunicationStatesContainer.h"
 #include "SystemComponentsContainer.h"
@@ -45,6 +48,7 @@ public:
     void constructIHM();
     void setConnections();
     void closeSystem();
+    void drawBackground();
 
 public slots:
     void onStartServerButtonClicked();

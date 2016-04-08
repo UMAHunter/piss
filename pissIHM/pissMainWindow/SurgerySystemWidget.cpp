@@ -57,13 +57,13 @@ void SurgerySystemWidget::constructIHM(){
     //!
     //!  - luo jia ming
     //!
-    systemComponentsContainer = new SystemComponentsContainer(width*0.5, this->height*0.97);
+    systemComponentsContainer = new SystemComponentsContainer(width*0.45, this->height*0.97);
 
     //!----------------------------------------------------------------------------------------------
     //!
     //!  - fan de yuan
     //!
-    communicationStatesContainer = new CommunicationStatesContainer(width*0.5, this->height*0.97);
+    communicationStatesContainer = new CommunicationStatesContainer(width*0.55, this->height*0.97);
 
     surgerySystemComponents = new QWidget();
     surgerySystemComponents->setStyleSheet("background-color:transparent; border: 1px solid gainsboro; ");

@@ -5,11 +5,15 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QTableWidget>
+#include <QTreeWidget>
+#include <QHeaderView>
+#include <QGroupBox>
+
 #include <PlottingBoard.h>
 
 /**
  * @brief The CommunicationStatesContainer class
- * @author fan de yuan
+ * @author cheng wang, fan de yuan
  */
 class CommunicationStatesContainer : public QFrame
 {
@@ -18,6 +22,9 @@ class CommunicationStatesContainer : public QFrame
 private:
     int width;
     int height;
+    QStringList hardwareHeader;
+    QStringList transmissionHeader;
+    QString groupBoxStyleSheet;
 
     PlottingBoard *communicationFrameRateWindow;
 
@@ -26,14 +33,18 @@ private:
     QHBoxLayout *communicationInformationWindowLayout;
 
     QTableWidget *HardwareInformation;
-    QTableWidget *TransmitBuffer;
-    QTableWidget *ReceiveBuffer;
+
+    QGroupBox *transmissionArea;
+    QGroupBox *receptionArea;
+
+    QTreeWidget *transmissionBuffer;
+    QTreeWidget *receptionBuffer;
 
     QVBoxLayout *CommunicationStatesContainerLayout;
+    QHBoxLayout *transmissionAreaLayout;
+    QHBoxLayout *receptionAreaLayout;
 
-    QGridLayout *HardwareInformationLayout;
-    QGridLayout *TransmitBufferLayout;
-    QGridLayout *ReceiveBufferLayout;
+
 public:
     explicit CommunicationStatesContainer(int width, int height);
     void initVariable();

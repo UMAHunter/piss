@@ -10,7 +10,7 @@ PlottingBoard::PlottingBoard() : QCustomPlot(){
     //! des propriete des courbes
     legendFont = QFont("Segoe UI", 9, QFont::AnyStyle, true);  // start out with MainWindow's font..
     this->setFixedHeight(250);
-    this->setBackground(QColor(58,89,92));
+
     this->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom)); // period as decimal separator and comma as thousand separator
 
     // move bars above graphs and grid below bars:
@@ -45,6 +45,10 @@ PlottingBoard::PlottingBoard() : QCustomPlot(){
 }
 
 PlottingBoard::~PlottingBoard(){}
+
+void PlottingBoard::setWorkSpaceColor(QString workspaceColor){
+    this->setBackground(QColor(workspaceColor));
+}
 
 int PlottingBoard::getOrdinateMaxValue(){
     return y_max;

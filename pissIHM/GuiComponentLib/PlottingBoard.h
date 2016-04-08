@@ -17,6 +17,8 @@ public:
     explicit PlottingBoard();
     ~PlottingBoard();
 
+    void setWorkSpaceColor(QString workspaceColor);
+
     void test();
 
     int addCurve(QString curveName, QString abscissa, QString ordinate, QString lineColor, int pointSize);
