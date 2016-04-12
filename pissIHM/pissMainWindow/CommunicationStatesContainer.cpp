@@ -22,7 +22,7 @@ void CommunicationStatesContainer::initVariable(){
     transmissionHeader<<"channel"<<"version"<<"type"<<"device"<<"timestamp"<<"dlc"<<"data0"<<"data1"<<"data2"<<"data3"<<"data4"<<"data5"<<"data6"<<"data7"<<"data8"<<"data9"<<"...";
 
     groupBoxStyleSheet = "QGroupBox {background-color: transparent;border: 1px solid beige;border-radius: 0px;margin-top: 1ex; /* leave space at the top for the title */}"
-                         "QGroupBox::title {subcontrol-origin: margin;subcontrol-position: bottom right; /* position at the top center */padding: 0 3px;color: aliceblue}";
+                         "QGroupBox::title {subcontrol-origin: margin;subcontrol-position: bottom right; /* position at the top center */padding: 0 3px;color: beige}";
 }
 
 //! ---------------------------------------------------------------------------------------------------

@@ -648,7 +648,7 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     this->patientsPhotoWidget = new QWidget();
     this->patientsPhotoWidget->setFixedSize(this->appWidth*0.6, this->appHeight*0.28);
-    //this->patientsPhotoWidget->setStyleSheet("background-color:transparent; border:1px solid beige;");
+    //this->patientsPhotoWidget->setStyleSheet("border-image: url(:images/background.png); border:1px solid beige;");
     this->patientsPhotoWidgetLayout = new QHBoxLayout(this->patientsPhotoWidget);
     this->patientsPhotoWidgetLayout->addWidget(waittingPatientsAndBlackAreaWindow);
     this->patientsPhotoWidgetLayout->addWidget(leftSelectButton);

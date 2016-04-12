@@ -50,6 +50,7 @@ struct MainOptionStates{
     bool historyWidgetOptionState;
 };
 
+
 /**
  * @brief The pissMainWindow class
  */
@@ -95,6 +96,7 @@ private:
     QHBoxLayout *mainPlatformLayout;
     QGridLayout *statusBarLayout;
     QVBoxLayout *systemInformationBoardWidgetLayout;
+    QHBoxLayout *configurationBoardLayout;
 
     QWidget *mainPlatform;
     QWidget *configurationBoard;
@@ -129,7 +131,6 @@ private:
     vtkVolume *volume;
     vtkSmartPointer<vtkRenderWindow> renderWindow;
     vtkSmartPointer<vtkRenderer> renderer;
-
 
     SystemDispatcher* systemDispatcher;
     QString mhdImagePath;

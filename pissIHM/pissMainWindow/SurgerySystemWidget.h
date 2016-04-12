@@ -23,6 +23,8 @@ class SurgerySystemWidget:public QWidget
 {
     Q_OBJECT
 private:
+    QString workspaceColor;
+
     QWidget *surgerySystemControlBar;
     QWidget *surgerySystemComponents;
 
@@ -58,7 +60,8 @@ public:
      explicit SurgerySystemWidget(int width,
                                   int height,
                                   SystemDispatcher* systemDispatcher,
-                                  AlgorithmTestPlatform* algorithmTestPlatform);
+                                  AlgorithmTestPlatform* algorithmTestPlatform,
+                                  QString workspaceColor);
 };
 
 #endif // SURGERYSYSTEMWIDGET_H

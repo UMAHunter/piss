@@ -4,12 +4,14 @@
 SurgerySystemWidget::SurgerySystemWidget(int width,
                                          int height,
                                          SystemDispatcher* systemDispatcher,
-                                         AlgorithmTestPlatform* algorithmTestPlatform){
+                                         AlgorithmTestPlatform* algorithmTestPlatform,
+                                         QString workspaceColor){
 
     this->width = width;
     this->height = height;
     this->systemDispatcher = systemDispatcher;
     this->algorithmTestPlatform = algorithmTestPlatform;
+    this->workspaceColor = workspaceColor;
 
     this->initVariable();
     this->constructIHM();
@@ -21,7 +23,7 @@ SurgerySystemWidget::SurgerySystemWidget(int width,
 //! \brief SurgerySystemWidget::initVariable
 //!
 void SurgerySystemWidget::initVariable(){
-
+    this->setStyleSheet("background:"+ this->workspaceColor);
 }
 
 //! ---------------------------------------------------------------------------------------------
@@ -57,16 +59,16 @@ void SurgerySystemWidget::constructIHM(){
     //!
     //!  - luo jia ming
     //!
-    systemComponentsContainer = new SystemComponentsContainer(width*0.45, this->height*0.97);
+    systemComponentsContainer = new SystemComponentsContainer(width*0.4, this->height*0.97);
 
     //!----------------------------------------------------------------------------------------------
     //!
     //!  - fan de yuan
     //!
-    communicationStatesContainer = new CommunicationStatesContainer(width*0.55, this->height*0.97);
+    communicationStatesContainer = new CommunicationStatesContainer(width*0.6, this->height*0.97);
 
     surgerySystemComponents = new QWidget();
-    surgerySystemComponents->setStyleSheet("background-color:transparent; border: 1px solid gainsboro; ");
+    surgerySystemComponents->setStyleSheet("background-color:"+this->workspaceColor+ "; border: 1px solid gainsboro; ");
     surgerySystemComponentsLayout = new QHBoxLayout(surgerySystemComponents);
     surgerySystemComponentsLayout->addWidget(communicationStatesContainer);
     surgerySystemComponentsLayout->addWidget(systemComponentsContainer);
@@ -77,7 +79,7 @@ void SurgerySystemWidget::constructIHM(){
     myLayout->addWidget(surgerySystemControlBar);
     myLayout->addWidget(surgerySystemComponents);
     myLayout->setSpacing(0);
-    myLayout->setMargin(5);
+    myLayout->setMargin(0);
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -103,12 +105,17 @@ void SurgerySystemWidget::closeSystem(){
 //!
 void SurgerySystemWidget::onStopServerButtonClicked(){
     bool ret = this->systemDispatcher->stopPissServer();
+
+
     if(ret){
         this->algorithmTestPlatform->setSystemStatus("platform server closed");
     }
     else{
         this->algorithmTestPlatform->setSystemStatus("please don't click the stop button when nothing happened");
     }
+
+
+
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -116,7 +123,15 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
 //! \brief SurgerySystemWidget::onStartServerButtonClicked
 //!
 void SurgerySystemWidget::onStartServerButtonClicked(){
+
+    //! fetch ip adress display at the front table...
+    //! port
+
+
+
     bool ret = this->systemDispatcher->startPissServer();
+
+
     if(ret){
         this->algorithmTestPlatform->setSystemStatus("platform server started");
     }
@@ -124,3 +139,5 @@ void SurgerySystemWidget::onStartServerButtonClicked(){
         this->algorithmTestPlatform->setSystemStatus("platform server can't be started");
     }
 }
+
+

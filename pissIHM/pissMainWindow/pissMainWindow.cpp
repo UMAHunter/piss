@@ -135,8 +135,12 @@ void pissMainWindow::constructIHM(){
     //!------------------------------------------------------------------------------------------
     //! configurationBoard:
     //!------------------------------------------------------------------------------------------
+
+
+
     configurationBoard = new QWidget();
     configurationBoard->setFixedWidth(this->primary_screen_width*0.22);
+    configurationBoardLayout = new QHBoxLayout(configurationBoard);
 
     //!----------------------------------------------------------------------------------------------------------------------------
     //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th¨¦rapy
@@ -164,7 +168,8 @@ void pissMainWindow::constructIHM(){
     surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.846,
                                                   primary_screen_height*0.79,
                                                   this->systemDispatcher,
-                                                  this->algorithmTestPlatform);
+                                                  this->algorithmTestPlatform,
+                                                  this->globalWorkSpaceColor);
 
     //!----------------------------------------------------------------------------------------------------------------------------
     //! historique
@@ -257,10 +262,8 @@ void pissMainWindow::drawBackground(){
 void pissMainWindow::setConnections(){
 
     this->connect(this->ecranDesMaladies, SIGNAL(surgeryLaunchButtonCicked()), this, SLOT(close()));
-
     this->connect(closeButton, SIGNAL(clicked()), this, SLOT(closeSystem()));
     this->connect(systemConfigurationButton, SIGNAL(clicked()), this, SLOT(configurerLeSysteme()));
-
     this->connect(this->systemOptionWindow, SIGNAL(confirm()), this, SLOT(updateIHM()));
 
 }
