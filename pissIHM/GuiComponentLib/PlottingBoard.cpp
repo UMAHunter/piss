@@ -50,6 +50,10 @@ void PlottingBoard::setWorkSpaceColor(QString workspaceColor){
     this->setBackground(QColor(workspaceColor));
 }
 
+void PlottingBoard::setWorkSpaceColor(int r, int g, int b){
+    this->setBackground(QColor(r,g,b));
+}
+
 int PlottingBoard::getOrdinateMaxValue(){
     return y_max;
 }

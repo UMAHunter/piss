@@ -18,6 +18,7 @@ public:
     ~PlottingBoard();
 
     void setWorkSpaceColor(QString workspaceColor);
+    void setWorkSpaceColor(int r, int g, int b);
 
     void test();
 

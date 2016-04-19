@@ -498,6 +498,7 @@ void SurgeryPlanWindow::updatePatientMRAImageHistogram(){
 
     int index = histogramPlottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
     histogramPlottingBoard->doHistogramPlotting(index,frequencies);
+    histogramPlottingBoard->setWorkSpaceColor(55,85,95);
 
 }
 
@@ -1095,6 +1096,7 @@ void SurgeryPlanWindow::constructPatientInformationWidget(){
     transferChoicesLayout->setSpacing(0);
 
     transformationPlottingBoard = new PlottingBoard();
+    transformationPlottingBoard->setWorkSpaceColor(55,85,95);
 
     transformationIndicationBar = new QWidget();
     transformationIndicationBarLayout = new QHBoxLayout(transformationIndicationBar);

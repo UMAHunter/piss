@@ -34,7 +34,7 @@ void GuidewareTrackingWindow::update(){
 
     //! lecture dcm ct img
     vtkSmartPointer<vtkPNGReader> reader =vtkSmartPointer<vtkPNGReader>::New();
-    QString dir = "C://Users//cheng//Documents//CanalyserWorkspace//CanalyserImageCenter//guideware_tracking//PNG/";
+    QString dir = "C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\CanalyserImageCenter\\guideware_tracking\\PNG\\";
     QDirIterator it(dir, QStringList() << "*.png", QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext()){
         BidimensionnelImage *imgPackage1 = new BidimensionnelImage();
@@ -459,7 +459,7 @@ void GuidewareTrackingWindow::constructionIHM(){
     realTimeVideoWidget->setFixedSize(width*0.40,height*0.48);
     realTimeDisplayLayout->addWidget(realTimeVideoWidget);
     realTimeDisplayLayout->setMargin(0);
-    realTimePlayList->addMedia(QUrl::fromLocalFile("E:\\LIU_XINKUN-3-3.avi"));
+    realTimePlayList->addMedia(QUrl::fromLocalFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\CanalyserImageCenter\\guideware_tracking\\LIU_XINKUN-3-3.avi"));
     realTimePlayList->setCurrentIndex(1);
     realTimePlayList->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
     realTimeplayer->setPlaylist(realTimePlayList);
@@ -478,7 +478,7 @@ void GuidewareTrackingWindow::constructionIHM(){
     lastFrameVideoWidget->setFixedSize(width*0.40,height*0.48);
     lastFrameLayout->addWidget(lastFrameVideoWidget);
     lastFrameLayout->setMargin(0);
-    lastFramePlayList->addMedia(QUrl::fromLocalFile("E:\\LIU_XINKUN-51-51.avi"));
+    lastFramePlayList->addMedia(QUrl::fromLocalFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\CanalyserImageCenter\\guideware_tracking\\LIU_XINKUN-51-51.avi"));
     lastFramePlayList->setCurrentIndex(1);
     lastFramePlayList->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
     lastFrameplayer->setPlaylist(lastFramePlayList);
