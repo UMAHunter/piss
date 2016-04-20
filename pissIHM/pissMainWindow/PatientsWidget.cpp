@@ -267,66 +267,77 @@ void PatientsWidget::displayCurrentPatinetInfo(){
 //! \brief PatientsWidget::launchSurgery
 //!
 void PatientsWidget::launchSurgery(){
+    if(screen_count == 2){
+        this->surgeryLaunchButton->setEnabled(false);
 
-    if(screen_count != 3){
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Not enough screen available", "branche le?",
-                                    QMessageBox::Yes|QMessageBox::No);
-        return;
+        this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid gray;color:gray");
+        this->leftSelectButton->setEnabled(false);
+        this->rightSelectButton->setEnabled(false);
+        this->surgeryLoadingBar->setValue(10);
+
+        Patient *patientHandling = this->dispatcher->getPatientById(waitingPatientsIDQueue[4].toInt(0,10));
+        this->surgeryLoadingBar->setValue(20);
+
+        this->surgeryPlanWindow->setPatientHandling(patientHandling);
+        this->surgeryPlanWindow->update();
+        this->surgeryLoadingBar->setValue(30);
+
+        emit surgeryLaunchButtonCicked();
+
+        //! -----------------------------------------
+        //! loading task terminated......
+        //!-----------------------------------------
+
+        this->surgeryPlanWindow->displayWindow();
+        this->controlConsoleWindow->showFullScreen();
+
+        this->surgeryLaunched = true;
+
+        this->surgeryTimer->start();
+        this->surgeryPlanWindow->setStartTime(this->surgeryTimer->elapsed());
     }
+    else if(screen_count == 3){
+        this->surgeryLaunchButton->setEnabled(false);
 
-    //! -----------------------------------------
-    //!TODO: loading tasks execute......
+        this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid gray;color:gray");
+        this->leftSelectButton->setEnabled(false);
+        this->rightSelectButton->setEnabled(false);
+        this->surgeryLoadingBar->setValue(10);
 
-    //! ......
-    //this->surgeryLaunchButton->setFixedSize(0,0);
-    //this->surgeryTerminateButton->setFixedSize(this->appWidth*0.15,this->appHeight/0.79*0.846*0.15*0.3);
-    this->surgeryLaunchButton->setEnabled(false);
+        Patient *patientHandling = this->dispatcher->getPatientById(waitingPatientsIDQueue[4].toInt(0,10));
+        this->surgeryLoadingBar->setValue(20);
 
-    this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid gray;color:gray");
-    this->leftSelectButton->setEnabled(false);
-    this->rightSelectButton->setEnabled(false);
-    this->surgeryLoadingBar->setValue(10);
+        this->surgeryPlanWindow->setPatientHandling(patientHandling);
+        this->surgeryPlanWindow->update();
+        this->surgeryLoadingBar->setValue(30);
 
-    //! -----------------------------------------
-    //! fetch the pointer of the patient handling
-    Patient *patientHandling = this->dispatcher->getPatientById(waitingPatientsIDQueue[4].toInt(0,10));
-    this->surgeryLoadingBar->setValue(20);
+        this->guidewareTrackingWindow->setPatientHandling(patientHandling);
+        this->guidewareTrackingWindow->update();
+        this->surgeryLoadingBar->setValue(50);
 
-    //! duchengcheng, duyue, qiujiaqing
-    this->surgeryPlanWindow->setPatientHandling(patientHandling);
-    this->surgeryPlanWindow->update();
-    this->surgeryLoadingBar->setValue(30);
+        //this->superviseWindow->show();
 
-    //! wangcheng, fandeyuan
-    this->guidewareTrackingWindow->setPatientHandling(patientHandling);
-    this->guidewareTrackingWindow->update();
-    this->surgeryLoadingBar->setValue(50);
+        emit surgeryLaunchButtonCicked();
 
-    //! apres
-    //this->superviseWindow->show();
+        //! -----------------------------------------
+        //! loading task terminated......
+        //!-----------------------------------------
 
-    emit surgeryLaunchButtonCicked();
+        this->surgeryPlanWindow->displayWindow();
+        this->guidewareTrackingWindow->displayWindow();
+        this->controlConsoleWindow->showFullScreen();
 
-    //! -----------------------------------------
-    //! loading task terminated......
-    //!-----------------------------------------
+        this->surgeryLaunched = true;
 
-    this->surgeryPlanWindow->displayWindow();
-    this->guidewareTrackingWindow->displayWindow();
-    this->controlConsoleWindow->showFullScreen();
+        this->surgeryTimer->start();
+        this->surgeryPlanWindow->setStartTime(this->surgeryTimer->elapsed());
 
-    this->surgeryLaunched = true;
-
-    this->surgeryTimer->start();
-    this->surgeryPlanWindow->setStartTime(this->surgeryTimer->elapsed());
-
-    //! TODO: to be modified!!!!
-    this->guidewareTrackingWindow->realTimeVideoPlay();
-    this->guidewareTrackingWindow->lastFramePlay();
-    // this->guidewareTrackingWindow->VTKDisplay();
-    // this->guidewareTrackingWindow->VTKFlowDisplay();
-
+        //! TODO: to be modified!!!!
+        this->guidewareTrackingWindow->realTimeVideoPlay();
+        this->guidewareTrackingWindow->lastFramePlay();
+        // this->guidewareTrackingWindow->VTKDisplay();
+        // this->guidewareTrackingWindow->VTKFlowDisplay();
+    }
 }
 
 //!----------------------------------------------------------------------------------------------------

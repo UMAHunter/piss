@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QCursor>
+#include <QColor>
 
 //! VTK - auto initialization
 #include <vtkAutoInit.h>
@@ -118,7 +119,8 @@ public:
     explicit SurgeryPlanWindow(QRect rect,
                                QTime* surgeryTime,
                                SystemDispatcher* systemDispatcher,
-                               AlgorithmTestPlatform *algorithmTestPlatform);
+                               AlgorithmTestPlatform *algorithmTestPlatform,
+                               QString globalWorkSpaceColor);
     void displayWindow();
 
     void createRandomVtkImageData();
@@ -130,14 +132,70 @@ public:
     void loadVesselsExisted();
     void setStartTime(int start_time);
 
+    void setWorkSpaceColor(QString workspaceColor);
+
+    void constructPatientInformationWidget();
+    void constructCprAnalyseWidget();
+    void constructControlBar();
+    void constructIHM();
+
+    void initialisation();
+    void regroupAllComponents();
+    void setConnections();
+    void drawBackground();
+    void initVariable();
+
+    void updatePatientPersonelInformation();
+    void updatePatientPersonelPhoto();
+
+    //!   show slice
+    void showSlice(int position);
+
+    void displayVessel();
+    void displayCpr();
+    void displayCenterLine();
+    void displayPatientMRAImage();
+    void updatePatientMRAImageStatistics();
+    void updatePatientMRAImageHistogram();
+    void updatePatientMRAImageTransformationCurves();
+    void removeCurveBy(int index);
+    void updatePatientMRAImage();
+    void generateNewOpacityPoint(double abscissa, double ordinate);
+    void generateNewColorPoints(double abscissa, double ordinate);
+    void generateNewGradientPoint(double abscissa, double ordinate);
+    void generateInitColorPoints(double abscissa, int colorCount);
+    void initialRendering();
+    void opacityPointTracking();
+    void colorPointTracking();
+    void gradientPointTracking();
+    //void calculateCenterOfTheVolume();
+    void sfunctionSource();
+    void cprMath();
+
 protected:
     vtkEventQtSlotConnect* MraConnections;
 
 private:
+
+    //! ---------------------------------------------------------------------------------------------------------
+    //! MRI
+    QVTKWidget *patientMRAImage;
+
+    //! ---------------------------------------------------------------------------------------------------------
+    //! Centre line
+    QVTKWidget *centerLineVTKWidget;
+
+    //! ---------------------------------------------------------------------------------------------------------
+    //! CPR Results
+    QVTKWidget *cprOutcomingVTKWidget;
+
+    //! ---------------------------------------------------------------------------------------------------------
+    int workspaceRed;
+    int workspaceGreen;
+    int workspaceBlue;
     QString vesselHandlingName;
     QRect rect;
-    int start_time;
-    int current_time;
+
     QTime* surgeryTime;
 
     QTimer *timer;
@@ -155,9 +213,7 @@ private:
 
     //MedicalImageHandler *medicalImageHandler;
     QString mraImagefilePath;
-
-    QPixmap *pixmap;
-
+    QString globalWorkSpaceColor;
     QFrame *controlBar;
     QHBoxLayout *controlBarLayout;
 
@@ -258,8 +314,6 @@ private:
     QHBoxLayout *patientMRAImageWidgetLayout;
 
 
-    QVTKWidget *patientMRAImage;
-
     QWidget *patientMRAImageManipulation;
 
 
@@ -298,13 +352,16 @@ private:
     QIcon *defaultTitleIcon;
     QFont *font;
 
-    //.............
-    QVTKWidget *centerLineVTKWidget;
-    vtkPoints *singleVesselPoints;
-    //vtkDataSetMapper *
+    QWidget *centrelineVisualiseArea;
+    QVBoxLayout *centrelineVisualiseAreaLayout;
 
-    //.............
-    QVTKWidget *cprOutcomingVTKWidget;
+    QLabel *centrelineParametorArea;
+    QHBoxLayout *centrelineParametorAreaLayout;
+    QSlider *centrelineSlider;
+    QComboBox *centreLineCoordinates;
+
+    vtkPoints *singleVesselPoints;
+
     vtkPolyDataMapper *cprmapper;
     vtkFixedPointVolumeRayCastMapper *cprmapper1;
     vtkActor *cpractor;
@@ -340,42 +397,8 @@ private:
     int appWidth;
     int appHeight;
     SystemDispatcher* systemDispatcher;
-
-
-
-
-    void constructPatientInformationWidget();
-    void constructCprAnalyseWidget();
-    void constructControlBar();
-    void initialisation();
-    void regroupAllComponents();
-    void setConnections();
-    void drawBackground();
-    void initVariable();
-
-    void updatePatientPersonelInformation();
-    void updatePatientPersonelPhoto();
-
-    void displayVesselse();
-    void displayCpr();
-    void displayCenterLine();
-    void displayPatientMRAImage();
-    void updatePatientMRAImageStatistics();
-    void updatePatientMRAImageHistogram();
-    void updatePatientMRAImageTransformationCurves();
-    void removeCurveBy(int index);
-    void updatePatientMRAImage();
-    void generateNewOpacityPoint(double abscissa, double ordinate);
-    void generateNewColorPoints(double abscissa, double ordinate);
-    void generateNewGradientPoint(double abscissa, double ordinate);
-    void generateInitColorPoints(double abscissa, int colorCount);
-    void initialRendering();
-    void opacityPointTracking();
-    void colorPointTracking();
-    void gradientPointTracking();
-    //void calculateCenterOfTheVolume();
-    void sfunctionSource();
-    void cprMath();
+    int start_time;
+    int current_time;
 
 signals:
     void finished();

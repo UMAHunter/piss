@@ -63,10 +63,11 @@ void pissMainWindow::initVariable(){
     this->globalWorkSpaceColor = "teal";
 
     //! -------------------------------------------------------
-    //! Des procedure afin de recuperer les tailles des ¨¦crans;
+    //! Des procedure afin de recuperer les tailles des ??crans;
     //! -------------------------------------------------------
     this->desktop = QApplication::desktop();
     this->screen_count = desktop->screenCount();
+    qDebug()<<"this->screen_count: "<<this->screen_count;
     this->primary_screen = desktop->primaryScreen();
 
     this->screen = new Screen[screen_count];
@@ -95,8 +96,14 @@ void pissMainWindow::initVariable(){
     this->surgeryTimer = new QTime();
 
     if(this->screen_count == 3){
-        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
+        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
         this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect, this->systemDispatcher);
+        this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
+
+        this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
+    }
+    else if(this->screen_count == 2){
+        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
         this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
@@ -143,7 +150,7 @@ void pissMainWindow::constructIHM(){
     configurationBoardLayout = new QHBoxLayout(configurationBoard);
 
     //!----------------------------------------------------------------------------------------------------------------------------
-    //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th¨¦rapy
+    //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th??rapy
     //!----------------------------------------------------------------------------------------------------------------------------
     ecranDesMaladies = new PatientsWidget(  this->screen_count,
                                             this->systemDispatcher,
@@ -161,9 +168,14 @@ void pissMainWindow::constructIHM(){
         this->ecranDesMaladies->setControlConsoleWindow(this->controlConsoleWindow);
         this->ecranDesMaladies->setParent(this);
     }
+    else if(this->screen_count == 2){
+        this->ecranDesMaladies->setSurgeryPlanWindow(this->surgeryPlanWindow);
+        this->ecranDesMaladies->setControlConsoleWindow(this->controlConsoleWindow);
+        this->ecranDesMaladies->setParent(this);
+    }
 
     //!----------------------------------------------------------------------------------------------------------------------------
-    //! surveillance sur les ¨¦tats du system
+    //! surveillance sur les ??tats du system
     //!----------------------------------------------------------------------------------------------------------------------------
     surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.846,
                                                   primary_screen_height*0.79,

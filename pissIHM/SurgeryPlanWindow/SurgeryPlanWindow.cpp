@@ -1,49 +1,52 @@
 #include "SurgeryPlanWindow.h"
 
+
+/**
+ * @brief SurgeryPlanWindow::SurgeryPlanWindow
+ * @param rect
+ * @param surgeryTime
+ * @param systemDispatcher
+ * @param algorithmTestPlatform
+ */
 SurgeryPlanWindow::SurgeryPlanWindow(QRect rect,
                                      QTime* surgeryTime,
                                      SystemDispatcher* systemDispatcher,
-                                     AlgorithmTestPlatform *algorithmTestPlatform) : QWidget()
-{
+                                     AlgorithmTestPlatform *algorithmTestPlatform,
+                                     QString globalWorkSpaceColor) : QWidget()
+{  
+    //! attributes assignment
     this->rect = rect;
-    this->x = rect.x();
-    this->y = rect.y();
-
     this->appWidth = rect.width();
     this->appHeight = rect.height();
     this->systemDispatcher = systemDispatcher;
     this->algorithmTestPlatform = algorithmTestPlatform;
     this->surgeryTime = surgeryTime;
-
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);// | Qt::WindowStaysOnTopHint);
-    this->setWindowOpacity(1);
-    this->setMouseTracking(true);
-    this->setAutoFillBackground(true);
-
-    defaultFolderIcon = new QIcon(":/images/folder.png");
-    fileUnloadedIcon = new QIcon(":/images/fileunloaded.png");
-    fileLoadedIcon = new QIcon(":/images/fileloaded.png");
-    defaultTitleIcon = new QIcon(":/images/title.png");
-    font = new  QFont("Helvetica", 8, QFont::AnyStyle, true);
-
-    this->constructPatientInformationWidget();
-    this->constructCprAnalyseWidget();
-    this->constructControlBar();
-    this->regroupAllComponents();
+    this->globalWorkSpaceColor = globalWorkSpaceColor;
 
     this->initialisation();
+    this->constructIHM();
     this->setConnections();
     this->drawBackground();
-
-    //this->MraConnections = vtkEventQtSlotConnect::New();
-
-    //! update coords as we move through the window
-    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::MouseMoveEvent, this, SLOT(updateCoords(vtkObject*)));
-    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::LeftButtonPressEvent, this, SLOT(onImageMouseLeftButtonPressed(vtkObject*)));
-    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::LeftButtonReleaseEvent, this, SLOT(onImageMouseLeftButtonReleased(vtkObject*)));
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SurgeryPlanWindow::setWorkSpaceColor
+//! \param workspaceColor
+//!
+void SurgeryPlanWindow::setWorkSpaceColor(QString workspaceColor){
+    this->setStyleSheet("background-color:"+workspaceColor);
+
+    QColor *qworkspaceColor = new QColor(workspaceColor);
+
+    workspaceRed = qworkspaceColor->red();
+    workspaceGreen = qworkspaceColor->green();
+    workspaceBlue = qworkspaceColor->blue();
+
+    //! todo! this->cprRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+}
+
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::setStartTime
 //! \param start_time
@@ -53,7 +56,7 @@ void SurgeryPlanWindow::setStartTime(int start_time){
     this->timer->start(1000);
 }
 
-//!--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::update
 //!
@@ -77,7 +80,7 @@ void SurgeryPlanWindow::update(){
     this->loadVesselsExisted();
 }
 
-//!--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::loadVesselsExisted
 //!
@@ -96,7 +99,7 @@ void SurgeryPlanWindow::loadVesselsExisted(){
     }
 }
 
-//!--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::displayCenterLine
 //!
@@ -125,7 +128,7 @@ void SurgeryPlanWindow::displayCenterLine(){
     }
 }
 
-//!--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::updatePatientMRAImage
 //!
@@ -133,7 +136,7 @@ void SurgeryPlanWindow::displayPatientMRAImage(){
     display(this->patientHandling->getMraImageToBeDisplayed());
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::display
 //! \param imgToBeDisplayed
@@ -179,7 +182,7 @@ void SurgeryPlanWindow::display(vtkImageData *imgToBeDisplayed){
     this->patientMRAImage->update();
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::setPatientHandling
 //! \param patientHandling
@@ -194,7 +197,7 @@ void SurgeryPlanWindow::setPatientHandling(Patient *patientHandling){
 //! \brief SurgeryPlanWindow::displayWindow
 //!
 void SurgeryPlanWindow::displayWindow(){
-    this->move(this->x, this->y);
+    this->move(this->rect.x(), this->rect.y());
     this->resize(this->appWidth, this->appHeight);
     this->show();
 }
@@ -206,76 +209,6 @@ void SurgeryPlanWindow::displayWindow(){
 void SurgeryPlanWindow::displaySize(){
     this->show();
     this->resize(appWidth, appHeight);
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------
-//!
-//! \brief SurgeryPlanWindow::drawBackground
-//!
-void SurgeryPlanWindow::drawBackground(){
-    pixmap = new QPixmap(":/images/background_darkBlue.png");
-    QPalette p =  this->palette();
-
-    p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(appWidth, appHeight), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    this->setPalette(p);
-    this->setMask(pixmap->mask());
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------
-//!
-//! \brief SurgeryPlanWindow::setConnections
-//!
-void SurgeryPlanWindow::setConnections(){
-
-    // switch the volume rendering options
-    this->connect(opacityTransferChoice, SIGNAL(toggled(bool)), this, SLOT(opacityTransformationStateChanged(bool)));
-    this->connect(colorTransferChoice, SIGNAL(toggled(bool)), this, SLOT(colorTransformationStateChanged(bool)));
-    this->connect(gradientTransferChoice, SIGNAL(toggled(bool)), this, SLOT(gradientTransformationStateChanged(bool)));
-
-    // actions of the mouse's pointer on the plotting board
-    this->connect(transformationPlottingBoard, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(generateNewTransformationPoint(QMouseEvent*)));
-    this->connect(transformationPlottingBoard, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(transformPointTracking(QMouseEvent*)));
-    this->connect(transformationPlottingBoard, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(lockTargetPoint(QMouseEvent*)));
-    this->connect(transformationPlottingBoard, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(positioningTransformPoint(QMouseEvent*)));
-
-    // ....
-    this->connect(this->originalOption, SIGNAL(mouseHover()), this, SLOT(originalOptionHovered()));
-    this->connect(this->originalOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(originalOptionClicked()));
-    this->connect(this->originalOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(originalOptionReleased()));
-    this->connect(this->originalOption, SIGNAL(mouseLeaved()), this, SLOT(originalOptionLeaved()));
-
-    this->connect(this->transparentBrainOption, SIGNAL(mouseHover()), this, SLOT(transparentBrainOptionHovered()));
-    this->connect(this->transparentBrainOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(transparentBrainOptionClicked()));
-    this->connect(this->transparentBrainOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(transparentBrainOptionReleased()));
-    this->connect(this->transparentBrainOption, SIGNAL(mouseLeaved()), this, SLOT(transparentBrainOptionLeaved()));
-
-    this->connect(this->greyMatterOption, SIGNAL(mouseHover()), this, SLOT(greyMatterOptionHovered()));
-    this->connect(this->greyMatterOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(greyMatterOptionClicked()));
-    this->connect(this->greyMatterOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(greyMatterOptionReleased()));
-    this->connect(this->greyMatterOption, SIGNAL(mouseLeaved()), this, SLOT(greyMatterOptionLeaved()));
-
-    this->connect(this->whiteMatterOption, SIGNAL(mouseHover()), this, SLOT(whiteMatterOptionHovered()));
-    this->connect(this->whiteMatterOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(whiteMatterOptionClicked()));
-    this->connect(this->whiteMatterOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(whiteMatterOptionReleased()));
-    this->connect(this->whiteMatterOption, SIGNAL(mouseLeaved()), this, SLOT(whiteMatterOptionLeaved()));
-
-    this->connect(this->vesselOption, SIGNAL(mouseHover()), this, SLOT(vesselOptionHovered()));
-    this->connect(this->vesselOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(vesselOptionClicked()));
-    this->connect(this->vesselOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(vesselOptionReleased()));
-    this->connect(this->vesselOption, SIGNAL(mouseLeaved()), this, SLOT(vesselOptionLeaved()));
-
-    this->connect(this->interventionalRouteOption, SIGNAL(mouseHover()), this, SLOT(interventionalRouteOptionHovered()));
-    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(interventionalRouteOptionClicked()));
-    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(interventionalRouteOptionReleased()));
-    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeaved()), this, SLOT(interventionalRouteOptionLeaved()));
-
-    this->connect(this->imageConfigurationButton, SIGNAL(mouseLeftButtonClicked()), this, SLOT(displayConfigurationBoard()));
-    //this->connect(this->sugeryEndnessButton, SIGNAL(clicked()), this, SLOT(stopSurgery()));
-    this->connect(this->curveReformationButton,SIGNAL(mouseLeftButtonClicked()),this,SLOT(displayCurveReformatwionWindow()));
-    this->connect(this->quitSurgeryPlanButton, SIGNAL(clicked()), this, SLOT(closeSurgeryPlanWindow()));
-    this->connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
-    this->connect(centerlineTreeWidget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint &)));
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------
@@ -318,9 +251,8 @@ void SurgeryPlanWindow::showContextMenu(const QPoint &pos){
 //! \brief SurgeryPlanWindow::loadVesselAction
 //!
 void SurgeryPlanWindow::loadVesselAction(){
-    //vesselHandlingName
-    patientHandling->loadVesselByPath(vesselHandlingName);
-   this->displayVesselse();
+   patientHandling->loadVesselByPath(vesselHandlingName);
+   this->displayVessel();
    this->displayCpr();
 }
 
@@ -905,6 +837,18 @@ void SurgeryPlanWindow::constructControlBar(){
 //! \brief SurgeryPlanWindow::initialisation
 //!
 void SurgeryPlanWindow::initialisation(){
+
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);// | Qt::WindowStaysOnTopHint);
+    this->setWindowOpacity(1);
+    this->setMouseTracking(true);
+    this->setAutoFillBackground(true);
+
+    this->defaultFolderIcon = new QIcon(":/images/folder.png");
+    this->fileUnloadedIcon = new QIcon(":/images/fileunloaded.png");
+    this->fileLoadedIcon = new QIcon(":/images/fileloaded.png");
+    this->defaultTitleIcon = new QIcon(":/images/title.png");
+    this->font = new  QFont("Helvetica", 8, QFont::AnyStyle, true);
+
     //fixedPointVolumeRayCastMapper = vtkFixedPointVolumeRayCastMapper::New();
     //! for volume data visualization
     volumeMapper = vtkFixedPointVolumeRayCastMapper::New();
@@ -954,7 +898,6 @@ void SurgeryPlanWindow::initialisation(){
 //! \brief SurgeryPlanWindow::constructPatientInformationWidget
 //!
 void SurgeryPlanWindow::constructPatientInformationWidget(){
-
 
     this->elapsedTimeLabel = new QLCDNumber();
     this->elapsedTimeLabel->setStyleSheet("background-color: transparent; color: Gainsboro");
@@ -1206,7 +1149,6 @@ void SurgeryPlanWindow::constructPatientInformationWidget(){
     this->interventionalRouteOption->setFont(QFont("Segoe UI", 10, QFont::AnyStyle, true));
 
     this->patientMRAImageOptionLabel = new QLabel();
-    //patientMRAImageOptionLabel->setFixedWidth(320);
 
     this->quitSurgeryPlanButton = new QPushButton("X");
     this->quitSurgeryPlanButton->setFixedSize(int(appHeight*0.03), int(appHeight*0.03));
@@ -1251,9 +1193,9 @@ void SurgeryPlanWindow::constructPatientInformationWidget(){
     this->patientMRAImageConfigurationWidgetLayout->setSpacing(0);
     this->patientMRAImageConfigurationWidgetLayout->setMargin(0);
 
-    //--------------------------------------------------------------------------------------------------------
-    //patient clinical widgets container(the bigest widget) and its horizonal layout
-    //--------------------------------------------------------------------------------------------------------
+    //! --------------------------------------------------------------------------------------------------------
+    //! patient clinical widgets container(the bigest widget) and its horizonal layout
+    //! --------------------------------------------------------------------------------------------------------
     this->patientClinicalWidgetsContainer = new QFrame();
     this->patientClinicalWidgetsContainerLayout = new QHBoxLayout(this->patientClinicalWidgetsContainer);
     this->patientClinicalWidgetsContainerLayout->addWidget(this->patientMRAImageOptionWidget);
@@ -1268,17 +1210,11 @@ void SurgeryPlanWindow::constructPatientInformationWidget(){
     this->patientInformationLayout->setMargin(0);
 }
 
-//!--------------------------------------------------------------------------------------------------------------------------------
+//! -----------------------------------------------------------------------------------------------------------------
 //!
-//!  the widget which contains all the information about the patient in order to prepare the therapy
-//!
-//! \brief SurgeryPlanWindow::constructDoctorInformationWidget
+//! \brief SurgeryPlanWindow::constructCprAnalyseWidget
 //!
 void SurgeryPlanWindow::constructCprAnalyseWidget(){
-    cprAnalyseWidget =  new QFrame();
-    cprAnalyseWidget->setFixedHeight(int(appHeight*0.27));
-    cprAnalyseWidget->setStyleSheet("background-color:transparent; color:AliceBlue; border-top: 1px solid Gray;border-radius: 0px;padding: 0 8px; selection-background-color: darkAliceBlue");
-    cprAnalyseWidgetLayout = new QHBoxLayout(cprAnalyseWidget);
 
     centerlineTreeWidget = new QTreeWidget();
     QString centerlineTreeWidgetStyle = "QTreeWidget{show-decoration-selected:2}" \
@@ -1290,7 +1226,7 @@ void SurgeryPlanWindow::constructCprAnalyseWidget(){
 
     centerlineTreeWidget->setStyleSheet(centerlineTreeWidgetStyle);
     centerlineTreeWidget->setHeaderHidden(1);
-    centerlineTreeWidget->setFixedSize(appWidth*0.3,appHeight*0.27);
+    centerlineTreeWidget->setFixedSize(appWidth*0.2,appHeight*0.27);
     centerlineTreeWidget->setStyleSheet("background-color:transparent");
     centerlineTreeWidget->setColumnCount(1);
     centerlineTreeWidget->setHeaderLabel(tr("Centerline Choose"));
@@ -1303,16 +1239,48 @@ void SurgeryPlanWindow::constructCprAnalyseWidget(){
     vesselsFolder->setCheckState(0, Qt::Unchecked);
     centerlineTreeWidget->expandAll();
 
+    //! TODO centerlines
+    QString comboBoxStyle = "QComboBox {border: 0px solid gray;border-radius: 3px;padding: 1px 18px 1px 3px;min-width: 6em;}"
+    "QComboBox::drop-down { subcontrol-origin: padding;subcontrol-position: top right;width: 15px;border-left-width: 1px; border-left-color: lightGray; border-left-style: solid;border-top-right-radius: 3px; border-bottom-right-radius: 3px;}";
+    centreLineCoordinates = new QComboBox();
+    centreLineCoordinates->setStyleSheet(comboBoxStyle);
+    centreLineCoordinates->setFont(QFont("Helvetica", 6, QFont::AnyStyle, false));
+    centreLineCoordinates->setFixedSize(appWidth*0.1,appHeight*0.02);
+
+    centrelineSlider = new QSlider(Qt::Horizontal);
+    centrelineSlider->setFixedSize(appWidth*0.15,appHeight*0.02);
+
+    centrelineParametorArea = new QLabel();
+    centrelineParametorArea->setFixedSize(appWidth*0.25,appHeight*0.02);
+    centrelineParametorAreaLayout = new QHBoxLayout(centrelineParametorArea);
+    centrelineParametorAreaLayout->addWidget(centreLineCoordinates);
+    centrelineParametorAreaLayout->addWidget(centrelineSlider);
+    centrelineParametorAreaLayout->setSpacing(0);
+    centrelineParametorAreaLayout->setMargin(0);
+
     centerLineVTKWidget = new QVTKWidget();
-    centerLineVTKWidget->setFixedSize(appWidth*0.2,appHeight*0.27);
+    centerLineVTKWidget->setFixedSize(appWidth*0.25,appHeight*0.25);
+
+    centrelineVisualiseArea = new QWidget();
+    centrelineVisualiseArea->setFixedSize(appWidth*0.25,appHeight*0.27);
+    centrelineVisualiseAreaLayout = new QVBoxLayout(centrelineVisualiseArea);
+    centrelineVisualiseAreaLayout->addWidget(centrelineParametorArea);
+    centrelineVisualiseAreaLayout->addWidget(centerLineVTKWidget);
+    centrelineVisualiseAreaLayout->setSpacing(0);
+    centrelineVisualiseAreaLayout->setMargin(0);
 
     cprOutcomingVTKWidget = new QVTKWidget();
-    cprOutcomingVTKWidget->setFixedSize(appWidth*0.2,appHeight*0.27);
+    cprOutcomingVTKWidget->setFixedSize(appWidth*0.25,appHeight*0.27);
+
     flyThroughWidget = new QWidget();
     flyThroughWidget->setFixedSize(appWidth*0.3,appHeight*0.27);
 
+    cprAnalyseWidget =  new QFrame();
+    cprAnalyseWidget->setFixedHeight(int(appHeight*0.27));
+    cprAnalyseWidget->setStyleSheet("background-color:transparent; color:AliceBlue; border-top: 1px solid Gray;border-radius: 0px;padding: 0 8px; selection-background-color: darkAliceBlue");
+    cprAnalyseWidgetLayout = new QHBoxLayout(cprAnalyseWidget);
     cprAnalyseWidgetLayout->addWidget(centerlineTreeWidget);
-    cprAnalyseWidgetLayout->addWidget(centerLineVTKWidget);
+    cprAnalyseWidgetLayout->addWidget(centrelineVisualiseArea);
     cprAnalyseWidgetLayout->addWidget(cprOutcomingVTKWidget);
     cprAnalyseWidgetLayout->addWidget(flyThroughWidget);
     cprAnalyseWidgetLayout->setMargin(0);
@@ -1323,7 +1291,8 @@ void SurgeryPlanWindow::constructCprAnalyseWidget(){
 //!
 //! \brief SurgeryPlanWindow::displayVesselse
 //!
-void SurgeryPlanWindow::displayVesselse(){
+void SurgeryPlanWindow::displayVessel(){
+    centreLineCoordinates->clear();
     singleVesselPoints = patientHandling->getVesselByName(vesselHandlingName);
 
     vtkPolyVertex *singleVesselPoly = vtkPolyVertex::New();
@@ -1334,9 +1303,16 @@ void SurgeryPlanWindow::displayVesselse(){
     vtkRenderWindow *singleVesselRenderwindow =vtkRenderWindow::New();
 
     singleVesselPoly->GetPointIds()->SetNumberOfIds(singleVesselPoints->GetNumberOfPoints());
+
     for(int i = 0;i<singleVesselPoints->GetNumberOfPoints();i++){
+        double p0[3];
+        singleVesselPoints->GetPoint(i, p0);
+        centreLineCoordinates->addItem("(" + QString::number(p0[0]) + ", " + QString::number(p0[0]) + ", " + QString::number(p0[0]) + ")");
+        centreLineCoordinates->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+
         singleVesselPoly->GetPointIds()->SetId(i,i);
     }
+
     singleVesselgrid->SetPoints(singleVesselPoints);
     singleVesselgrid->InsertNextCell(singleVesselPoly->GetCellType(),singleVesselPoly->GetPointIds());
     singleVesselMapper->SetInputData(singleVesselgrid);
@@ -1349,7 +1325,22 @@ void SurgeryPlanWindow::displayVesselse(){
     singleVesselRenderwindow->AddRenderer(singleVesselRenderer);
     centerLineVTKWidget->SetRenderWindow(singleVesselRenderwindow);
     centerLineVTKWidget->update();
+
+    this->renderer->AddActor(singleVesselactor);
+    this->renderWindow->Render();
+    //this->patientMRAImage->update();
 }
+
+//!--------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SurgeryPlanWindow::showSlice
+//! \param position
+//!
+void SurgeryPlanWindow::showSlice(int position){
+
+
+}
+
 
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
@@ -1829,12 +1820,9 @@ void SurgeryPlanWindow::interventionalRouteOptionReleased(){
     imageOptionStates.whiteMatterOptionState = false;
     imageOptionStates.vesselOptionState = false;
     imageOptionStates.interventionalRouteOptionState = true;
-
-    displayCenterLine();
-
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::interventionalRouteOptionLeaved
 //!
@@ -1847,7 +1835,7 @@ void SurgeryPlanWindow::interventionalRouteOptionLeaved(){
     }
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::displayConfigurationBoard
 //!
@@ -1855,7 +1843,7 @@ void SurgeryPlanWindow::displayConfigurationBoard(){
     this->patientWidgetConfigurationBoard->display(QCursor::pos());
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::displayCurveReformatwionWindow
 //!
@@ -1872,7 +1860,7 @@ void SurgeryPlanWindow::closeSurgeryPlanWindow(){
     this->display(this->patientHandling->getMraImageToBeDisplayed());
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief SurgeryPlanWindow::showTime
 //!
@@ -1883,18 +1871,6 @@ void SurgeryPlanWindow::showTime(){
     int minute = t/60000 - hour*60;
     int second = t/1000 - minute*60 - hour*3600;
 
-//    if(t < 86400000){
-//        hour = t/3600000;
-//        minute = t/60000 - hour*60;
-//        second = t/1000 - minute*60 - hour*3600;
-//    }
-//    else {
-//        day = day +1;
-//        t = t-86400000*day;
-//        hour = t/3600000;
-//        minute = t/60000 - hour*60;
-//        second = t/1000 - minute*60 - hour*3600;
-//    }
     if(hour < 10 && minute < 10 &&second < 10)
         this->elapsedTimeLabel->display("0" + QString::number(hour) + ":" + "0" + QString::number(minute) + ":" + "0" + QString::number(second));
     else if(hour < 10 && minute < 10 &&second >= 10)
@@ -1912,3 +1888,89 @@ void SurgeryPlanWindow::showTime(){
     else
         this->elapsedTimeLabel->display(QString::number(hour) + ":" + QString::number(minute) + ":" + QString::number(second));
 }
+
+//! --------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SurgeryPlanWindow::constructIHM
+//!
+void SurgeryPlanWindow::constructIHM(){
+    this->constructPatientInformationWidget();
+    this->constructCprAnalyseWidget();
+    this->constructControlBar();
+    this->regroupAllComponents();
+
+}
+
+//! --------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SurgeryPlanWindow::drawBackground
+//!
+void SurgeryPlanWindow::drawBackground(){
+    this->setStyleSheet("background:"+this->globalWorkSpaceColor);
+    setWorkSpaceColor(this->globalWorkSpaceColor);
+}
+
+//! --------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief SurgeryPlanWindow::setConnections
+//!
+void SurgeryPlanWindow::setConnections(){
+
+    // switch the volume rendering options
+    this->connect(opacityTransferChoice, SIGNAL(toggled(bool)), this, SLOT(opacityTransformationStateChanged(bool)));
+    this->connect(colorTransferChoice, SIGNAL(toggled(bool)), this, SLOT(colorTransformationStateChanged(bool)));
+    this->connect(gradientTransferChoice, SIGNAL(toggled(bool)), this, SLOT(gradientTransformationStateChanged(bool)));
+
+    // actions of the mouse's pointer on the plotting board
+    this->connect(transformationPlottingBoard, SIGNAL(mouseDoubleClick(QMouseEvent*)), this, SLOT(generateNewTransformationPoint(QMouseEvent*)));
+    this->connect(transformationPlottingBoard, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(transformPointTracking(QMouseEvent*)));
+    this->connect(transformationPlottingBoard, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(lockTargetPoint(QMouseEvent*)));
+    this->connect(transformationPlottingBoard, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(positioningTransformPoint(QMouseEvent*)));
+
+    // ....
+    this->connect(this->originalOption, SIGNAL(mouseHover()), this, SLOT(originalOptionHovered()));
+    this->connect(this->originalOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(originalOptionClicked()));
+    this->connect(this->originalOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(originalOptionReleased()));
+    this->connect(this->originalOption, SIGNAL(mouseLeaved()), this, SLOT(originalOptionLeaved()));
+
+    this->connect(this->transparentBrainOption, SIGNAL(mouseHover()), this, SLOT(transparentBrainOptionHovered()));
+    this->connect(this->transparentBrainOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(transparentBrainOptionClicked()));
+    this->connect(this->transparentBrainOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(transparentBrainOptionReleased()));
+    this->connect(this->transparentBrainOption, SIGNAL(mouseLeaved()), this, SLOT(transparentBrainOptionLeaved()));
+
+    this->connect(this->greyMatterOption, SIGNAL(mouseHover()), this, SLOT(greyMatterOptionHovered()));
+    this->connect(this->greyMatterOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(greyMatterOptionClicked()));
+    this->connect(this->greyMatterOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(greyMatterOptionReleased()));
+    this->connect(this->greyMatterOption, SIGNAL(mouseLeaved()), this, SLOT(greyMatterOptionLeaved()));
+
+    this->connect(this->whiteMatterOption, SIGNAL(mouseHover()), this, SLOT(whiteMatterOptionHovered()));
+    this->connect(this->whiteMatterOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(whiteMatterOptionClicked()));
+    this->connect(this->whiteMatterOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(whiteMatterOptionReleased()));
+    this->connect(this->whiteMatterOption, SIGNAL(mouseLeaved()), this, SLOT(whiteMatterOptionLeaved()));
+
+    this->connect(this->vesselOption, SIGNAL(mouseHover()), this, SLOT(vesselOptionHovered()));
+    this->connect(this->vesselOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(vesselOptionClicked()));
+    this->connect(this->vesselOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(vesselOptionReleased()));
+    this->connect(this->vesselOption, SIGNAL(mouseLeaved()), this, SLOT(vesselOptionLeaved()));
+
+    this->connect(this->interventionalRouteOption, SIGNAL(mouseHover()), this, SLOT(interventionalRouteOptionHovered()));
+    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeftButtonClicked()), this, SLOT(interventionalRouteOptionClicked()));
+    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeftButtonReleased()), this, SLOT(interventionalRouteOptionReleased()));
+    this->connect(this->interventionalRouteOption, SIGNAL(mouseLeaved()), this, SLOT(interventionalRouteOptionLeaved()));
+
+    this->connect(this->imageConfigurationButton, SIGNAL(mouseLeftButtonClicked()), this, SLOT(displayConfigurationBoard()));
+    //this->connect(this->sugeryEndnessButton, SIGNAL(clicked()), this, SLOT(stopSurgery()));
+    this->connect(this->curveReformationButton,SIGNAL(mouseLeftButtonClicked()),this,SLOT(displayCurveReformatwionWindow()));
+    this->connect(this->quitSurgeryPlanButton, SIGNAL(clicked()), this, SLOT(closeSurgeryPlanWindow()));
+    this->connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
+    this->connect(centerlineTreeWidget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint &)));
+
+
+    //this->MraConnections = vtkEventQtSlotConnect::New();
+
+    //! update coords as we move through the window
+    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::MouseMoveEvent, this, SLOT(updateCoords(vtkObject*)));
+    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::LeftButtonPressEvent, this, SLOT(onImageMouseLeftButtonPressed(vtkObject*)));
+    //this->MraConnections->Connect(patientMRAImage->GetRenderWindow()->GetInteractor(), vtkCommand::LeftButtonReleaseEvent, this, SLOT(onImageMouseLeftButtonReleased(vtkObject*)));
+}
+
