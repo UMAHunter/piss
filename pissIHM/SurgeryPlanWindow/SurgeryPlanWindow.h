@@ -185,6 +185,13 @@ private:
     //! Centre line
     QVTKWidget *centerLineVTKWidget;
 
+    vtkPolyVertex *singleVesselPoly;
+    vtkUnstructuredGrid *singleVesselgrid;
+    vtkDataSetMapper *singleVesselMapper;
+    vtkActor *singleVesselactor;
+    vtkRenderer *singleVesselRenderer;
+    vtkRenderWindow *singleVesselRenderwindow;
+
     //! ---------------------------------------------------------------------------------------------------------
     //! CPR Results
     QVTKWidget *cprOutcomingVTKWidget;

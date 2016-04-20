@@ -79,7 +79,7 @@ void pissMainWindow::initVariable(){
     primary_screen_width = screen[0].rect.width();
     primary_screen_height = screen[0].rect.height();
 
-    the_tab_style =   "QTabBar::tab { background: beige; color: teal; padding: "
+    the_tab_style =   "QTabBar::tab{background: beige; color: teal; padding: "
                       "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
                       "QTabBar::tab:selected {background: teal; color: beige; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
                       "QTabWidget::pane { border: 0; } ";;
@@ -99,7 +99,6 @@ void pissMainWindow::initVariable(){
         this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
         this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect, this->systemDispatcher);
         this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
-
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
     else if(this->screen_count == 2){

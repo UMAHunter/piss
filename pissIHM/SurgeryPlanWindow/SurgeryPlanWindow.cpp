@@ -39,11 +39,16 @@ void SurgeryPlanWindow::setWorkSpaceColor(QString workspaceColor){
 
     QColor *qworkspaceColor = new QColor(workspaceColor);
 
-    workspaceRed = qworkspaceColor->red();
-    workspaceGreen = qworkspaceColor->green();
-    workspaceBlue = qworkspaceColor->blue();
+    this->workspaceRed = qworkspaceColor->red();
+    this->workspaceGreen = qworkspaceColor->green();
+    this->workspaceBlue = qworkspaceColor->blue();
 
-    //! todo! this->cprRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->histogramPlottingBoard->setBackgroundColor(workspaceRed, workspaceGreen, workspaceBlue);
+    this->transformationPlottingBoard->setBackgroundColor(workspaceRed, workspaceGreen, workspaceBlue);
+
+    this->cprRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->singleVesselRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 }
 
 //! --------------------------------------------------------------------------------------------------------------------------------
@@ -154,7 +159,7 @@ void SurgeryPlanWindow::display(vtkImageData *imgToBeDisplayed){
     this->volume->SetProperty(volumeProperty);
 
     this->renderer->AddVolume(volume);
-    this->renderer->SetBackground(58.0/255, 89.0/255, 92.0/255);
+    //.....this->renderer->SetBackground(58.0/255, 89.0/255, 92.0/255);
 
     this->renderWindow->AddRenderer(renderer);
 
@@ -430,7 +435,6 @@ void SurgeryPlanWindow::updatePatientMRAImageHistogram(){
 
     int index = histogramPlottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
     histogramPlottingBoard->doHistogramPlotting(index,frequencies);
-    histogramPlottingBoard->setWorkSpaceColor(55,85,95);
 
 }
 
@@ -871,6 +875,19 @@ void SurgeryPlanWindow::initialisation(){
     grid = vtkUnstructuredGrid::New();
     poly = vtkPolyVertex::New();
 
+    singleVesselPoly = vtkPolyVertex::New();
+    singleVesselgrid = vtkUnstructuredGrid::New();
+    singleVesselMapper =  vtkDataSetMapper::New();
+    singleVesselactor = vtkActor::New();
+    singleVesselRenderer = vtkRenderer::New();
+    singleVesselRenderwindow =vtkRenderWindow::New();
+
+    //! cpr
+    cprmapper = vtkPolyDataMapper::New();
+    cpractor = vtkActor::New();
+    cprRenderer = vtkRenderer::New();
+    cprRenderwindow = vtkRenderWindow::New();
+
     imageOptionStates.originalOptionState = false;
     imageOptionStates.transparentBrainOptionState = false;
     imageOptionStates.greyMatterOptionState = false;
@@ -1294,14 +1311,6 @@ void SurgeryPlanWindow::constructCprAnalyseWidget(){
 void SurgeryPlanWindow::displayVessel(){
     centreLineCoordinates->clear();
     singleVesselPoints = patientHandling->getVesselByName(vesselHandlingName);
-
-    vtkPolyVertex *singleVesselPoly = vtkPolyVertex::New();
-    vtkUnstructuredGrid *singleVesselgrid = vtkUnstructuredGrid::New();
-    vtkDataSetMapper *singleVesselMapper =  vtkDataSetMapper::New();
-    vtkActor *singleVesselactor = vtkActor::New();
-    vtkRenderer *singleVesselRenderer = vtkRenderer::New();
-    vtkRenderWindow *singleVesselRenderwindow =vtkRenderWindow::New();
-
     singleVesselPoly->GetPointIds()->SetNumberOfIds(singleVesselPoints->GetNumberOfPoints());
 
     for(int i = 0;i<singleVesselPoints->GetNumberOfPoints();i++){
@@ -1321,7 +1330,6 @@ void SurgeryPlanWindow::displayVessel(){
     singleVesselactor->GetProperty()->SetOpacity(0.1);
     singleVesselactor->GetProperty()->SetPointSize(0.39);
     singleVesselRenderer->AddActor(singleVesselactor);
-    singleVesselRenderer->SetBackground(55.0/255, 85.0/255, 95.0/255);
     singleVesselRenderwindow->AddRenderer(singleVesselRenderer);
     centerLineVTKWidget->SetRenderWindow(singleVesselRenderwindow);
     centerLineVTKWidget->update();
@@ -1348,16 +1356,10 @@ void SurgeryPlanWindow::showSlice(int position){
 //! \param input
 //!
 void SurgeryPlanWindow::displayCpr(){
-    cprmapper = vtkPolyDataMapper::New();
-    cpractor = vtkActor::New();
-    cprRenderer = vtkRenderer::New();
-    cprRenderwindow = vtkRenderWindow::New();
-
     cprMath();
     cprmapper->SetInputConnection(pCut->GetOutputPort());
     cpractor->SetMapper(cprmapper);
     cprRenderer->AddActor(cpractor);
-    cprRenderer->SetBackground(55.0/255, 85.0/255, 95.0/255);
     cprRenderwindow->AddRenderer(cprRenderer);
     cprOutcomingVTKWidget->SetRenderWindow(cprRenderwindow);
     cprOutcomingVTKWidget->update();
@@ -1907,6 +1909,7 @@ void SurgeryPlanWindow::constructIHM(){
 //!
 void SurgeryPlanWindow::drawBackground(){
     this->setStyleSheet("background:"+this->globalWorkSpaceColor);
+
     setWorkSpaceColor(this->globalWorkSpaceColor);
 }
 
