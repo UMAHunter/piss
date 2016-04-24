@@ -22,6 +22,8 @@
 #include <QLineEdit>
 #include <QTimer>
 #include <QDirIterator>
+#include <QColor>
+
 #include <vtkBMPReader.h>
 #include <vtkOBJReader.h>
 
@@ -47,8 +49,11 @@ class GuidewareTrackingWindow : public QWidget
     Q_OBJECT
 public:
     explicit GuidewareTrackingWindow(QRect rect,
-                                     SystemDispatcher* systemDispatcher);
+                                     SystemDispatcher* systemDispatcher,
+                                     QString globalWorkSpaceColor);
     ~GuidewareTrackingWindow();
+
+    void setWorkSpaceColor(QString workspaceColor);
     void initVariable();
     void displayWindow();
     void constructionIHM();
@@ -61,6 +66,11 @@ public:
     void update();
 
 private:
+    QString globalWorkSpaceColor;
+    int workspaceRed;
+    int workspaceGreen;
+    int workspaceBlue;
+
     QTimer *displayTaskTimer;
 
     int x;
@@ -109,8 +119,6 @@ private:
     QWidget* controlButtonArea;
     QWidget* unknownArea;
 
-    QVTKWidget* realTimeDisplayVTK;
-    QVTKWidget* lastFrameVTK;
     QLabel* guidewareTrackingDisplayVTK;
     QVTKWidget* CarmStructureDisplay;
 
@@ -136,7 +144,12 @@ private:
 
     QVideoWidget* realTimeVideoWidget;
     QVideoWidget* lastFrameVideoWidget;
-    vtkSmartPointer<vtkImageViewer2> imageViewer;
+
+    vtkSmartPointer<vtkOBJReader> reader;
+    vtkSmartPointer<vtkPolyDataMapper> mapper;
+    vtkSmartPointer<vtkActor> actor;
+    vtkSmartPointer<vtkRenderer> renderer;
+    vtkSmartPointer<vtkRenderWindow> renderWindow;
 
 
 public slots:

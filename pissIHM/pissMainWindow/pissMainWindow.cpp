@@ -97,7 +97,7 @@ void pissMainWindow::initVariable(){
 
     if(this->screen_count == 3){
         this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
-        this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect, this->systemDispatcher);
+        this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect, this->systemDispatcher, this->globalWorkSpaceColor);
         this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
@@ -141,9 +141,6 @@ void pissMainWindow::constructIHM(){
     //!------------------------------------------------------------------------------------------
     //! configurationBoard:
     //!------------------------------------------------------------------------------------------
-
-
-
     configurationBoard = new QWidget();
     configurationBoard->setFixedWidth(this->primary_screen_width*0.22);
     configurationBoardLayout = new QHBoxLayout(configurationBoard);

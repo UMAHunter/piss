@@ -1,17 +1,23 @@
 #include "GuidewareTrackingWindow.h"
 
+
+/**
+ * @brief GuidewareTrackingWindow::GuidewareTrackingWindow
+ * @param rect
+ * @param systemDispatcher
+ * @param globalWorkSpaceColor
+ */
 GuidewareTrackingWindow::GuidewareTrackingWindow(QRect rect,
-                                                 SystemDispatcher* systemDispatcher) : QWidget(){
+                                                 SystemDispatcher* systemDispatcher,
+                                                 QString globalWorkSpaceColor) : QWidget(){
 
     this->x = rect.x();
     this->y = rect.y();
     this->width = rect.width();
     this->height = rect.height();
     this->systemDispatcher = systemDispatcher;
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);// | Qt::WindowStaysOnTopHint);
-    this->setWindowOpacity(1);
-    this->setMouseTracking(true);
-    this->setAutoFillBackground(true);
+    this->globalWorkSpaceColor = globalWorkSpaceColor;
+
     this->initVariable();
     this->constructionIHM();
     this->setConnections();
@@ -24,6 +30,21 @@ GuidewareTrackingWindow::GuidewareTrackingWindow(QRect rect,
 //!
 GuidewareTrackingWindow::~GuidewareTrackingWindow(){
 
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief GuidewareTrackingWindow::setWorkSpaceColor
+//! \param workspaceColor
+//!
+void GuidewareTrackingWindow::setWorkSpaceColor(QString workspaceColor){
+    QColor *qworkspaceColor = new QColor(workspaceColor);
+
+    this->workspaceRed   = qworkspaceColor->red();
+    this->workspaceGreen = qworkspaceColor->green();
+    this->workspaceBlue  = qworkspaceColor->blue();
+
+    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -118,9 +139,20 @@ void GuidewareTrackingWindow::displayWindow(){
 //! \brief GuidewareTrackingWindow::initVariable
 //!
 void GuidewareTrackingWindow::initVariable(){
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);// | Qt::WindowStaysOnTopHint);
+    this->setWindowOpacity(1);
+    this->setMouseTracking(true);
+    this->setAutoFillBackground(true);
+
     this->caracterStyle = new QFont("Segoe UI", 8, QFont::AnyStyle, false);
     this->windowStyleSheet = "border: 1px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent; color: AliceBlue";
     this->displayTaskTimer = new QTimer();
+
+    reader = vtkSmartPointer<vtkOBJReader>::New();
+    mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    actor =  vtkSmartPointer<vtkActor>::New();
+    renderer = vtkSmartPointer<vtkRenderer>::New();
+    renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
 }
 
 //!
@@ -140,23 +172,14 @@ void GuidewareTrackingWindow::setConnections(){
 void GuidewareTrackingWindow::VTKFlowDisplay(){
 
     QString humaBodyDataPath = this->systemDispatcher->getImageCenterPath()+"carm.obj";
-    vtkSmartPointer<vtkOBJReader> reader = vtkSmartPointer<vtkOBJReader>::New();
+
     reader->SetFileName(humaBodyDataPath.toLocal8Bit().data());
     reader->Update();
 
-    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
     mapper->SetInputConnection(reader->GetOutputPort());
-
-    vtkSmartPointer<vtkActor> actor =  vtkSmartPointer<vtkActor>::New();
     actor->SetMapper(mapper);
-
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
     renderer->AddActor(actor);
-    renderer->SetBackground(58.0/255, 89.0/255, 92.0/255); // Background color green
-
-    vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
     renderWindow->AddRenderer(renderer);
-
     CarmStructureDisplay->SetRenderWindow(renderWindow);
 
     renderer->ResetCamera();
@@ -171,21 +194,20 @@ void GuidewareTrackingWindow::VTKFlowDisplay(){
 void GuidewareTrackingWindow::screenShot(){
     QPixmap pixmap;
     QPixmap pix;
+
     //pix = pixmap.grabWidget(guidewareTrackingDisplayVTK, 0, 0, -1, -1);
-   pix = pixmap.grabWindow(this->winId(), width*0.2,height*0.04, width*0.4,height*0.48);
-    if(pix.isNull())
-        {
-            QMessageBox::information(this,"error","grab Screen failed",QMessageBox::Ok);
+    pix = pixmap.grabWindow(this->winId(), width*0.2,height*0.04, width*0.4,height*0.48);
+    if(pix.isNull()){
+        QMessageBox::information(this,"error","grab Screen failed",QMessageBox::Ok);
+    }
+    else{
+        if(pix.save( "E:\\1.bmp", "BMP" )==false){
+            QMessageBox::information(this,"right","save error",QMessageBox::Ok);
         }
-        else
-        {
-            if(pix.save( "E:\\1.bmp", "BMP" )==false)
-            {
-                QMessageBox::information(this,"right","save error",QMessageBox::Ok);
-            }
-            else
-                QMessageBox::information(this,"Grab","bitmap saved as E:\\1.bmp",QMessageBox::Ok);
+        else{
+            QMessageBox::information(this,"Grab","bitmap saved as E:\\1.bmp",QMessageBox::Ok);
         }
+    }
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------
@@ -211,13 +233,9 @@ void GuidewareTrackingWindow::lastFramePlay(){
 //! \brief GuidewareTrackingWindow::drawBackground
 //!
 void GuidewareTrackingWindow::drawBackground(){
-    pixmap = new QPixmap(":/images/background_darkBlue.png");
-    QPalette p =  this->palette();
+    this->setStyleSheet("background:"+this->globalWorkSpaceColor);
 
-    p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(this->width, this->height), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    this->setPalette(p);
-    this->setMask(pixmap->mask());
+    setWorkSpaceColor(this->globalWorkSpaceColor);
 }
 
 void GuidewareTrackingWindow::testVtkwidget(){

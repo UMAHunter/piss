@@ -18,8 +18,6 @@ AlgorithmTestPlatform::AlgorithmTestPlatform(SystemDispatcher* dispatcher,
     this->constructIHM();
     this->setConnections();
 
-
-
     ramProgressBar->setValue(40);
     diskProgressBar->setValue(35);
     netProgressBar->setValue(20);
@@ -197,7 +195,7 @@ void AlgorithmTestPlatform::constructIHM(){
 
 
     this->systemUsageStatusWidget = new QLabel();
-    this->systemUsageStatusWidget->setFixedWidth(this->appWidth*0.13);
+    this->systemUsageStatusWidget->setFixedWidth(this->appWidth*0.22);
     this->systemUsageStatusLayout = new QGridLayout(this->systemUsageStatusWidget);
 
     this->systemUsageStatusLayout->addWidget(this->algorithmTestTitleLabel, 0, 0);
@@ -206,7 +204,6 @@ void AlgorithmTestPlatform::constructIHM(){
     this->systemUsageStatusLayout->addWidget(this->diskLable, 3, 0);
     this->systemUsageStatusLayout->addWidget(this->netLable, 4, 0);
     this->systemUsageStatusLayout->addWidget(this->algorithmTestStatusLabel, 5, 0);
-
     this->systemUsageStatusLayout->addWidget(this->algorithmTestCommandLabel, 0, 1);
     this->systemUsageStatusLayout->addWidget(this->cpuProgressBar, 1, 1);
     this->systemUsageStatusLayout->addWidget(this->ramProgressBar, 2, 1);

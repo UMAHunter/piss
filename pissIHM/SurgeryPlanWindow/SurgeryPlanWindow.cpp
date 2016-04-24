@@ -35,7 +35,6 @@ SurgeryPlanWindow::SurgeryPlanWindow(QRect rect,
 //! \param workspaceColor
 //!
 void SurgeryPlanWindow::setWorkSpaceColor(QString workspaceColor){
-    this->setStyleSheet("background-color:"+workspaceColor);
 
     QColor *qworkspaceColor = new QColor(workspaceColor);
 
