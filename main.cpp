@@ -5,9 +5,6 @@
 #include "GlobalTime.h"
 
 #include <QApplication>
-#include <QTimer>
-#include <QThread>
-#include <QVector>
 
 
 /**

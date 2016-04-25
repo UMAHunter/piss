@@ -1,27 +1,6 @@
 #include "pissMainWindow.h"
 #include "vtkImageData.h"
 
-// Sets the style sheet of the QTabWidget to expand the tabs.
-static void expandingTabsStyleSheet(QTabWidget *tw)
-{
-    tw->setStyleSheet(QString("QTabBar::tab { width: %1px; } ")
-                      .arg(tw->size().width()/tw->count()));
-}
-
-// On resize events, reapply the expanding tabs style sheet
-class ResizeFilter : public QObject
-{
-    QTabWidget *target;
-public:
-    ResizeFilter(QTabWidget *target) : QObject(target), target(target) {}
-
-    bool eventFilter(QObject *object, QEvent *event)
-    {
-        if (event->type() == QEvent::Resize)
-            expandingTabsStyleSheet(target);
-        return false;
-    }
-};
 
 /**
  * @brief pissMainWindow::pissMainWindow
@@ -82,7 +61,7 @@ void pissMainWindow::initVariable(){
     the_tab_style =   "QTabBar::tab{background: beige; color: teal; padding: "
                       "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
                       "QTabBar::tab:selected {background: teal; color: beige; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
-                      "QTabWidget::pane { border: 0; } ";;
+                      "QTabWidget::pane { border: 0; } ";
 
     //!----------------------------------------------------------------------------------------------------
     //! status bar area
@@ -91,24 +70,50 @@ void pissMainWindow::initVariable(){
                                                             this->primary_screen_width,
                                                             this->primary_screen_height);
 
-    this->patientInformationWidget = new PatientInformationWidget();
+    this->patientInformationWidget = new PatientInformationWidget(this->primary_screen_width,
+                                                                  this->primary_screen_height);
 
     this->surgeryTimer = new QTime();
 
+    //!----------------------------------------------------------------------------------------------------
+    //! three main ihm while therapy
+    //!----------------------------------------------------------------------------------------------------
     if(this->screen_count == 3){
-        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
-        this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect, this->systemDispatcher, this->globalWorkSpaceColor);
-        this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
+        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,
+                                                        this->surgeryTimer,
+                                                        this->systemDispatcher,
+                                                        this->algorithmTestPlatform,
+                                                        this->globalWorkSpaceColor);
+
+        this->guidewareTrackingWindow = new GuidewareTrackingWindow(screen[2].rect,
+                                                                    this->systemDispatcher,
+                                                                    this->globalWorkSpaceColor);
+
+        this->controlConsoleWindow = new ControlConsoleWindow(  screen[1].rect,
+                                                                this->surgeryTimer,
+                                                                this->systemDispatcher,
+                                                                this->algorithmTestPlatform);
+
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
     else if(this->screen_count == 2){
-        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform, this->globalWorkSpaceColor);
-        this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,  this->surgeryTimer, this->systemDispatcher, this->algorithmTestPlatform);
+        this->surgeryPlanWindow = new SurgeryPlanWindow(screen[1].rect,
+                                                        this->surgeryTimer, this->systemDispatcher,
+                                                        this->algorithmTestPlatform,
+                                                        this->globalWorkSpaceColor);
+
+        this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,
+                                                              this->surgeryTimer,
+                                                              this->systemDispatcher,
+                                                              this->algorithmTestPlatform);
+
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
 
+    //!----------------------------------------------------------------------------------------------------
+    //! ihm pour configurer les parametre des systems
+    //!----------------------------------------------------------------------------------------------------
     systemOptionWindow = new SystemOptions();
-
 }
 
 //!---------------------------------------------------------------------------------------

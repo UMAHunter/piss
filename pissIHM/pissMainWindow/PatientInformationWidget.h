@@ -32,8 +32,12 @@ class PatientInformationWidget : public QWidget{
 
     Q_OBJECT
 public:
-    explicit PatientInformationWidget(QWidget *parent = 0);
+    explicit PatientInformationWidget(int screen_width, int screen_height);
     ~PatientInformationWidget();
+
+    void init();
+    void construct();
+    void connections();
 
     void display(QPoint pos);
     void drawBackground();
@@ -47,6 +51,9 @@ public:
 
 
 private:
+
+    int screen_width;
+    int screen_height;
     QPixmap *pixmap;
     QLabel *nameLabel;
     QLabel *birthdayLabel;

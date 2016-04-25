@@ -72,6 +72,5 @@ void pissReceptionTask::lecture()
 //!
 void pissReceptionTask::disconnect()
 {
-    qDebug()<<sd<<"Disconnected";
     this->soc->deleteLater();
 }

@@ -2,6 +2,7 @@
 #define PISSCOMMUNICATIONSTACK_H
 
 #include "pissInputInformationDecoder.h"
+#include "pissOutputInformationEncoder.h"
 #include "pissNetworkEnvironment.h"
 #include "DatagrammeAnalyser.h"
 #include "InputQueue.h"
@@ -20,6 +21,7 @@ private:
     QVector <OutputQueue*> outputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;
     pissInputInformationDecoder *informationDecodeTask;
+    pissOutputInformationEncoder *outputInformationEncoder;
     pissServer *server;
     GlobalTime *globalTime;
 

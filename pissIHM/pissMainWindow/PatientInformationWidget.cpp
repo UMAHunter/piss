@@ -3,8 +3,28 @@
 #include <QDebug>
 
 
-PatientInformationWidget::PatientInformationWidget(QWidget *parent) : QWidget(parent){
+/**
+ * @brief PatientInformationWidget::PatientInformationWidget
+ * @param parent
+ */
+PatientInformationWidget::PatientInformationWidget(int screen_width, int screen_height) : QWidget()
+{
+    this->screen_width = screen_width;
+    this->screen_height = screen_height;
 
+    this->init();
+    this->construct();
+    this->connections();
+    this->drawBackground();
+}
+
+PatientInformationWidget::~PatientInformationWidget(){}
+
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::init
+//!
+void PatientInformationWidget::init(){
     //! initialise ...
     this->mouseLeftButtonPressed = false;
     this->displaying = false;
@@ -14,10 +34,17 @@ PatientInformationWidget::PatientInformationWidget(QWidget *parent) : QWidget(pa
     this->setWindowOpacity(0.97);
     this->setMouseTracking(true);
     this->setAutoFillBackground(true);
-    this->setFixedSize(350,450);
+
+    this->setFixedSize(screen_width*0.35,screen_height*0.5);
     this->setFont( QFont("Segoe UI", 8, QFont::AnyStyle, true));
     this->setStyleSheet("color: AliceBlue");
+}
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::construct
+//!
+void PatientInformationWidget::construct(){
     nameLabel = new QLabel("Name:");
     nameLabel->setFixedWidth(60);
     birthdayLabel = new QLabel("Birth:");
@@ -87,7 +114,7 @@ PatientInformationWidget::PatientInformationWidget(QWidget *parent) : QWidget(pa
     cancelButton = new CPushButton();
     cancelButton->setText("cancel");
     cancelButton->setFlat(true);
-    confirmButton = new CPushButton();  
+    confirmButton = new CPushButton();
     confirmButton->setText("confirm");
     confirmButton->setFlat(true);
     ccSpacerItem = new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
@@ -102,64 +129,115 @@ PatientInformationWidget::PatientInformationWidget(QWidget *parent) : QWidget(pa
     mainLayout->addWidget(doctorCommentGroupBox);
     mainLayout->addWidget(ccContatiner);
 
-    this->drawBackground();
+}
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::connections
+//!
+void PatientInformationWidget::connections(){
     this->connect(cancelButton , SIGNAL(mouseLeftButtonReleased()), this, SLOT(cancel()));
     this->connect(confirmButton , SIGNAL(mouseLeftButtonReleased()), this, SLOT(confirm()));
 }
 
-PatientInformationWidget::~PatientInformationWidget(){}
-
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::patientInformationConfigured
+//! \return
+//!
 bool PatientInformationWidget::patientInformationConfigured(){
    return this->informationConfigured;
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::getPatientImagePath
+//! \return
+//!
 QString PatientInformationWidget::getPatientImagePath(){
     return this->patientImageLabel->getImagePath();
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::getPatientName
+//! \return
+//!
 QString PatientInformationWidget::getPatientName(){
     return this->nameLineEdit->text().replace(" ", "_");
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::getPatientBirth
+//! \return
+//!
 QString PatientInformationWidget::getPatientBirth(){
     return this->birthdayLineEdit->text().replace(".", "_");
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::getPatientSex
+//! \return
+//!
 QString PatientInformationWidget::getPatientSex(){
     return this->sexualLineEdit->text();
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::getPatientTherapyDate
+//! \return
+//!
 QString PatientInformationWidget::getPatientTherapyDate(){
     return this->therapyTimeLineEdit->text().replace(".", "_");
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::setParentWidget
+//! \param p
+//!
 void PatientInformationWidget::setParentWidget(QObject *p){
     this->parent = p;
 }
 
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::display
+//! \param pos
+//!
 void PatientInformationWidget::display(QPoint pos){
-     qDebug()<<pos.x()<<pos.y();
+
      if(!displaying){
          this->show();
-         //this->move(pos.x() + 20, pos.y()+15);
+         this->move(pos.x() + 50, pos.y());
          displaying = true;
      }
- }
+}
 
- void PatientInformationWidget::drawBackground(){
-     pixmap = new QPixmap(":/images/background_light_green.png");
-     QPalette p =  this->palette();
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::drawBackground
+//!
+void PatientInformationWidget::drawBackground(){
+ pixmap = new QPixmap(":/images/background_light_green.png");
+ QPalette p =  this->palette();
 
-     p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(this->width(), this->height()), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+ p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(screen_width*0.35,screen_height*0.5), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-     this->setPalette(p);
-     this->setMask(pixmap->mask());
- }
+ this->setPalette(p);
+ this->setMask(pixmap->mask());
+}
 
- void PatientInformationWidget::confirm(){
-     //check the content...
-     if(nameLineEdit->text().isEmpty()||birthdayLineEdit->text().isEmpty()){
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::confirm
+//!
+void PatientInformationWidget::confirm(){
+    //check the content...
+    if(nameLineEdit->text().isEmpty()||birthdayLineEdit->text().isEmpty()){
          QMessageBox *msgBox = new QMessageBox(this);
          msgBox->setWindowTitle("Attention");
          msgBox->setFont(QFont("Segoe UI", 8, QFont::AnyStyle, true));
@@ -167,44 +245,64 @@ void PatientInformationWidget::display(QPoint pos){
          msgBox->setText("name and birthday has not filled");
          msgBox->exec();
          return;
-     }
-     //(qobject_cast<IgssMainWindow *>(this->parent))->createPatient();
-     //this->informationConfigured = true;
+    }
 
-     //TODO add a listWidgetItem in the listWidget.
-     // A drag&drop or upload photo of the patient
+    //(qobject_cast<IgssMainWindow *>(this->parent))->createPatient();
+    //this->informationConfigured = true;
+
+    //TODO add a listWidgetItem in the listWidget.
+    // A drag&drop or upload photo of the patient
     this->close();
     displaying = !displaying;
- }
+}
 
- void PatientInformationWidget::cancel(){
-     this->close();
-     displaying = !displaying;
-//(qobject_cast<IgssMainWindow *>(this->parent))->reopenMainWindow();
- }
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::cancel
+//!
+void PatientInformationWidget::cancel(){
+    this->close();
+    displaying = !displaying;
+    //(qobject_cast<IgssMainWindow *>(this->parent))->reopenMainWindow();
+}
 
- void PatientInformationWidget::mouseMoveEvent(QMouseEvent *event){
-     if(mouseLeftButtonPressed == true){
-         mouseMovingPosition = event->globalPos();
-         this->move(this->pos() + mouseMovingPosition - mousePosition);
-         mousePosition = mouseMovingPosition;
-     }
-     event->ignore();
- }
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::mouseMoveEvent
+//! \param event
+//!
+void PatientInformationWidget::mouseMoveEvent(QMouseEvent *event){
+    if(mouseLeftButtonPressed == true){
+        mouseMovingPosition = event->globalPos();
+        this->move(this->pos() + mouseMovingPosition - mousePosition);
+        mousePosition = mouseMovingPosition;
+    }
+    event->ignore();
+}
 
- void PatientInformationWidget::mousePressEvent(QMouseEvent *event){
-     if(event->button() == Qt::LeftButton){
-        if (!((event->y() < 5) || (event->x() <5))){
-            mousePosition = event->globalPos();
-            mouseLeftButtonPressed = true;
-        }
-     }
-     event->ignore();
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::mousePressEvent
+//! \param event
+//!
+void PatientInformationWidget::mousePressEvent(QMouseEvent *event){
+ if(event->button() == Qt::LeftButton){
+    if (!((event->y() < 5) || (event->x() <5))){
+        mousePosition = event->globalPos();
+        mouseLeftButtonPressed = true;
+    }
  }
+ event->ignore();
+}
 
- void PatientInformationWidget::mouseReleaseEvent(QMouseEvent *event){
-     if(event->button() == Qt::LeftButton){
-         mouseLeftButtonPressed = false;
-     }
-     event->ignore();
+//! --------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientInformationWidget::mouseReleaseEvent
+//! \param event
+//!
+void PatientInformationWidget::mouseReleaseEvent(QMouseEvent *event){
+ if(event->button() == Qt::LeftButton){
+     mouseLeftButtonPressed = false;
  }
+ event->ignore();
+}

@@ -1,5 +1,6 @@
 #include "pissCommunicationStack.h"
 
+
 /**
  * @brief pissCommunicationStack::pissCommunicationStack
  * @param globalTime
@@ -13,6 +14,7 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
 
     datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,networkEnvironment,globalTime);
     informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,networkEnvironment,datagrammeAnalyser);
+    outputInformationEncoder = new pissOutputInformationEncoder();
     server = new pissServer(&inputQueueManager,&outputQueueManager,networkEnvironment, datagrammeAnalyser,globalTime);
 }
 
@@ -32,6 +34,7 @@ void pissCommunicationStack::clearBuffer(){
 //!
 bool pissCommunicationStack::closeServer(){
     informationDecodeTask->stop();
+    //outputInformationEncoder->stop();
     return server->stopServer();
 }
 
@@ -41,6 +44,7 @@ bool pissCommunicationStack::closeServer(){
 //!
 bool pissCommunicationStack::launch(){
     informationDecodeTask->start();
+    outputInformationEncoder->start();
     return server->launchServer();
 }
 

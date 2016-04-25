@@ -106,15 +106,12 @@ void SurgerySystemWidget::closeSystem(){
 void SurgerySystemWidget::onStopServerButtonClicked(){
     bool ret = this->systemDispatcher->stopPissServer();
 
-
     if(ret){
         this->algorithmTestPlatform->setSystemStatus("platform server closed");
     }
     else{
         this->algorithmTestPlatform->setSystemStatus("please don't click the stop button when nothing happened");
     }
-
-
 
 }
 
@@ -126,8 +123,6 @@ void SurgerySystemWidget::onStartServerButtonClicked(){
 
     //! fetch ip adress display at the front table...
     //! port
-
-
 
     bool ret = this->systemDispatcher->startPissServer();
 

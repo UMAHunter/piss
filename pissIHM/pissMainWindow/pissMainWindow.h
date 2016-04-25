@@ -1,5 +1,5 @@
 #ifndef  WIDGET_H
-#define WIDGET_H
+#define  WIDGET_H
 
 #define vtkRenderingCore_AUTOINIT 4(vtkInteractionStyle,vtkRenderingFreeType,vtkRenderingFreeTypeOpenGL,vtkRenderingOpenGL)
 #define vtkRenderingVolume_AUTOINIT 1(vtkRenderingVolumeOpenGL)
@@ -19,7 +19,6 @@
 #include <QApplication>
 #include <QPoint>
 #include <QTime>
-
 #include <QRect>
 
 #include <CPushButton.h>
@@ -39,21 +38,58 @@
 #include "SystemOptions.h"
 
 
+//! -------------------------------------------------------------------------
+//!
+//! \brief The Screen struct
+//!
 typedef struct{
     int screenIndex;
     QRect rect;
 }Screen;
 
+//! -------------------------------------------------------------------------
+//!
+//! \brief The MainOptionStates struct
+//!
 struct MainOptionStates{
     bool patientsWidgetOptionState;
     bool systemWidgetOptionState;
     bool historyWidgetOptionState;
 };
 
+//! -------------------------------------------------------------------------
+//!
+//! \brief expandingTabsStyleSheet : Sets the style sheet of the QTabWidget to expand the tabs.
+//! \param tw
+//!
+static void expandingTabsStyleSheet(QTabWidget *tw){
+    tw->setStyleSheet(QString("QTabBar::tab { width: %1px; } ")
+                      .arg(tw->size().width()/tw->count()));
+}
 
-/**
- * @brief The pissMainWindow class
- */
+//! -------------------------------------------------------------------------
+//!
+//! \brief The ResizeFilter class
+//!  : On resize events, reapply the expanding tabs style sheet
+//!
+class ResizeFilter : public QObject
+{
+    QTabWidget *target;
+public:
+    ResizeFilter(QTabWidget *target) : QObject(target), target(target) {}
+
+    bool eventFilter(QObject *object, QEvent *event){
+        qDebug()<<object;
+        if (event->type() == QEvent::Resize)
+            expandingTabsStyleSheet(target);
+        return false;
+    }
+};
+
+//! -------------------------------------------------------------------------
+//!
+//! \brief The pissMainWindow class
+//!
 class pissMainWindow : public QWidget{
     Q_OBJECT
 
