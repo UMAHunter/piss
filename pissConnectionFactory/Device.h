@@ -11,22 +11,22 @@ typedef enum {
 }ModuleCode;
 
 
-class ModuleIpConfig
+class Device
 {
 public:
-    ModuleIpConfig();
+    Device();
 
     QHostAddress getIpAddress();
-    int getPort();
+    int getPortNumber();
     QString getName();
     int getSocketrec();
     int getSockettrans();
     quint32 getClientlistenport();
     bool getCode();
-    int getModuleNumber();
+    int getDeviceNumber();
 
     void setIpAddress(QHostAddress Addr);
-    void setPort(int Port);
+    void setPortNumber(int p);
     void setName(QString Name);
     void setSocketrec(int Socketrec);
     void setSockettrans(int Sockettrans);
@@ -37,7 +37,7 @@ public:
 private:
     int moduleNumber;
     QHostAddress addr;
-    int port;
+    int portNumber;
     QString name;
     qintptr socketrec;//接收到的socket
     qintptr sockettrans;//发起连接的socket

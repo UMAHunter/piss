@@ -65,3 +65,11 @@ void pissCommunicationStack::setPatientHandling(Patient *patientHandling){
 void pissCommunicationStack::setSystemMetaData(SystemMetaData *systemMetaData){
     this->systemMetaData = systemMetaData;
 }
+
+//!
+//! \brief pissCommunicationStack::getNetworkEnvironment
+//! \return
+//!
+pissNetworkEnvironment* pissCommunicationStack::getNetworkEnvironment(){
+    return this->networkEnvironment;
+}

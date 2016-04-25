@@ -1,6 +1,6 @@
-#include "ModuleIpConfig.h"
+#include "Device.h"
 
-ModuleIpConfig::ModuleIpConfig()
+Device::Device()
 {
 
 }
@@ -10,7 +10,7 @@ ModuleIpConfig::ModuleIpConfig()
 //! \brief ModuleIpConfig::setModuleNumber
 //! \param moduleNumber
 //!
-void ModuleIpConfig::setModuleNumber(int moduleNumber){
+void Device::setModuleNumber(int moduleNumber){
     this->moduleNumber = moduleNumber;
     switch (moduleNumber){
         case PISS:
@@ -32,7 +32,7 @@ void ModuleIpConfig::setModuleNumber(int moduleNumber){
 //! \brief ModuleIpConfig::getIpAddress
 //! \return
 //!
-QHostAddress ModuleIpConfig::getIpAddress()
+QHostAddress Device::getIpAddress()
 {
     return this->addr;
 }
@@ -42,9 +42,9 @@ QHostAddress ModuleIpConfig::getIpAddress()
 //! \brief ModuleIpConfig::getPort
 //! \return
 //!
-int ModuleIpConfig::getPort()
+int Device::getPortNumber()
 {
-    return this->port;
+    return this->portNumber;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ int ModuleIpConfig::getPort()
 //! \brief ModuleIpConfig::getModuleNumber
 //! \return
 //!
-int ModuleIpConfig::getModuleNumber(){
+int Device::getDeviceNumber(){
     return this->moduleNumber;
 }
 
@@ -61,7 +61,7 @@ int ModuleIpConfig::getModuleNumber(){
 //! \brief ModuleIpConfig::getName
 //! \return
 //!
-QString ModuleIpConfig::getName()
+QString Device::getName()
 {
     return this->name;
 }
@@ -71,7 +71,7 @@ QString ModuleIpConfig::getName()
 //! \brief ModuleIpConfig::getSocketrec
 //! \return
 //!
-int ModuleIpConfig::getSocketrec()
+int Device::getSocketrec()
 {
     return this->socketrec;
 }
@@ -81,7 +81,7 @@ int ModuleIpConfig::getSocketrec()
 //! \brief ModuleIpConfig::getSocketTrans
 //! \return
 //!
-int ModuleIpConfig::getSockettrans()
+int Device::getSockettrans()
 {
     return this->sockettrans;
 }
@@ -91,7 +91,7 @@ int ModuleIpConfig::getSockettrans()
 //! \brief ModuleIpConfig::getClientlistenport
 //! \return
 //!
-quint32 ModuleIpConfig::getClientlistenport()
+quint32 Device::getClientlistenport()
 {
     return this->clientlistenport;
 }
@@ -101,7 +101,7 @@ quint32 ModuleIpConfig::getClientlistenport()
 //! \brief ModuleIpConfig::getCode
 //! \return
 //!
-bool ModuleIpConfig::getCode()
+bool Device::getCode()
 {
     return this->code;
 }
@@ -113,7 +113,7 @@ bool ModuleIpConfig::getCode()
 //! \brief ModuleIpConfig::setIpAddress
 //! \param Addr
 //!
-void ModuleIpConfig::setIpAddress(QHostAddress Addr)
+void Device::setIpAddress(QHostAddress Addr)
 {
     this->addr = Addr;
 }
@@ -123,9 +123,9 @@ void ModuleIpConfig::setIpAddress(QHostAddress Addr)
 //! \brief ModuleIpConfig::setPort
 //! \param Port
 //!
-void ModuleIpConfig::setPort(int Port)
+void Device::setPortNumber(int p)
 {
-    this->port = Port;
+    this->portNumber = p;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ void ModuleIpConfig::setPort(int Port)
 //! \brief ModuleIpConfig::setName
 //! \param Name
 //!
-void ModuleIpConfig::setName(QString Name)
+void Device::setName(QString Name)
 {
     this->name = Name;
 }
@@ -143,7 +143,7 @@ void ModuleIpConfig::setName(QString Name)
 //! \brief ModuleIpConfig::setSocketrec
 //! \param Socketrec
 //!
-void ModuleIpConfig::setSocketrec(int Socketrec)
+void Device::setSocketrec(int Socketrec)
 {
     this->socketrec = Socketrec;
 }
@@ -153,7 +153,7 @@ void ModuleIpConfig::setSocketrec(int Socketrec)
 //! \brief ModuleIpConfig::setSocketTrans
 //! \param SocketTrans
 //!
-void ModuleIpConfig::setSockettrans(int Sockettrans)
+void Device::setSockettrans(int Sockettrans)
 {
     this->sockettrans = Sockettrans;
 }
@@ -163,7 +163,7 @@ void ModuleIpConfig::setSockettrans(int Sockettrans)
 //! \brief ModuleIpConfig::setClientlistenport
 //! \param Clientlistenport
 //!
-void ModuleIpConfig::setClientlistenport(quint32 Clientlistenport)
+void Device::setClientlistenport(quint32 Clientlistenport)
 {
     this->clientlistenport = Clientlistenport;
 }
@@ -173,7 +173,7 @@ void ModuleIpConfig::setClientlistenport(quint32 Clientlistenport)
 //! \brief ModuleIpConfig::setCode
 //! \param Code
 //!
-void ModuleIpConfig::setCode(bool Code)
+void Device::setCode(bool Code)
 {
     this->code = Code;
 }

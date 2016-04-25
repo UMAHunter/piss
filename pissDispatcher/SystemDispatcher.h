@@ -33,6 +33,8 @@ public:
 
     int findPatientExisted();
 
+    Device* getMyDeviceInfo();
+
 private:
     SystemDataBase* database;
     ImageProcessingFactory *imageProcessingFactory;

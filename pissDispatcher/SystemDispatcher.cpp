@@ -171,3 +171,11 @@ QString SystemDispatcher::doImageProcessingByMethodType(int id, int dim, QString
 
     return msg;
 }
+
+//!
+//! \brief SystemDispatcher::getModuleConfig
+//! \return
+//!
+Device* SystemDispatcher::getMyDeviceInfo(){
+    return this->communicationStack->getNetworkEnvironment()->getDeviceAt(0);
+}

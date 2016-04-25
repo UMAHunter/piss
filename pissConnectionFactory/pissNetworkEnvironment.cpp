@@ -2,15 +2,15 @@
 
 pissNetworkEnvironment::pissNetworkEnvironment()
 {
-    this->clientCount = 0;
+    this->deviceCount = 0;
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief pissNetworkEnvironment::addAClient
 //!
-void pissNetworkEnvironment::addAClient(){
-    this->clientCount++;
+void pissNetworkEnvironment::addClient(){
+    this->deviceCount++;
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ void pissNetworkEnvironment::addAClient(){
 //! \return
 //!
 int pissNetworkEnvironment::getClientNumber(){
-    return this->clientCount;
+    return this->deviceCount;
 }
 
 
@@ -28,7 +28,7 @@ int pissNetworkEnvironment::getClientNumber(){
 //! \brief pissNetworkEnvironment::selfDetectIP
 //! \return
 //!
-QHostAddress pissNetworkEnvironment::selfDetectIP()
+QHostAddress pissNetworkEnvironment::ipDetect()
 {
     foreach(const QHostAddress &address, QNetworkInterface::allAddresses())
     {
@@ -43,17 +43,17 @@ QHostAddress pissNetworkEnvironment::selfDetectIP()
 //! \param Module
 //! \param Port
 //!
-void pissNetworkEnvironment::append(QString ModuleName, int Port)
+void pissNetworkEnvironment::append(QString deviceName, int Port)
 {
-    if(ModuleName == "self")
+    if(deviceName == "self")
     {
-        ModuleIpConfig* selfIpConfig = new ModuleIpConfig();
-        selfIpConfig->setIpAddress(this->selfDetectIP());
-        selfIpConfig->setPort(Port);
-        selfIpConfig->setName(ModuleName);
+        Device* selfIpConfig = new Device();
+        selfIpConfig->setIpAddress(this->ipDetect());
+        selfIpConfig->setPortNumber(Port);
+        selfIpConfig->setName(deviceName);
         selfIpConfig->setCode(0);
         mutex.lock();
-        this->modules.append(selfIpConfig);
+        this->devices.append(selfIpConfig);
         mutex.unlock();
     }
 }
@@ -64,14 +64,16 @@ void pissNetworkEnvironment::append(QString ModuleName, int Port)
 //! \param ModuleNumber
 //! \param Port
 //!
-void pissNetworkEnvironment::append(int ModuleNumber, int Port){
-    ModuleIpConfig* selfIpConfig = new ModuleIpConfig();
-    selfIpConfig->setIpAddress(this->selfDetectIP());
-    selfIpConfig->setPort(Port);
-    selfIpConfig->setModuleNumber(ModuleNumber);
-    selfIpConfig->setCode(0);
+void pissNetworkEnvironment::append(int ModuleNumber, int port){
+    Device* device = new Device();
+    device->setIpAddress(ipDetect());
+    device->setPortNumber(port);
+    device->setModuleNumber(ModuleNumber);
+    device->setSockettrans(0);
+    device->setSocketrec(0);
+    device->setCode(0);
     mutex.lock();
-    this->modules.append(selfIpConfig);
+    this->devices.append(device);
     mutex.unlock();
 }
 
@@ -94,14 +96,14 @@ void pissNetworkEnvironment::append(QString ModuleName,
 {
     mutex.lock();
     QHostAddress address(addr);
-    ModuleIpConfig *missIpConfig = new ModuleIpConfig();
+    Device *missIpConfig = new Device();
     missIpConfig->setIpAddress(address);
-    missIpConfig->setPort(Port);
+    missIpConfig->setPortNumber(Port);
     missIpConfig->setName(ModuleName);
     missIpConfig->setSocketrec(Socketrec);
     missIpConfig->setClientlistenport(Clientlistenport);
     missIpConfig->setCode(Code);
-    this->modules.append(missIpConfig);
+    this->devices.append(missIpConfig);
     mutex.unlock();
 }
 
@@ -123,14 +125,14 @@ void pissNetworkEnvironment::append(int ModuleNumber,
                                     quint8 Code){
     mutex.lock();
     QHostAddress address(addr);
-    ModuleIpConfig *missIpConfig = new ModuleIpConfig();
+    Device *missIpConfig = new Device();
     missIpConfig->setIpAddress(address);
-    missIpConfig->setPort(Port);
+    missIpConfig->setPortNumber(Port);
     missIpConfig->setModuleNumber(ModuleNumber);
     missIpConfig->setSocketrec(Socketrec);
     missIpConfig->setClientlistenport(Clientlistenport);
     missIpConfig->setCode(Code);
-    this->modules.append(missIpConfig);
+    this->devices.append(missIpConfig);
     mutex.unlock();
 
 }
@@ -149,11 +151,11 @@ void pissNetworkEnvironment::setModuleName(QString ModuleName)
 void pissNetworkEnvironment::setSockettransByModule(QString ModuleName, int Sockettrans)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            this->modules.at(cpt)->setSockettrans(Sockettrans);
+            this->devices.at(cpt)->setSockettrans(Sockettrans);
         }
     }
     mutex.unlock();
@@ -162,11 +164,11 @@ void pissNetworkEnvironment::setSockettransByModule(QString ModuleName, int Sock
 void pissNetworkEnvironment::setIpAddressByModule(QString ModuleName, QHostAddress ip)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            this->modules.at(cpt)->setIpAddress(ip);
+            this->devices.at(cpt)->setIpAddress(ip);
         }
     }
     mutex.unlock();
@@ -175,11 +177,11 @@ void pissNetworkEnvironment::setIpAddressByModule(QString ModuleName, QHostAddre
 void pissNetworkEnvironment::setClientlistenportByModule(QString ModuleName, quint32 Clientlistenport)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            this->modules.at(cpt)->setClientlistenport(Clientlistenport);
+            this->devices.at(cpt)->setClientlistenport(Clientlistenport);
         }
     }
     mutex.unlock();
@@ -188,11 +190,11 @@ void pissNetworkEnvironment::setClientlistenportByModule(QString ModuleName, qui
 void pissNetworkEnvironment::setCodeByModule(QString ModuleName, bool Code)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            this->modules.at(cpt)->setCode(Code);
+            this->devices.at(cpt)->setCode(Code);
         }
     }
     mutex.unlock();
@@ -211,11 +213,11 @@ QHostAddress pissNetworkEnvironment::getIpAddressByModule(QString ModuleName)
 {
     QHostAddress ret;
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            ret =  this->modules.at(cpt)->getIpAddress();
+            ret =  this->devices.at(cpt)->getIpAddress();
         }
     }
     mutex.unlock();
@@ -231,11 +233,11 @@ QHostAddress pissNetworkEnvironment::getIpAddressByModule(QString ModuleName)
 QHostAddress pissNetworkEnvironment::getIpAddressByModule(int ModuleNumber){
     QHostAddress ret;
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getModuleNumber() == ModuleNumber)
+        if(this->devices.at(cpt)->getDeviceNumber() == ModuleNumber)
         {
-            ret =  this->modules.at(cpt)->getIpAddress();
+            ret =  this->devices.at(cpt)->getIpAddress();
         }
     }
     mutex.unlock();
@@ -252,11 +254,11 @@ int pissNetworkEnvironment::getPortByModule(QString ModuleName)
 {
     int ret = -1;
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            ret = this->modules.at(cpt)->getPort();
+            ret = this->devices.at(cpt)->getPortNumber();
         }
     }
     mutex.unlock();
@@ -269,14 +271,14 @@ int pissNetworkEnvironment::getPortByModule(QString ModuleName)
 //! \param ModuleNumber
 //! \return
 //!
-int pissNetworkEnvironment::getPortByModule(int ModuleNumber){
+int pissNetworkEnvironment::getPortByModule(int deviceNumber){
     int ret = -1;
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getModuleNumber() == ModuleNumber)
+        if(this->devices.at(cpt)->getDeviceNumber() == deviceNumber)
         {
-            ret = this->modules.at(cpt)->getPort();
+            ret = this->devices.at(cpt)->getPortNumber();
         }
     }
     mutex.unlock();
@@ -292,11 +294,11 @@ int pissNetworkEnvironment::getPortByModule(int ModuleNumber){
 int pissNetworkEnvironment::getSocketrecByModule(QString ModuleName)
 {
     //mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            return this->modules.at(cpt)->getSocketrec();
+            return this->devices.at(cpt)->getSocketrec();
         }
     }
     //mutex.unlock();
@@ -305,11 +307,11 @@ int pissNetworkEnvironment::getSocketrecByModule(QString ModuleName)
 int pissNetworkEnvironment::getSockettransByModule(QString ModuleName)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            return this->modules.at(cpt)->getSockettrans();
+            return this->devices.at(cpt)->getSockettrans();
         }
     }
     mutex.unlock();
@@ -318,11 +320,11 @@ int pissNetworkEnvironment::getSockettransByModule(QString ModuleName)
 int pissNetworkEnvironment::getSockettransByCode(quint8 Code)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getCode() == Code)
+        if(this->devices.at(cpt)->getCode() == Code)
         {
-            return this->modules.at(cpt)->getSockettrans();
+            return this->devices.at(cpt)->getSockettrans();
         }
     }
     mutex.unlock();
@@ -331,11 +333,11 @@ int pissNetworkEnvironment::getSockettransByCode(quint8 Code)
 quint32 pissNetworkEnvironment::getClientlistenportByModule(QString ModuleName)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            return this->modules.at(cpt)->getClientlistenport();
+            return this->devices.at(cpt)->getClientlistenport();
         }
     }
     mutex.unlock();
@@ -344,12 +346,16 @@ quint32 pissNetworkEnvironment::getClientlistenportByModule(QString ModuleName)
 bool pissNetworkEnvironment::getCodeByModule(QString ModuleName)
 {
     mutex.lock();
-    for(unsigned char cpt = 0; cpt < this->modules.size(); cpt++)
+    for(unsigned char cpt = 0; cpt < this->devices.size(); cpt++)
     {
-        if(this->modules.at(cpt)->getName() == ModuleName)
+        if(this->devices.at(cpt)->getName() == ModuleName)
         {
-            return this->modules.at(cpt)->getCode();
+            return this->devices.at(cpt)->getCode();
         }
     }
     mutex.unlock();
+}
+
+Device* pissNetworkEnvironment::getDeviceAt(int index){
+    return devices.at(index);
 }

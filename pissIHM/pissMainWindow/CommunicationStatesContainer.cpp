@@ -13,6 +13,26 @@ CommunicationStatesContainer::CommunicationStatesContainer(int width, int height
 
 //! ---------------------------------------------------------------------------------------------------
 //!
+//! \brief CommunicationStatesContainer::setDeviceInfo
+//! \param device
+//!
+void CommunicationStatesContainer::setDeviceInfo(Device *device){
+    QTableWidgetItem *deviceNumber = new QTableWidgetItem(QString::number(device->getDeviceNumber(), 10));
+    HardwareInformation->setItem(0, 0, deviceNumber);
+    QTableWidgetItem *ipAddress = new QTableWidgetItem(device->getIpAddress().toString());
+    HardwareInformation->setItem(0, 1, ipAddress);
+    QTableWidgetItem *portNum = new QTableWidgetItem(QString::number(device->getPortNumber(), 10));
+    HardwareInformation->setItem(0, 2, portNum);
+    QTableWidgetItem *transmission = new QTableWidgetItem(QString::number(device->getSockettrans(), 10));
+    HardwareInformation->setItem(0, 3, transmission);
+    QTableWidgetItem *reception = new QTableWidgetItem(QString::number(device->getSocketrec(), 10));
+    HardwareInformation->setItem(0, 4, reception);
+    QTableWidgetItem *control = new QTableWidgetItem(QString::number(device->getCode(), 10));
+    HardwareInformation->setItem(0, 5, control);
+}
+
+//! ---------------------------------------------------------------------------------------------------
+//!
 //! \brief CommunicationStatesContainer::initVariable
 //!
 void CommunicationStatesContainer::initVariable(){
@@ -35,8 +55,13 @@ void CommunicationStatesContainer::constructIHM(){
     this->HardwareInformation->setFixedSize(0.5*width, 0.3*height);
     this->HardwareInformation->setHorizontalHeaderLabels(hardwareHeader);
     this->HardwareInformation->verticalHeader()->setVisible(false);
-    this->HardwareInformation->setStyleSheet("color: teal;background-color: rgba(0,0,0,0);border: 0px groove gray;gridline-color: lightYellow;");
-    this->HardwareInformation->resizeColumnsToContents();
+    this->HardwareInformation->setStyleSheet("selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0.5, y2: 0.5, stop: 0 #FF92BB, stop: 1 white);");
+    this->HardwareInformation->setColumnWidth(0, 0.06*width);
+    this->HardwareInformation->setColumnWidth(1, 0.1*width);
+    this->HardwareInformation->setColumnWidth(2, 0.08*width);
+    this->HardwareInformation->setColumnWidth(3, 0.1*width);
+    this->HardwareInformation->setColumnWidth(4, 0.1*width);
+    this->HardwareInformation->setColumnWidth(5, 0.06*width);
 
     this->communicationFrameRateWindow = new PlottingBoard();
     this->communicationFrameRateWindow->setFixedSize(0.5*width, 0.3*height);

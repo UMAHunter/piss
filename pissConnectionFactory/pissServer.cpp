@@ -83,7 +83,7 @@ bool pissServer::getConnectionState(){
 //! \param socketDescriptor
 //!
 void pissServer::incomingConnection(qintptr socketDescriptor){ 
-    this->networkEnvironment->addAClient();
+    this->networkEnvironment->addClient();
 
     InputQueue *myInputQueue = new InputQueue();
     myInputQueue->clear();

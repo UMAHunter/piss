@@ -8,8 +8,9 @@
 #include <QTreeWidget>
 #include <QHeaderView>
 #include <QGroupBox>
-
 #include <PlottingBoard.h>
+
+#include "Device.h"
 
 /**
  * @brief The CommunicationStatesContainer class
@@ -44,12 +45,13 @@ private:
     QHBoxLayout *transmissionAreaLayout;
     QHBoxLayout *receptionAreaLayout;
 
-
 public:
     explicit CommunicationStatesContainer(int width, int height);
     void initVariable();
     void constructIHM();
     void setConnections();
+
+    void setDeviceInfo(Device *device);
 
 signals:
 

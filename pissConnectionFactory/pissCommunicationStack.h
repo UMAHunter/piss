@@ -36,6 +36,7 @@ public:
     void setPatientHandling(Patient *patientHandling);
     void setSystemMetaData(SystemMetaData *systemMetaData);
 
+    pissNetworkEnvironment* getNetworkEnvironment();
 public:
     pissCommunicationStack(GlobalTime *globalTime);
 };

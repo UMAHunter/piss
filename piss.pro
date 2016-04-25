@@ -95,7 +95,6 @@ SOURCES +=  main.cpp\
             pissDiskImageReaderFactory/ImageFileInterface_Mat.cpp \
             pissDiskImageReaderFactory/CenterLineReader.cpp \
             pissConnectionFactory/pissNetworkEnvironment.cpp \
-            pissConnectionFactory/ModuleIpConfig.cpp \
             pissIHM/ControlConsoleWindow/ControlConsoleWindow.cpp \
             pissIHM/pissMainWindow/SurgeryLoadingWindow.cpp \
             pissConnectionFactory/pissServer.cpp \
@@ -115,7 +114,8 @@ SOURCES +=  main.cpp\
             pissSystemDataWare/InterventionalTool.cpp \
             pissIHM/pissMainWindow/SystemOptions.cpp \
     pissIHM/pissMainWindow/SystemComponentsContainer.cpp \
-    pissIHM/pissMainWindow/CommunicationStatesContainer.cpp
+    pissIHM/pissMainWindow/CommunicationStatesContainer.cpp \
+    pissConnectionFactory/Device.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -165,7 +165,6 @@ HEADERS  += \
             pissDiskImageReaderFactory/ImageFileInterface_Mat.h \
             pissDiskImageReaderFactory/CenterLineReader.h \
             pissConnectionFactory/pissNetworkEnvironment.h \
-            pissConnectionFactory/ModuleIpConfig.h \
             pissIHM/ControlConsoleWindow/ControlConsoleWindow.h \
             pissIHM/pissMainWindow/SurgeryLoadingWindow.h \
             pissConnectionFactory/pissServer.h \
@@ -185,7 +184,8 @@ HEADERS  += \
             pissSystemDataWare/InterventionalTool.h \
             pissIHM/pissMainWindow/SystemOptions.h \
     pissIHM/pissMainWindow/SystemComponentsContainer.h \
-    pissIHM/pissMainWindow/CommunicationStatesContainer.h
+    pissIHM/pissMainWindow/CommunicationStatesContainer.h \
+    pissConnectionFactory/Device.h
 
 
 # CTK lib.....
