@@ -11,7 +11,7 @@ pissReceptionTask::pissReceptionTask(int id,
                              qintptr SD,
                              DatagrammeAnalyser *datagrammeAnalyser,
                              QVector <InputQueue*> *inputQueueManager,
-                             pissNetworkEnvironment *networkEnvironment)
+                             Devices *networkEnvironment)
 {
     this->id = id;
     this->sd = SD;

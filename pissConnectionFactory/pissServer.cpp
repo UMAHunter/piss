@@ -9,7 +9,7 @@
  */
 pissServer::pissServer(QVector <InputQueue*> *inputQueueManager,
                        QVector <OutputQueue*> *outputQueueManager,
-                       pissNetworkEnvironment *networkEnvironment,
+                       Devices *networkEnvironment,
                        DatagrammeAnalyser *datagrammeAnalyser,
                        GlobalTime *globalTime)
 {

@@ -9,10 +9,10 @@
 #include"Device.h"
 
 
-class pissNetworkEnvironment
+class Devices
 {
 public:
-    pissNetworkEnvironment();
+    Devices();
     void append(QString ModuleName, int Port);
     void append(int ModuleNumber, int Port);
     void append(QString ModuleName, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);

@@ -3,7 +3,7 @@
 
 #include "pissInputInformationDecoder.h"
 #include "pissOutputInformationEncoder.h"
-#include "pissNetworkEnvironment.h"
+#include "Devices.h"
 #include "DatagrammeAnalyser.h"
 #include "InputQueue.h"
 #include "OutputQueue.h"
@@ -16,7 +16,7 @@
 class pissCommunicationStack
 {
 private:
-    pissNetworkEnvironment *networkEnvironment;
+    Devices *networkEnvironment;
     QVector <InputQueue*> inputQueueManager;
     QVector <OutputQueue*> outputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;
@@ -36,7 +36,7 @@ public:
     void setPatientHandling(Patient *patientHandling);
     void setSystemMetaData(SystemMetaData *systemMetaData);
 
-    pissNetworkEnvironment* getNetworkEnvironment();
+    Devices* getNetworkEnvironment();
 public:
     pissCommunicationStack(GlobalTime *globalTime);
 };

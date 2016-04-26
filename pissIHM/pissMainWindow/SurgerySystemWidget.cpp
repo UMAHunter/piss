@@ -122,11 +122,7 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
 void SurgerySystemWidget::onStartServerButtonClicked(){
 
     //! fetch ip adress display at the front table...
-    communicationStatesContainer->setDeviceInfo(this->systemDispatcher->getMyDeviceInfo());
-
-    //! port
-
-
+    communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
 
     bool ret = this->systemDispatcher->startPissServer();
 

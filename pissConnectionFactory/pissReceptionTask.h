@@ -19,7 +19,7 @@ public:
                     qintptr SD,
                     DatagrammeAnalyser *datagrammeAnalyser,
                     QVector <InputQueue*> *inputQueueManager,
-                    pissNetworkEnvironment *networkEnvironment);//socket descriptor
+                    Devices *networkEnvironment);//socket descriptor
     ~pissReceptionTask();
     void run();
 
@@ -28,7 +28,7 @@ private:
     int clientCount;
     DatagrammeAnalyser *datagrammeAnalyser;
     QVector <InputQueue*> *inputQueueManager;
-    pissNetworkEnvironment *networkEnvironment;
+    Devices *networkEnvironment;
     qintptr sd;
     QTcpSocket *soc;
     qint16 blockSize;

@@ -2,7 +2,7 @@
 
 DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
                                        QVector <InputQueue*> *iq,
-                                       pissNetworkEnvironment* environment,
+                                       Devices* environment,
                                        GlobalTime *globalTime)
 {
     this->iq = iq;

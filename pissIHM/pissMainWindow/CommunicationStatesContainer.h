@@ -51,7 +51,7 @@ public:
     void constructIHM();
     void setConnections();
 
-    void setDeviceInfo(Device *device);
+    void setDeviceInfo(int index, Device *device);
 
 signals:
 

@@ -8,7 +8,7 @@
  * @param datagrammeAnalyser
  */
 pissInputInformationDecoder::pissInputInformationDecoder(QVector<InputQueue *> *inputQueueManager,
-                                                         pissNetworkEnvironment *NetworkEnvironment,
+                                                         Devices *NetworkEnvironment,
                                                          DatagrammeAnalyser *datagrammeAnalyser)
 {
     this->inputQueueManager = inputQueueManager;

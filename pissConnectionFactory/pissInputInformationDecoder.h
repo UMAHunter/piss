@@ -11,14 +11,14 @@ class pissInputInformationDecoder : public QThread
 {
 public:
     pissInputInformationDecoder(QVector <InputQueue*> *inputQueueManager,
-                                pissNetworkEnvironment* NetworkEnvironment,
+                                Devices* NetworkEnvironment,
                                 DatagrammeAnalyser *datagrammeAnalyser);
     ~pissInputInformationDecoder();
     void run();
     void stop();
 
 private:
-    pissNetworkEnvironment *networkEnvironment;
+    Devices *networkEnvironment;
     QVector <InputQueue*> *inputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;
     CDatagramme data;

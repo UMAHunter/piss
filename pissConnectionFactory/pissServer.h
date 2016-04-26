@@ -5,7 +5,7 @@
 #include <QVector>
 #include <QMessageBox>
 
-#include "pissNetworkEnvironment.h"
+#include "Devices.h"
 #include "pissReceptionTask.h"
 #include "DatagrammeAnalyser.h"
 #include "pissInputInformationDecoder.h"
@@ -19,7 +19,7 @@ class pissServer : public QTcpServer
 public:
     pissServer(QVector <InputQueue*> *inputQueueManager,
                QVector <OutputQueue*> *outputQueueManager,
-               pissNetworkEnvironment* networkEnvironment,
+               Devices* networkEnvironment,
                DatagrammeAnalyser *datagrammeAnalyser,
                GlobalTime *globalTime);
 
@@ -32,7 +32,7 @@ private:
 
     bool serverStatus;
 
-    pissNetworkEnvironment *networkEnvironment;
+    Devices *networkEnvironment;
     QVector <InputQueue*> *inputQueueManager;
     QVector <OutputQueue*> *outputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;

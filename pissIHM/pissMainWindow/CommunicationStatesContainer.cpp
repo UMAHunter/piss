@@ -16,19 +16,19 @@ CommunicationStatesContainer::CommunicationStatesContainer(int width, int height
 //! \brief CommunicationStatesContainer::setDeviceInfo
 //! \param device
 //!
-void CommunicationStatesContainer::setDeviceInfo(Device *device){
+void CommunicationStatesContainer::setDeviceInfo(int index, Device *device){
     QTableWidgetItem *deviceNumber = new QTableWidgetItem(QString::number(device->getDeviceNumber(), 10));
-    HardwareInformation->setItem(0, 0, deviceNumber);
+    HardwareInformation->setItem(index, 0, deviceNumber);
     QTableWidgetItem *ipAddress = new QTableWidgetItem(device->getIpAddress().toString());
-    HardwareInformation->setItem(0, 1, ipAddress);
+    HardwareInformation->setItem(index, 1, ipAddress);
     QTableWidgetItem *portNum = new QTableWidgetItem(QString::number(device->getPortNumber(), 10));
-    HardwareInformation->setItem(0, 2, portNum);
+    HardwareInformation->setItem(index, 2, portNum);
     QTableWidgetItem *transmission = new QTableWidgetItem(QString::number(device->getSockettrans(), 10));
-    HardwareInformation->setItem(0, 3, transmission);
+    HardwareInformation->setItem(index, 3, transmission);
     QTableWidgetItem *reception = new QTableWidgetItem(QString::number(device->getSocketrec(), 10));
-    HardwareInformation->setItem(0, 4, reception);
+    HardwareInformation->setItem(index, 4, reception);
     QTableWidgetItem *control = new QTableWidgetItem(QString::number(device->getCode(), 10));
-    HardwareInformation->setItem(0, 5, control);
+    HardwareInformation->setItem(index, 5, control);
 }
 
 //! ---------------------------------------------------------------------------------------------------

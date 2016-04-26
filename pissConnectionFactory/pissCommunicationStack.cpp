@@ -9,7 +9,7 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
 {
     this->globalTime = globalTime;
 
-    networkEnvironment = new pissNetworkEnvironment();
+    networkEnvironment = new Devices();
     networkEnvironment->append(0, 10703);
 
     datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,networkEnvironment,globalTime);
@@ -70,6 +70,6 @@ void pissCommunicationStack::setSystemMetaData(SystemMetaData *systemMetaData){
 //! \brief pissCommunicationStack::getNetworkEnvironment
 //! \return
 //!
-pissNetworkEnvironment* pissCommunicationStack::getNetworkEnvironment(){
+Devices* pissCommunicationStack::getNetworkEnvironment(){
     return this->networkEnvironment;
 }

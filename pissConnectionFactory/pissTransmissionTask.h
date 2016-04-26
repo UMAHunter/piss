@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QTimer>
-#include "pissNetworkEnvironment.h"
+#include "Devices.h"
 #include "OutputQueue.h"
 
 
@@ -15,12 +15,12 @@ class pissTransmissionTask : public QObject
 private:
     QTcpSocket* socketTransmission;
     QVector <OutputQueue*> *oq;
-    pissNetworkEnvironment *environment;
+    Devices *environment;
     QTimer *transmissionTimer;
     int frameCounter;
     QMutex outputMutex;
 public:
-    pissTransmissionTask(QVector <OutputQueue*> *oq, pissNetworkEnvironment* environment);
+    pissTransmissionTask(QVector <OutputQueue*> *oq, Devices* environment);
     ~pissTransmissionTask();
     void connectTo(int moduleNumber);
 public slots:

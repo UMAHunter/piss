@@ -1,7 +1,7 @@
 #include "pissTransmissionTask.h"
 
 
-pissTransmissionTask::pissTransmissionTask(QVector<OutputQueue *> *oq, pissNetworkEnvironment* environment){
+pissTransmissionTask::pissTransmissionTask(QVector<OutputQueue *> *oq, Devices* environment){
     frameCounter = 0;
     transmissionTimer = new QTimer();
     this->oq = oq;
