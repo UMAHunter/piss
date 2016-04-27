@@ -59,6 +59,7 @@ public:
 
     void initVariable();
     void constructIHM();
+
     void findPatientExisted();
     void setConnections();
     void addPatientToWidget(QString path);
@@ -97,13 +98,12 @@ private:
     vtkVolumeProperty*volumeProperty;
 
     QVBoxLayout* patientsWidgetLayout;
-    QHBoxLayout* totalInformationLayout;
+    QGridLayout* patientsWidgetWorkspaceLayout;
     QHBoxLayout* patientsPhotoWidgetLayout;
     QVBoxLayout* waittingPatientsAndBlackAreaWindowLayout;
     QHBoxLayout* waittingPatientPhotoesLayout;
     QVBoxLayout* patientHandlingWidgetLayout;
     QHBoxLayout* patientsWidgetToolBarLayout;
-    QVBoxLayout* personalInformationLayout;
     QGridLayout* patientInfoContainerLayout;
     QVBoxLayout* currentPatientBreifInformationWidgetLayout;
     QVBoxLayout* firstPatientPhotoWidgetLayout;
@@ -113,12 +113,9 @@ private:
     QHBoxLayout *surgeryLoadingWidgetLayout;
 
     QWidget* patientsWidgetToolBar;
-    QWidget* personalInformation;
     QWidget* patientsPhotoWidget;
     QVTKWidget* patientImageLoaded;
-    QWidget* totalInformation;
-    QFrame *patientsPhotoAndMedicaleImageContainerWidget;
-    QVBoxLayout *patientsPhotoAndMedicaleImageContainerWidgetLayout;
+    QWidget* patientsWidgetWorkspace;
 
     QWidget* patientHandlingWidget;
     QWidget* currentPatientBreifInformationWidget;
