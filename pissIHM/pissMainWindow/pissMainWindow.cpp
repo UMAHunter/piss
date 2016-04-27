@@ -37,16 +37,16 @@ void pissMainWindow::initVariable(){
     //! -------------------------------------------------------
     this->buttonGaucheDuSourisClique = false;
     this->flag = 0;
-    this->englishCaracterStyle = new QFont("Helvetica", 8, QFont::AnyStyle, true);
-    this->globalBackgroundColor = "beige";
-    this->globalWorkSpaceColor = "teal";
+    this->englishCaracterStyle = new QFont("Times", 8, QFont::AnyStyle, false);
+    this->globalBackgroundColor = "dimgray";
+    this->globalWorkSpaceColor = "slategray";
+    this->globalFontColor = "aliceblue";
 
     //! -------------------------------------------------------
     //! Des procedure afin de recuperer les tailles des ??crans;
     //! -------------------------------------------------------
     this->desktop = QApplication::desktop();
     this->screen_count = desktop->screenCount();
-    qDebug()<<"this->screen_count: "<<this->screen_count;
     this->primary_screen = desktop->primaryScreen();
 
     this->screen = new Screen[screen_count];
@@ -58,9 +58,9 @@ void pissMainWindow::initVariable(){
     primary_screen_width = screen[0].rect.width();
     primary_screen_height = screen[0].rect.height();
 
-    the_tab_style =   "QTabBar::tab{background: beige; color: teal; padding: "
+    the_tab_style =   "QTabBar::tab{background: "+globalBackgroundColor+"; color: "+globalFontColor+"; padding: "
                       "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
-                      "QTabBar::tab:selected {background: teal; color: beige; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
+                      "QTabBar::tab:selected {background: "+globalWorkSpaceColor+"; color: "+globalFontColor+"; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
                       "QTabWidget::pane { border: 0; } ";
 
     //!----------------------------------------------------------------------------------------------------
@@ -159,9 +159,10 @@ void pissMainWindow::constructIHM(){
                                             this->patientInformationWidget,
                                             this->surgeryTimer,
                                             this->englishCaracterStyle,
-                                            this->primary_screen_width*0.846,
+                                            this->primary_screen_width*0.765,
                                             this->primary_screen_height*0.79,
-                                            this->globalWorkSpaceColor);
+                                            this->globalWorkSpaceColor,
+                                            this->globalFontColor);
 
     if(this->screen_count == 3){
         this->ecranDesMaladies->setSurgeryPlanWindow(this->surgeryPlanWindow);
@@ -291,7 +292,7 @@ void pissMainWindow::updateIHM(){
     this->globalWorkSpaceColor = this->systemOptionWindow->getSystemGlobalWorkSpaceColor();
 
     globalBackgroundColorSetting();
-
+    widgetsContainer->setStyleSheet(the_tab_style);
     if(mainOptionStates.historyWidgetOptionState){
         this->onHistoryWidgetOptionReleased();
     }

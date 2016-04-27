@@ -114,6 +114,7 @@ private:
 
     QString globalBackgroundColor;
     QString globalWorkSpaceColor;
+    QString globalFontColor;
 
     SystemOptions *systemOptionWindow;
     MainOptionStates mainOptionStates;

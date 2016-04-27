@@ -21,7 +21,8 @@ PatientsWidget::PatientsWidget(int screen_count,
                                QFont *caracterStyle,
                                int appWidth,
                                int appHeight,
-                               QString workspaceColor) : QWidget(){
+                               QString workspaceColor,
+                               QString globalFontColor) : QWidget(){
 
     this->screen_count = screen_count;
     this->dispatcher = dispatcher;
@@ -32,6 +33,7 @@ PatientsWidget::PatientsWidget(int screen_count,
     this->appWidth = appWidth;
     this->appHeight = appHeight;
     this->workspaceColor = workspaceColor;
+    this->globalFontColor = globalFontColor;
 
     this->initVariable();
     this->constructIHM();
@@ -49,9 +51,9 @@ void PatientsWidget::initVariable(){
     this->numberOfPatient   = 0;
     this->dicomCDRomReader  = new DicomCDRomReader();
     this->dicomCDRomReader->setAlgorithmTestPlatform(this->algorithmTestPlatform);
-    this->photoLabelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent; color: AliceBlue";
-    this->labelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;background-color: transparent; color: teal";
-    this->textEditStyleSheet = "border: 0px solid aliceBlue; color: AliceBlue; background-color: transparent";
+    this->photoLabelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent; color:" + globalFontColor;
+    this->labelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;background-color: transparent; color: "+globalFontColor;
+    this->textEditStyleSheet = "border: 0px solid aliceBlue; color: "+ globalFontColor +"; background-color: transparent";
     this->caracterFontStyle = new QFont("Times",10,QFont::AnyStyle, false);
 
     this->superviseWindow = new SuperviseWindow(appWidth, appHeight);
@@ -314,7 +316,6 @@ void PatientsWidget::launchSurgery(){
 //!
 void PatientsWidget::terminateSurgery(){
 
-    //this->surgeryLaunchButton->setFixedSize(this->appWidth*0.15,this->appHeight/0.79*0.846*0.15*0.3);
     this->surgeryLaunchButton->setText("launch");
     this->surgeryLaunchButton->setEnabled(true);
     this->leftSelectButton->setEnabled(true);
@@ -420,6 +421,9 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
     workspaceBlue = qworkspaceColor->blue();
 
     this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->patientsWidgetToolBar->setStyleSheet("background-color:"+this->workspaceColor);
+    this->patientsPhotoAndMedicaleImageContainerWidget->setStyleSheet("background-color:"+this->workspaceColor);
+    this->commentTextEdit->setStyleSheet(this->textEditStyleSheet);
 }
 
 //! --------------------------------------------------------------------------------------------------------
@@ -471,7 +475,6 @@ void PatientsWidget::update(){
 //!
 void PatientsWidget::constructIHM(){
 
-    //! ---------------------------------------------------------------------------------------------------------------------
     this->patientsWidgetToolBar = new QWidget();
 
     this->patientsWidgetToolBar->setStyleSheet("background-color:"+this->workspaceColor);
@@ -515,7 +518,6 @@ void PatientsWidget::constructIHM(){
     this->upBlackArea = new QWidget();
     this->upBlackArea->setFixedHeight(this->appHeight*0.03);
     this->upBlackArea->setStyleSheet("background-color:transparent; border:0px solid beige");
-
 
     this->downBlackArea = new QWidget();
     this->downBlackArea->setFixedHeight(this->appHeight*0.03);
@@ -639,7 +641,7 @@ void PatientsWidget::constructIHM(){
     this->patientsPhotoWidgetLayout->addWidget(rightSelectButton);
     this->patientsPhotoWidgetLayout->setSpacing(0);
     this->patientsPhotoWidgetLayout->setMargin(0);
-    //drawBackground(this->patientsPhotoWidget, ":/images/background.png",this->appWidth*0.6, this->appHeight*0.28);
+    drawBackground(this->patientsPhotoWidget, ":/images/background.png",this->appWidth*0.6, this->appHeight*0.28);
 
     this->patientImageLoaded = new QVTKWidget();
     this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.64);
@@ -657,17 +659,17 @@ void PatientsWidget::constructIHM(){
     //!the information of the current patient
     //!--------------------------------------------------------------------------------------
     this->nameLabel = new QLabel("name: ");
-    this->nameLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->nameLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
     this->nameLabel->setFont(*this->caracterFontStyle);
     this->nameLabel->setStyleSheet(this->labelStyleSheet);
 
     this->birthdayLabel = new QLabel("birth: ");
-    this->birthdayLabel->setFixedSize(appWidth*0.6,appHeight*0.03);
+    this->birthdayLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
     this->birthdayLabel->setFont(*this->caracterFontStyle);
     this->birthdayLabel->setStyleSheet(this->labelStyleSheet);
 
     this->sexualLabel = new QLabel("sex: ");
-    this->sexualLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->sexualLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
     this->sexualLabel->setFont(*this->caracterFontStyle);
     this->sexualLabel->setStyleSheet(this->labelStyleSheet);
 
@@ -777,33 +779,33 @@ void PatientsWidget::constructIHM(){
     this->remarksLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->patientInfoContainer = new QWidget();
-    this->patientInfoContainer->setStyleSheet("border: 0px solid white;background-color:transparent");
-    this->patientInfoContainer->setFixedHeight(appHeight*0.28);
+//this->patientInfoContainer->setStyleSheet("border: 0px solid white;background-color:blue");
+    this->patientInfoContainer->setFixedSize(this->appWidth*0.4, appHeight*0.28);
     this->patientInfoContainerLayout = new QGridLayout(patientInfoContainer);
-    this->patientInfoContainerLayout->addWidget(nameLabel, 1, 0);
-    this->patientInfoContainerLayout->addWidget(nameLineEdit, 1, 1);
-    this->patientInfoContainerLayout->addWidget(birthdayLabel, 1, 2);
-    this->patientInfoContainerLayout->addWidget(birthdayLineEdit, 1, 3);
-    this->patientInfoContainerLayout->addWidget(sexualLabel, 2, 0);
-    this->patientInfoContainerLayout->addWidget(sexualLineEdit, 2, 1);
-    this->patientInfoContainerLayout->addWidget(ageLabel, 2, 2);
-    this->patientInfoContainerLayout->addWidget(ageLineEdit, 2, 3);
-    this->patientInfoContainerLayout->addWidget(idNumberLabel, 3, 0);
-    this->patientInfoContainerLayout->addWidget(idNumberEdit, 3, 1);
-    this->patientInfoContainerLayout->addWidget(marryLabel, 3, 2);
-    this->patientInfoContainerLayout->addWidget(marryLineEdit, 3, 3);
-    this->patientInfoContainerLayout->addWidget(nationLabel, 4, 0);
-    this->patientInfoContainerLayout->addWidget(nationLineEdit, 4, 1);
-    this->patientInfoContainerLayout->addWidget(professionalLabel, 4, 2);
-    this->patientInfoContainerLayout->addWidget(professionalLineEdit, 4, 3);
-    this->patientInfoContainerLayout->addWidget(leadDoctorLabel, 5, 0);
-    this->patientInfoContainerLayout->addWidget(leadDoctorEdit, 5, 1);
-    this->patientInfoContainerLayout->addWidget(therapyTimeLabel, 5, 2);
-    this->patientInfoContainerLayout->addWidget(therapyTimeEdit, 5, 3);
-    this->patientInfoContainerLayout->addWidget(drugAllergyLabel, 6, 0);
-    this->patientInfoContainerLayout->addWidget(drugAllergyLineEdit, 6, 1, 1, 3, Qt::AlignVCenter);
-    this->patientInfoContainerLayout->addWidget(remarksLabel, 7, 0);
-    this->patientInfoContainerLayout->addWidget(remarksLineEdit, 7, 1, 1, 3, Qt::AlignVCenter);
+    this->patientInfoContainerLayout->addWidget(nameLabel, 0, 0);
+    this->patientInfoContainerLayout->addWidget(nameLineEdit, 0, 1);
+    this->patientInfoContainerLayout->addWidget(birthdayLabel, 0, 2);
+    this->patientInfoContainerLayout->addWidget(birthdayLineEdit, 0, 3);
+    this->patientInfoContainerLayout->addWidget(sexualLabel, 1, 0);
+    this->patientInfoContainerLayout->addWidget(sexualLineEdit, 1, 1);
+    this->patientInfoContainerLayout->addWidget(ageLabel, 1, 2);
+    this->patientInfoContainerLayout->addWidget(ageLineEdit, 1, 3);
+    this->patientInfoContainerLayout->addWidget(idNumberLabel, 2, 0);
+    this->patientInfoContainerLayout->addWidget(idNumberEdit, 2, 1);
+    this->patientInfoContainerLayout->addWidget(marryLabel, 2, 2);
+    this->patientInfoContainerLayout->addWidget(marryLineEdit, 2, 3);
+    this->patientInfoContainerLayout->addWidget(nationLabel, 3, 0);
+    this->patientInfoContainerLayout->addWidget(nationLineEdit, 3, 1);
+    this->patientInfoContainerLayout->addWidget(professionalLabel, 3, 2);
+    this->patientInfoContainerLayout->addWidget(professionalLineEdit, 3, 3);
+    this->patientInfoContainerLayout->addWidget(leadDoctorLabel, 4, 0);
+    this->patientInfoContainerLayout->addWidget(leadDoctorEdit, 4, 1);
+    this->patientInfoContainerLayout->addWidget(therapyTimeLabel, 4, 2);
+    this->patientInfoContainerLayout->addWidget(therapyTimeEdit, 4, 3);
+    this->patientInfoContainerLayout->addWidget(drugAllergyLabel, 5, 0);
+    this->patientInfoContainerLayout->addWidget(drugAllergyLineEdit, 5, 1);
+    this->patientInfoContainerLayout->addWidget(remarksLabel, 5, 2);
+    this->patientInfoContainerLayout->addWidget(remarksLineEdit, 5, 3);
     this->patientInfoContainerLayout->setSpacing(0);
     this->patientInfoContainerLayout->setMargin(0);
 
@@ -814,7 +816,7 @@ void PatientsWidget::constructIHM(){
 
     this->personalInformation = new QWidget();
     this->personalInformation->setFixedWidth(this->appWidth*0.4);
-    this->personalInformation->setStyleSheet("background-color:aliceBlue");
+    this->personalInformation->setStyleSheet("background-color:"+workspaceColor);
     this->personalInformationLayout = new QVBoxLayout(personalInformation);
     this->personalInformationLayout->addWidget(patientInfoContainer);
     this->personalInformationLayout->addWidget(commentTextEdit);
@@ -898,8 +900,9 @@ void PatientsWidget::addPatientToWidget(QString path){
  //! \param path
  //!
  void PatientsWidget::drawBackground(QWidget *widget, QString path, int w, int h){
+
      QPixmap *pixmap = new QPixmap(path);
-     QPalette palette;
+     QPalette palette = widget->palette();
 
      palette.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(w, h),
                                                                   Qt::IgnoreAspectRatio,

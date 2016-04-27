@@ -26,26 +26,8 @@ void PatientWidgetConfigurationBoard::printButtonStates(){
     qDebug()<<segmentationButtonStates.cropVesselSegementationState;
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
-//!
-//! \brief PatientWidgetConfigurationBoard::doThresholdSegementationPlottingBoardPlotting
-//!
-void PatientWidgetConfigurationBoard::doThresholdSegementationPlottingBoardPlotting(){
 
-    /*QVector<HistogramPoint*> frequencies = this->handler->getHistogramFrom(patient->getMRAImage());
-
-    int index = this->thresholdSegementationPlottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
-    this->thresholdSegementationPlottingBoard->doHistogramPlotting(index,frequencies);
-    this->thresholdSegementationPlottingBoard->legendSetting(false);
-    this->thresholdSegementationPlottingBoard->setAbscissaRange(-100, frequencies.size()+100);
-    this->thresholdSegementationPlottingBoard->setOrdinateRange(this->thresholdSegementationPlottingBoard->getOrdinateMinValue()-100000,
-                                                                this->thresholdSegementationPlottingBoard->getOrdinateMaxValue()/20);
-    this->thresholdSegementationPlottingBoard->setCurveStyle("circle", "black", 6);
-    this->thresholdSegementationPlottingBoard->setInteractionTolerated(false, true, true);
-    this->thresholdSegementationPlottingBoard->setGridStyle(false, "black", "black", false, "black", "black");*/
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------
+//!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief PatientWidgetConfigurationBoard::thresholdSegementationButtonHovered
 //!
@@ -55,7 +37,7 @@ void PatientWidgetConfigurationBoard::thresholdSegementationButtonHovered(){
     }
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief PatientWidgetConfigurationBoard::thresholdSegementationButtonClicked
 //!
@@ -65,7 +47,7 @@ void PatientWidgetConfigurationBoard::thresholdSegementationButtonClicked(){
     }
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief PatientWidgetConfigurationBoard::thresholdSegementationButtonReleased
 //!
@@ -530,3 +512,23 @@ void PatientWidgetConfigurationBoard::display(QPoint pos){
          this->show();
          this->move(pos.x(), pos.y()-550);
  }
+
+//--------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientWidgetConfigurationBoard::doThresholdSegementationPlottingBoardPlotting
+//!
+void PatientWidgetConfigurationBoard::doThresholdSegementationPlottingBoardPlotting(){
+
+    /*QVector<HistogramPoint*> frequencies = this->handler->getHistogramFrom(patient->getMRAImage());
+
+    int index = this->thresholdSegementationPlottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
+    this->thresholdSegementationPlottingBoard->doHistogramPlotting(index,frequencies);
+    this->thresholdSegementationPlottingBoard->legendSetting(false);
+    this->thresholdSegementationPlottingBoard->setAbscissaRange(-100, frequencies.size()+100);
+    this->thresholdSegementationPlottingBoard->setOrdinateRange(this->thresholdSegementationPlottingBoard->getOrdinateMinValue()-100000,
+                                                                this->thresholdSegementationPlottingBoard->getOrdinateMaxValue()/20);
+    this->thresholdSegementationPlottingBoard->setCurveStyle("circle", "black", 6);
+    this->thresholdSegementationPlottingBoard->setInteractionTolerated(false, true, true);
+    this->thresholdSegementationPlottingBoard->setGridStyle(false, "black", "black", false, "black", "black");*/
+}
+

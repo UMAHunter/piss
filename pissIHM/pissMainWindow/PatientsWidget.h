@@ -48,7 +48,8 @@ public:
                    QFont *caracterStyle,
                    int appWidth,
                    int appHeight,
-                   QString workspaceColor);
+                   QString workspaceColor,
+                   QString globalFontColor);
 
     void drawBackground(QWidget *widget, QString path, int w, int h);
     void setSurgeryPlanWindow(SurgeryPlanWindow* surgeryPlanWindow);
@@ -77,6 +78,7 @@ public:
 
 private:
     QString workspaceColor;
+    QString globalFontColor;
 
     int workspaceRed;
     int workspaceGreen;
