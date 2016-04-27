@@ -11,6 +11,7 @@
 #include "Devices.h"
 #include "pissTransmissionTask.h"
 #include "GlobalTime.h"
+#include "igtClient.h"
 
 
 //! Codes des erreurs remontees par les fonctions
@@ -43,7 +44,7 @@ private:
     QVector <InputQueue*> *iq;
     QVector <OutputQueue*> *oq;
 
-    Devices *mNetworkEnvironment;
+    Devices *devices;
     GlobalTime *globalTime;
 };
 

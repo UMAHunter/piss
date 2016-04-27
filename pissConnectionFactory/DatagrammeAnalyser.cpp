@@ -7,7 +7,7 @@ DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
 {
     this->iq = iq;
     this->oq = oq;
-    this->mNetworkEnvironment = environment;
+    this->devices = environment;
     this->globalTime = globalTime;
 }
 
@@ -61,22 +61,18 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
-    QString moduleIpAddress;
-    int port;
-    int moduleNumber = id;
 
-
-    moduleIpAddress = QString("%1.%2.%3.%4").
+    QString addr = QString("%1.%2.%3.%4").
             arg(quint8(datagramme->getValue()->at(8))).
             arg(quint8(datagramme->getValue()->at(9))).
             arg(quint8(datagramme->getValue()->at(10))).
             arg(quint8(datagramme->getValue()->at(11)));
 
-    port = datagramme->getValue()->at(12)*100 + datagramme->getValue()->at(13);
-    mNetworkEnvironment->append(moduleNumber, port, moduleIpAddress, 0, 0, 1);
+    int port = datagramme->getValue()->at(12)*100 + datagramme->getValue()->at(13);
+    devices->append(id, port, addr, 0, 0, 1);
 
-    pissTransmissionTask *transmissionTask = new pissTransmissionTask(oq, mNetworkEnvironment);
-    transmissionTask->connectTo(moduleNumber);
+    igtClient *client = new igtClient(devices->getClientNumber()-1, this->oq, this->devices);
+    client->connectBackRequest(addr, port);
 }
 
 //! ----------------------------------------------------------------------------------------

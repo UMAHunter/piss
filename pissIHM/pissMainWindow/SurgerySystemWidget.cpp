@@ -124,7 +124,7 @@ void SurgerySystemWidget::onStartServerButtonClicked(){
     //! fetch ip adress display at the front table...
     communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
 
-    bool ret = this->systemDispatcher->startPissServer();
+    bool ret = this->systemDispatcher->launchCommunicationStackServer();
 
 
     if(ret){

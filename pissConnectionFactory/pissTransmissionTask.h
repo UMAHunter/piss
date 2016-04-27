@@ -12,19 +12,25 @@
 class pissTransmissionTask : public QObject
 {
     Q_OBJECT
+
+public:
+
+
 private:
     QTcpSocket* socketTransmission;
     QVector <OutputQueue*> *oq;
-    Devices *environment;
+    Devices *devices;
     QTimer *transmissionTimer;
     int frameCounter;
     QMutex outputMutex;
+    int id;
+
 public:
-    pissTransmissionTask(QVector <OutputQueue*> *oq, Devices* environment);
+    pissTransmissionTask(int id, QVector <OutputQueue*> *oq, Devices* devices, QTcpSocket* socketTransmission);
     ~pissTransmissionTask();
-    void connectTo(int moduleNumber);
+
 public slots:
-    void startTransfer();
+    void launch();
     void transfer();
 };
 

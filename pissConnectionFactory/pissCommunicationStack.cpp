@@ -9,13 +9,13 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
 {
     this->globalTime = globalTime;
 
-    networkEnvironment = new Devices();
-    networkEnvironment->append(0, 10703);
+    devices = new Devices();
+    devices->append(0, 10703);
 
-    datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,networkEnvironment,globalTime);
-    informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,networkEnvironment,datagrammeAnalyser);
+    datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,devices,globalTime);
+    informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,devices,datagrammeAnalyser);
     outputInformationEncoder = new pissOutputInformationEncoder();
-    server = new pissServer(&inputQueueManager,&outputQueueManager,networkEnvironment, datagrammeAnalyser,globalTime);
+    server = new pissServer(&inputQueueManager,&outputQueueManager,devices, datagrammeAnalyser,globalTime);
 }
 
 //! -------------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ bool pissCommunicationStack::closeServer(){
 //!
 //! \brief pissCommunicationStack::launch
 //!
-bool pissCommunicationStack::launch(){
+bool pissCommunicationStack::launchServer(){
     informationDecodeTask->start();
     outputInformationEncoder->start();
     return server->launchServer();
@@ -50,26 +50,30 @@ bool pissCommunicationStack::launch(){
 
 //! -------------------------------------------------------------------------------------------------------------------
 //!
-//! \brief pissCommunicationStack::setPatientHandling
-//! \param patientHandling
+//! \brief pissCommunicationStack::connectBack
+//! \param flag
+//! \param addr
+//! \param port
+//! \return
 //!
-void pissCommunicationStack::setPatientHandling(Patient *patientHandling){
-    this->patientHandling = patientHandling;
+bool pissCommunicationStack::connectBack(bool flag, QString addr, int port){
+    if(flag){
+        //! motivate connect
+        igtClient *client = new igtClient(this->devices->getClientNumber()-1,&outputQueueManager,devices);
+        client->connect_request(addr, port);
+    }
+    else{
+        //! connect back process
+    }
+
+    return true;
 }
 
 //! -------------------------------------------------------------------------------------------------------------------
-//!
-//! \brief pissCommunicationStack::setSystemMetaData
-//! \param systemMetaData
-//!
-void pissCommunicationStack::setSystemMetaData(SystemMetaData *systemMetaData){
-    this->systemMetaData = systemMetaData;
-}
-
 //!
 //! \brief pissCommunicationStack::getNetworkEnvironment
 //! \return
 //!
 Devices* pissCommunicationStack::getNetworkEnvironment(){
-    return this->networkEnvironment;
+    return this->devices;
 }

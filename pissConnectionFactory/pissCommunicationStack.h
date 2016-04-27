@@ -9,14 +9,13 @@
 #include "OutputQueue.h"
 #include "pissServer.h"
 #include "GlobalTime.h"
-#include "Patient.h"
-#include "SystemMetaData.h"
+#include "igtClient.h"
 
 
 class pissCommunicationStack
 {
 private:
-    Devices *networkEnvironment;
+    Devices *devices;
     QVector <InputQueue*> inputQueueManager;
     QVector <OutputQueue*> outputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;
@@ -25,18 +24,17 @@ private:
     pissServer *server;
     GlobalTime *globalTime;
 
-    Patient *patientHandling;
-    SystemMetaData *systemMetaData;
-
 public:
-    bool launch();
+    bool launchServer();
+    bool connectBack(bool flag/*first time or not*/,
+                     QString addr,
+                     int port);
     bool closeServer();
 
     void clearBuffer();
-    void setPatientHandling(Patient *patientHandling);
-    void setSystemMetaData(SystemMetaData *systemMetaData);
 
     Devices* getNetworkEnvironment();
+
 public:
     pissCommunicationStack(GlobalTime *globalTime);
 };

@@ -23,9 +23,21 @@ Patient* SystemDispatcher::getPatientById(int id){
 //!
 //! \brief SystemDispatcher::startPissServer
 //!
-bool SystemDispatcher::startPissServer(){
-    return communicationStack->launch();
+bool SystemDispatcher::launchCommunicationStackServer(){
+    return communicationStack->launchServer();
 }
+
+//!---------------------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDispatcher::launchConnectBackProcess
+//! \param flag
+//! \param addr
+//! \param port
+//!
+void SystemDispatcher::launchConnectBackProcess(bool flag, QString addr,int port){
+    this->communicationStack->connectBack(flag, addr, port);
+}
+
 
 //!---------------------------------------------------------------------------------------------------------
 //!

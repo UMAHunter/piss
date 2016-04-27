@@ -11,6 +11,9 @@
 #include "ErrorMessage.h"
 #include "pissCommunicationStack.h"
 
+/**
+ * @brief The SystemDispatcher class
+ */
 class SystemDispatcher
 {
 public:
@@ -23,8 +26,11 @@ public:
     QStringList getPatientsStatus();
     QString doImageProcessingByMethodType(int id, int dim, QString method);
 
-    bool startPissServer();
+    //! com
+    bool launchCommunicationStackServer();
+    void launchConnectBackProcess(bool flag, QString addr,int port);
     bool stopPissServer();
+
     void setSystemDataBase(SystemDataBase* database);
     void setImageProcessingFactory(ImageProcessingFactory *imageProcessingFactory);
     void setCommunicationStack(pissCommunicationStack *communicationStack);
