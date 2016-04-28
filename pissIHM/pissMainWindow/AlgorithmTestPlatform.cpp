@@ -28,20 +28,20 @@ AlgorithmTestPlatform::AlgorithmTestPlatform(SystemDispatcher* dispatcher,
 
     GlobalMemoryStatusEx (&statex);
 
-    //      qDebug()<<statex.dwMemoryLoad;
-    //      qDebug()<<statex.ullTotalPhys/DIV;
-    //      qDebug()<<statex.ullAvailPhys/DIV;
-    //       qDebug()<<statex.ullTotalPageFile/DIV;
-    //      qDebug()<<statex.ullAvailPageFile/DIV;
-    //      qDebug()<<statex.ullTotalVirtual/DIV;
-    //       qDebug()<<statex.ullAvailVirtual/DIV;
+//    qDebug()<<statex.dwMemoryLoad;
+//    qDebug()<<statex.ullTotalPhys/DIV;
+//    qDebug()<<statex.ullAvailPhys/DIV;
+//    qDebug()<<statex.ullTotalPageFile/DIV;
+//    qDebug()<<statex.ullAvailPageFile/DIV;
+//    qDebug()<<statex.ullTotalVirtual/DIV;
+//    qDebug()<<statex.ullAvailVirtual/DIV;
 
-    // Show the amount of extended memory available.
+//    Show the amount of extended memory available.
 
-    //qDebug()<<statex.ullAvailExtendedVirtual/DIV;
+//    qDebug()<<statex.ullAvailExtendedVirtual/DIV;
 }
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------
+//! -------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::setBackgroundColor
 //! \param color
@@ -50,18 +50,18 @@ void AlgorithmTestPlatform::setBackgroundColor(QString color){
     this->setStyleSheet("background-color:" + color);
 }
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------
+//! -------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::getCpuUsing
 //!
-void AlgorithmTestPlatform::getCpuUsing(){
+void AlgorithmTestPlatform::getCpuUsage(){
 
     double cpuValue;
     cpuValue = GetCPULoad() * 100;
     this->cpuProgressBar->setValue(cpuValue);
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::CalculateCPULoad
 //! \param idleTicks
@@ -83,7 +83,7 @@ float AlgorithmTestPlatform::CalculateCPULoad(unsigned long long idleTicks, unsi
     return ret;
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//! -----------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::FileTimeToInt64
 //! \param ft
@@ -93,7 +93,7 @@ unsigned long long AlgorithmTestPlatform::FileTimeToInt64(const FILETIME & ft){
     return (((unsigned long long)(ft.dwHighDateTime)) << 32) | ((unsigned long long)ft.dwLowDateTime);
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------
+//! ------------------------------------------------------------------------------------------------------------------------------------------------------
 //! Returns 1.0f for "CPU fully pinned", 0.0f for "CPU idle", or somewhere in between
 //! You'll need to call this at regular intervals, since it measures the load between
 //! the previous call and the current one.  Returns -1.0 on error.
@@ -106,22 +106,24 @@ float AlgorithmTestPlatform::GetCPULoad(){
     return GetSystemTimes(&idleTime, &kernelTime, &userTime) ? CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime) + FileTimeToInt64(userTime)) : -1.0f;
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------
+//! ------------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::initVariable
 //!
 void AlgorithmTestPlatform::initVariable(){
 
-    this->labelStyleSheet = "border: 1px solid aliceBlue;border-radius: 3px;padding: 2 2px;background-color: transparent; color: red";
-    this->progressBarStyleSheet = "QProgressBar {border: 1px solid aliceBlue;border-radius: 3px;}"
-                                  "QProgressBar::chunk {background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0 green, stop: 1 white);}";
-    this->caracterStyle = new QFont("Helvetica",10,QFont::AnyStyle, false);
+    this->labelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px; background-color: transparent; color: aliceblue";
+    this->progressBarStyleSheet = "QProgressBar {border: 0px solid aliceBlue; color: red}"
+                                  "QProgressBar::chunk {background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0 yellow, stop: 1 red);}";
+
+    this->caracterStyle = new QFont("Times",10,QFont::AnyStyle, false);
+
     QTimer *timer = new QTimer();
     timer->start(1000);
-    this->connect(timer, SIGNAL(timeout()), this, SLOT(getCpuUsing()));
+    this->connect(timer, SIGNAL(timeout()), this, SLOT(getCpuUsage()));
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //!runmTestPlatform::constructIHM
 //!
@@ -138,52 +140,52 @@ void AlgorithmTestPlatform::constructIHM(){
     this->algorithmTestCommandLabel->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: gainsboro; color: AliceBlue");
     this->algorithmTestCommandLabel->setAlignment(Qt::AlignCenter);
 
-    this->cpuLabel = new QLabel("CPU");
-    this->cpuLabel->setFixedSize(appWidth*0.03,appHeight*0.02);
+    this->cpuLabel = new QLabel("cpu: ");
+    this->cpuLabel->setFixedSize(appWidth*0.02,appHeight*0.02);
     this->cpuLabel->setFont(*this->caracterStyle);
     this->cpuLabel->setStyleSheet(this->labelStyleSheet);
-    this->cpuLabel->setAlignment(Qt::AlignCenter);
-    this->ramLabel = new QLabel("RAM");
-    this->ramLabel->setFixedSize(appWidth*0.03,appHeight*0.02);
+    this->cpuLabel->setAlignment(Qt::AlignLeft);
+    this->ramLabel = new QLabel("ram: ");
+    this->ramLabel->setFixedSize(appWidth*0.02,appHeight*0.02);
     this->ramLabel->setFont(*this->caracterStyle);
     this->ramLabel->setStyleSheet(this->labelStyleSheet);
-    this->ramLabel->setAlignment(Qt::AlignCenter);
-    this->diskLable = new QLabel("Disk");
-    this->diskLable->setFixedSize(appWidth*0.03,appHeight*0.02);
+    this->ramLabel->setAlignment(Qt::AlignLeft);
+    this->diskLable = new QLabel("disk: ");
+    this->diskLable->setFixedSize(appWidth*0.02,appHeight*0.02);
     this->diskLable->setFont(*this->caracterStyle);
     this->diskLable->setStyleSheet(this->labelStyleSheet);
-    this->diskLable->setAlignment(Qt::AlignCenter);
-    this->netLable = new QLabel("Net");
-    this->netLable->setFixedSize(appWidth*0.03,appHeight*0.02);
+    this->diskLable->setAlignment(Qt::AlignLeft);
+    this->netLable = new QLabel("net: ");
+    this->netLable->setFixedSize(appWidth*0.02,appHeight*0.02);
     this->netLable->setFont(*this->caracterStyle);
     this->netLable->setStyleSheet(this->labelStyleSheet);
-    this->netLable->setAlignment(Qt::AlignCenter);
+    this->netLable->setAlignment(Qt::AlignLeft);
 
     this->cpuProgressBar = new QProgressBar();
     this->cpuProgressBar->setOrientation(Qt::Horizontal);
-    this->cpuProgressBar->setAlignment(Qt::AlignCenter);
-    this->cpuProgressBar->setFixedHeight(appHeight*0.015);
+    this->cpuProgressBar->setAlignment(Qt::AlignRight);
+    this->cpuProgressBar->setFixedHeight(appHeight*0.016);
     this->cpuProgressBar->setStyleSheet(this->progressBarStyleSheet);
     this->cpuProgressBar->setMinimum(0);
     this->cpuProgressBar->setMaximum(100);
     this->ramProgressBar = new QProgressBar();
     this->ramProgressBar->setOrientation(Qt::Horizontal);
-    this->ramProgressBar->setAlignment(Qt::AlignCenter);
-    this->ramProgressBar->setFixedHeight(appHeight*0.015);
+    this->ramProgressBar->setAlignment(Qt::AlignRight);
+    this->ramProgressBar->setFixedHeight(appHeight*0.016);
     this->ramProgressBar->setStyleSheet(this->progressBarStyleSheet);
     this->ramProgressBar->setMinimum(0);
     this->ramProgressBar->setMaximum(100);
     this->diskProgressBar = new QProgressBar();
     this->diskProgressBar->setOrientation(Qt::Horizontal);
-    this->diskProgressBar->setAlignment(Qt::AlignCenter);
-    this->diskProgressBar->setFixedHeight(appHeight*0.015);
+    this->diskProgressBar->setAlignment(Qt::AlignRight);
+    this->diskProgressBar->setFixedHeight(appHeight*0.016);
     this->diskProgressBar->setStyleSheet(this->progressBarStyleSheet);
     this->diskProgressBar->setMinimum(0);
     this->diskProgressBar->setMaximum(100);
     this->netProgressBar = new QProgressBar();
     this->netProgressBar->setOrientation(Qt::Horizontal);
-    this->netProgressBar->setAlignment(Qt::AlignCenter);
-    this->netProgressBar->setFixedHeight(appHeight*0.015);
+    this->netProgressBar->setAlignment(Qt::AlignRight);
+    this->netProgressBar->setFixedHeight(appHeight*0.016);
     this->netProgressBar->setStyleSheet(this->progressBarStyleSheet);
     this->netProgressBar->setMinimum(0);
     this->netProgressBar->setMaximum(100);
@@ -193,11 +195,9 @@ void AlgorithmTestPlatform::constructIHM(){
     this->algorithmTestStatusLabel->setFont(*this->caracterStyle);
     this->algorithmTestStatusLabel->setStyleSheet("border: 0px solid gainsboro ;border-radius: 0px; background-color: transparent; color: AliceBlue");
 
-
     this->systemUsageStatusWidget = new QLabel();
     this->systemUsageStatusWidget->setFixedWidth(this->appWidth*0.22);
     this->systemUsageStatusLayout = new QGridLayout(this->systemUsageStatusWidget);
-
     this->systemUsageStatusLayout->addWidget(this->algorithmTestTitleLabel, 0, 0);
     this->systemUsageStatusLayout->addWidget(this->cpuLabel, 1, 0);
     this->systemUsageStatusLayout->addWidget(this->ramLabel, 2, 0);
@@ -210,16 +210,16 @@ void AlgorithmTestPlatform::constructIHM(){
     this->systemUsageStatusLayout->addWidget(this->diskProgressBar, 3, 1);
     this->systemUsageStatusLayout->addWidget(this->netProgressBar, 4, 1);
     this->systemUsageStatusLayout->setSpacing(0);
-    this->systemUsageStatusLayout->setMargin(0);
+    this->systemUsageStatusLayout->setMargin(5);
 
     systemStatus = new QTextEdit();
-    systemStatus->setFont(*this->caracterStyle);
-    systemStatus->setStyleSheet("border: 1px solid aliceBlue;border-radius: 0px;background-color: transparent; color: red");
+    systemStatus->setFont(QFont("Courier",10,QFont::AnyStyle, false));
+    systemStatus->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: transparent; color: orange");
 
     systemCommand = new QLineEdit();
     systemCommand->setFixedHeight(this->appHeight*0.03);
-    systemCommand->setFont(*this->caracterStyle);
-    systemCommand->setStyleSheet("border: 1px solid gainsboro ;border-radius: 0px;background-color: transparent; color: red");
+    systemCommand->setFont(QFont("Courier",12,QFont::AnyStyle, false));
+    systemCommand->setStyleSheet("border: 1px solid gray ;border-radius: 0px;background-color: transparent; color: beige");
 
     terminalWindow = new QWidget();
     terminalWindowLayout = new QVBoxLayout(terminalWindow);
@@ -235,7 +235,7 @@ void AlgorithmTestPlatform::constructIHM(){
     platformLayout->setMargin(0);
 }
 
-//---------------------------------------------------------------------------------------------------------------------------------------------
+//! ---------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::setConnections
 //!
@@ -243,7 +243,7 @@ void AlgorithmTestPlatform::setConnections(){
     this->connect(systemCommand,SIGNAL(returnPressed()),this,SLOT(doParseCommand()));
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------
+//! -----------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::setSystemStatus
 //! \param status
@@ -255,7 +255,7 @@ void AlgorithmTestPlatform::setSystemStatus(QString status){
     this->systemStatus->setText(systemMessage);
 }
 
-//----------------------------------------------------------------------------------------
+//! -----------------------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief AlgorithmTestPlatform::doParseCommand
 //!
@@ -285,7 +285,7 @@ void AlgorithmTestPlatform::doParseCommand(){
     }
 }
 
-//----------------------------------------------------------------------------------------
+//! -----------------------------------------------------------------------------------------------------------------------------------------------
 //!doParseCommand
 //! \brief AlgorithmTestPlatform::getPatientsStatus
 //!

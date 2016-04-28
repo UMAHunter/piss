@@ -85,7 +85,7 @@ private:
 signals:
 private slots:
     void doParseCommand();
-    void getCpuUsing();
+    void getCpuUsage();
 };
 
 #endif // ALGORITHMTESTPLATFORM_H

@@ -19,6 +19,7 @@
 #include <QBrush>
 #include <QPixmap>
 #include <QBitmap>
+#include <QProgressDialog>
 
 #include "SystemDispatcher.h"
 #include "DicomCDRomReader.h"
@@ -105,7 +106,6 @@ private:
     QVBoxLayout* patientHandlingWidgetLayout;
     QHBoxLayout* patientsWidgetToolBarLayout;
     QGridLayout* patientInfoContainerLayout;
-    QVBoxLayout* currentPatientBreifInformationWidgetLayout;
     QVBoxLayout* firstPatientPhotoWidgetLayout;
     QVBoxLayout* secondPatientPhotoWidgetLayout;
     QVBoxLayout* thirdPatientPhotoWidgetLayout;
@@ -113,12 +113,11 @@ private:
     QHBoxLayout *surgeryLoadingWidgetLayout;
 
     QWidget* patientsWidgetToolBar;
-    QWidget* patientsPhotoWidget;
+    QLabel* patientsPhotoWidget;
     QVTKWidget* patientImageLoaded;
     QWidget* patientsWidgetWorkspace;
 
     QWidget* patientHandlingWidget;
-    QWidget* currentPatientBreifInformationWidget;
     QWidget* upBlackArea;
     QWidget* waittingPatientPhotoes;
     QWidget* downBlackArea;
@@ -136,7 +135,9 @@ private:
 
     QLabel*surgeryLoadingIndicationLabel;
     QLabel*currentPatientPhoto;
+    QVBoxLayout*currentPatientPhotoLayout;
     QLabel*currentPatientInfo;
+    QWidget *patientPhotoBlankArea;
 
 
     QTextEdit* commentTextEdit;

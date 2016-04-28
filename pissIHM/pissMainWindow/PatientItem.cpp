@@ -8,20 +8,27 @@ PatientItem::PatientItem(int appWidth, int appHeight)
     this->consructIHM();
 }
 
+//! ------------------------------------------------------------------------------------------
+//!
+//! \brief PatientItem::consructIHM
+//!
 void PatientItem::consructIHM(){
 
-    this->photoLabelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent; color: AliceBlue";
-    this->labelStyleSheet = "border: 0.5px solid aliceBlue;border-radius: 0px;padding: 2 2px;background-color: transparent; color: AliceBlue";
+    this->photoLabelStyleSheet = "border: 0px solid aliceBlue;border-radius: 0px;"
+                                 "padding: 2 2px;background-color: transparent; color: AliceBlue";
+
+    this->labelStyleSheet = "border: 0.5px solid lightgray; border-radius: 0px; "
+                            "padding: 2 2px; background-color: transparent; color: AliceBlue";
 
     this->patientInfoOne = new QLabel();
-    this->patientInfoOne->setStyleSheet("border-image: url(:/images/Brain.png)");
+    this->patientInfoOne->setStyleSheet("border-image: url(:/images/Brain.png);background:transparent");
     this->patientInfoTwo = new QLabel();
-    this->patientInfoTwo->setStyleSheet("border-image: url(:/images/xueguan.png)");
+    this->patientInfoTwo->setStyleSheet("border-image: url(:/images/xueguan.png);background:transparent");
     this->patientInfoThree = new QLabel();
-    this->patientInfoThree->setStyleSheet("border-image: url(:/images/notebook.png)");
+    this->patientInfoThree->setStyleSheet("border-image: url(:/images/notebook.png);background:transparent");
 
     this->patientInfoWidget = new QWidget();
-    this->patientInfoWidget->setFixedHeight(this->appHeight*0.028);
+    this->patientInfoWidget->setFixedHeight(this->appHeight*0.03);
     this->patientInfoLayout = new QHBoxLayout(patientInfoWidget);
     this->patientInfoLayout->addWidget(patientInfoOne);
     this->patientInfoLayout->addWidget(patientInfoTwo);
@@ -33,6 +40,7 @@ void PatientItem::consructIHM(){
     this->patientNameLabel->setFixedHeight(this->appHeight*0.166*0.16);
     this->patientNameLabel->setStyleSheet("background-color: rgba(0, 0, 0, 100);");
     this->patientNameLabel->setAlignment(Qt::AlignCenter);
+
     this->patientPhotoBlankArea = new QWidget();
 
     this->patientPhotoLabel = new QLabel();
@@ -50,15 +58,29 @@ void PatientItem::consructIHM(){
     this->patientItemLayout->setMargin(0);
 }
 
+//! ------------------------------------------------------------------------------------------
+//!
+//! \brief PatientItem::getPatientPhoto
+//! \return
+//!
 QLabel* PatientItem::getPatientPhoto(){
     return this->patientPhotoLabel;
 }
+
+//! ------------------------------------------------------------------------------------------
+//!
+//! \brief PatientItem::getPatientName
+//! \return
+//!
 QLabel* PatientItem::getPatientName(){
     return this->patientNameLabel;
 }
 
-PatientItem::~PatientItem()
-{
+//! ------------------------------------------------------------------------------------------
+//!
+//! \brief PatientItem::~PatientItem
+//!
+PatientItem::~PatientItem(){
 
 }
 
