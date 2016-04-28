@@ -451,7 +451,7 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
     this->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsWidgetToolBar->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsPhotoWidget->setStyleSheet("background-color:"+this->workspaceColor);
-    this->commentTextEdit->setStyleSheet(this->textEditStyleSheet);
+    this->volumeDataAnalyseArea->setStyleSheet(this->textEditStyleSheet);
     this->patientInfoContainer->setStyleSheet("background-color:"+this->workspaceColor);
 }
 
@@ -829,16 +829,42 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     //! area to be modified .. .. . . . . . .  . .
     //!--------------------------------------------------------------------------------------
-    this->commentTextEdit = new QTextEdit();
-    this->commentTextEdit->setFixedHeight(appHeight*0.66);
-    this->commentTextEdit->setFont(*this->caracterStyle);
-    this->commentTextEdit->setStyleSheet(this->textEditStyleSheet);
+
+    this->plottingBoardConfiguration = new QLabel();
+    this->plottingBoardConfiguration->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
+    this->plottingBoardConfiguration->setStyleSheet("background:orange");
+
+    this->plottingBoard = new PlottingBoard();
+    this->plottingBoard->setFixedSize(this->appWidth*0.4, this->appHeight*0.69);
+    this->plottingBoard->setWorkSpaceColor("snow");
+
+    this->volumeDataAnalyseArea = new QLabel();
+    this->volumeDataAnalyseArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.72);
+    this->volumeDataAnalyseAreaLayout = new QVBoxLayout(this->volumeDataAnalyseArea);
+    this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoardConfiguration);
+    this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoard);
+    this->volumeDataAnalyseAreaLayout->setSpacing(0);
+    this->volumeDataAnalyseAreaLayout->setMargin(0);
+
 
     //!--------------------------------------------------------------------------------------
     //! Patient's mri image display area
     //!--------------------------------------------------------------------------------------
+    this->imageConfigurationArea = new QLabel();
+    this->imageConfigurationArea->setStyleSheet("background:orange");
+    this->imageConfigurationArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.04);
+
     this->patientImageLoaded = new QVTKWidget();
-    this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.66);
+    this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.69);
+
+    this->patientImageDispalyArea = new QLabel();
+    this->patientImageDispalyArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.72);
+    this->patientImageDispalyAreaLayout = new QVBoxLayout(patientImageDispalyArea);
+    this->patientImageDispalyAreaLayout->addWidget(this->patientImageLoaded);
+    this->patientImageDispalyAreaLayout->addWidget(this->imageConfigurationArea);
+
+    this->patientImageDispalyAreaLayout->setSpacing(0);
+    this->patientImageDispalyAreaLayout->setMargin(0);
 
     //! --------------------------------------------------------------------------------------
     //! patients widget workspace
@@ -847,9 +873,9 @@ void PatientsWidget::constructIHM(){
     //border: 1px solid white;
     this->patientsWidgetWorkspaceLayout = new QGridLayout(this->patientsWidgetWorkspace);
     this->patientsWidgetWorkspaceLayout->addWidget(patientsPhotoWidget, 0, 0);
-    this->patientsWidgetWorkspaceLayout->addWidget(patientImageLoaded, 1, 0);
+    this->patientsWidgetWorkspaceLayout->addWidget(this->patientImageDispalyArea, 1, 0);
     this->patientsWidgetWorkspaceLayout->addWidget(patientInfoContainer,0, 1);
-    this->patientsWidgetWorkspaceLayout->addWidget(commentTextEdit, 1, 1);
+    this->patientsWidgetWorkspaceLayout->addWidget(volumeDataAnalyseArea, 1, 1);
     this->patientsWidgetWorkspaceLayout->setSpacing(0);
     this->patientsWidgetWorkspaceLayout->setMargin(0);
 

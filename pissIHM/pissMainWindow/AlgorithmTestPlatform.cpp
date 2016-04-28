@@ -132,12 +132,12 @@ void AlgorithmTestPlatform::constructIHM(){
     this->algorithmTestTitleLabel = new QLabel();
     this->algorithmTestTitleLabel->setFixedHeight(this->appHeight*0.03);
     this->algorithmTestTitleLabel->setFont(*this->caracterStyle);
-    this->algorithmTestTitleLabel->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: gainsboro; color: AliceBlue");
+    this->algorithmTestTitleLabel->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: orange; color: AliceBlue");
 
     this->algorithmTestCommandLabel = new QLabel("System Command");
     this->algorithmTestCommandLabel->setFixedHeight(this->appHeight*0.03);
     this->algorithmTestCommandLabel->setFont(QFont("Helvetica",12,QFont::AnyStyle, true));
-    this->algorithmTestCommandLabel->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: gainsboro; color: AliceBlue");
+    this->algorithmTestCommandLabel->setStyleSheet("border: 0px solid gainsboro;border-radius: 0px;background-color: orange; color: AliceBlue");
     this->algorithmTestCommandLabel->setAlignment(Qt::AlignCenter);
 
     this->cpuLabel = new QLabel("cpu: ");
@@ -193,7 +193,7 @@ void AlgorithmTestPlatform::constructIHM(){
     this->algorithmTestStatusLabel = new QLabel();
     this->algorithmTestStatusLabel->setFixedHeight(this->appHeight*0.08);
     this->algorithmTestStatusLabel->setFont(*this->caracterStyle);
-    this->algorithmTestStatusLabel->setStyleSheet("border: 0px solid gainsboro ;border-radius: 0px; background-color: transparent; color: AliceBlue");
+    this->algorithmTestStatusLabel->setStyleSheet("border: 0px solid orange ;border-radius: 0px; background-color: transparent; color: AliceBlue");
 
     this->systemUsageStatusWidget = new QLabel();
     this->systemUsageStatusWidget->setFixedWidth(this->appWidth*0.22);
@@ -210,7 +210,7 @@ void AlgorithmTestPlatform::constructIHM(){
     this->systemUsageStatusLayout->addWidget(this->diskProgressBar, 3, 1);
     this->systemUsageStatusLayout->addWidget(this->netProgressBar, 4, 1);
     this->systemUsageStatusLayout->setSpacing(0);
-    this->systemUsageStatusLayout->setMargin(5);
+    this->systemUsageStatusLayout->setMargin(0);
 
     systemStatus = new QTextEdit();
     systemStatus->setFont(QFont("Courier",10,QFont::AnyStyle, false));
@@ -219,7 +219,7 @@ void AlgorithmTestPlatform::constructIHM(){
     systemCommand = new QLineEdit();
     systemCommand->setFixedHeight(this->appHeight*0.03);
     systemCommand->setFont(QFont("Courier",12,QFont::AnyStyle, false));
-    systemCommand->setStyleSheet("border: 1px solid gray ;border-radius: 0px;background-color: transparent; color: beige");
+    systemCommand->setStyleSheet("border: 1px solid orange ;border-radius: 0px;background-color: transparent; color: beige");
 
     terminalWindow = new QWidget();
     terminalWindowLayout = new QVBoxLayout(terminalWindow);
@@ -286,7 +286,7 @@ void AlgorithmTestPlatform::doParseCommand(){
 }
 
 //! -----------------------------------------------------------------------------------------------------------------------------------------------
-//!doParseCommand
+//!  doParseCommand
 //! \brief AlgorithmTestPlatform::getPatientsStatus
 //!
 void AlgorithmTestPlatform::getPatientsStatus(){

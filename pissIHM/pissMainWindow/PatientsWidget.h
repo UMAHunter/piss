@@ -32,7 +32,7 @@
 #include "Patient.h"
 #include "vtkPiecewiseFunction.h"
 #include "vtkColorTransferFunction.h"
-
+#include "PlottingBoard.h"
 
 /**
  * @brief The PatientsWidget class
@@ -114,6 +114,11 @@ private:
 
     QWidget* patientsWidgetToolBar;
     QLabel* patientsPhotoWidget;
+
+    QLabel *patientImageDispalyArea;
+    QLabel *imageConfigurationArea;
+    QVBoxLayout *patientImageDispalyAreaLayout;
+
     QVTKWidget* patientImageLoaded;
     QWidget* patientsWidgetWorkspace;
 
@@ -140,7 +145,10 @@ private:
     QWidget *patientPhotoBlankArea;
 
 
-    QTextEdit* commentTextEdit;
+    PlottingBoard *plottingBoard;
+    QLabel *plottingBoardConfiguration;
+    QLabel* volumeDataAnalyseArea;
+    QVBoxLayout *volumeDataAnalyseAreaLayout;
 
     QLabel* nameLabel;
     QLabel* birthdayLabel;

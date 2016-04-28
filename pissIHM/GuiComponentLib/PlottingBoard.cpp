@@ -46,6 +46,7 @@ PlottingBoard::PlottingBoard() : QCustomPlot(){
 
 PlottingBoard::~PlottingBoard(){}
 
+
 void PlottingBoard::setWorkSpaceColor(QString workspaceColor){
     this->setBackground(QColor(workspaceColor));
 }
