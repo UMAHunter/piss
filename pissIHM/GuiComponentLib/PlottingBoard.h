@@ -22,6 +22,8 @@ public:
 
     void test();
 
+    void embellshing();
+
     int addCurve(QString curveName, QString abscissa, QString ordinate, QString lineColor, int pointSize);
     int getCurveNumber();
 

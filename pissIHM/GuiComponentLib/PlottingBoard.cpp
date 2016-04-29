@@ -30,10 +30,10 @@ PlottingBoard::PlottingBoard() : QCustomPlot(){
     this->xAxis->setTickLabelColor(Qt::white);
     this->yAxis->setTickLabelColor(Qt::white);
 
-    this->xAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
-    this->yAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
-    this->xAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
-    this->yAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
+    this->xAxis->grid()->setPen(QPen(QColor("darkgray"), 1, Qt::SolidLine));
+    this->yAxis->grid()->setPen(QPen(QColor("darkgray"), 1, Qt::SolidLine));
+    this->xAxis->grid()->setSubGridPen(QPen(QColor("steelblue"), 1, Qt::NoPen));
+    this->yAxis->grid()->setSubGridPen(QPen(QColor("steelblue"), 1, Qt::NoPen));
     this->xAxis->grid()->setSubGridVisible(true);
     this->yAxis->grid()->setSubGridVisible(true);
     this->xAxis->grid()->setZeroLinePen(Qt::NoPen);
@@ -46,6 +46,11 @@ PlottingBoard::PlottingBoard() : QCustomPlot(){
 
 PlottingBoard::~PlottingBoard(){}
 
+
+void PlottingBoard::embellshing(){
+    this->xAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+    this->yAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+}
 
 void PlottingBoard::setWorkSpaceColor(QString workspaceColor){
     this->setBackground(QColor(workspaceColor));
@@ -127,6 +132,13 @@ void PlottingBoard::setTickPenProperty(QColor tickColor, int width){
     this->yAxis->setTickLabelColor(tickColor);
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief PlottingBoard::setCurveStyle
+//! \param pointScatterStyle
+//! \param pointColor
+//! \param pointSize
+//!
 void PlottingBoard::setCurveStyle(QString pointScatterStyle, QString pointColor, int pointSize){
     this->graph(0)->setLineStyle(QCPGraph::lsNone);
     if(pointScatterStyle == "circle"){
@@ -287,8 +299,8 @@ void PlottingBoard::doHistogramPlotting(int index, QVector<HistogramPoint*> poin
     }
     this->graph(index)->clearData();
     this->graph(index)->setData(x, y);
-    this->xAxis->setRange(points[0]->getAbscissaValue()+1, points[length-1]->getAbscissaValue()/20);
-    this->yAxis->setRange(y_min, y_max/20);
+    this->xAxis->setRange(points[0]->getAbscissaValue() - 200, points[length-1]->getAbscissaValue()+200);
+    this->yAxis->setRange(y_min-2000000, y_max+2000000);
 
     this->replot();
 }

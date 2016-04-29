@@ -76,5 +76,3 @@ QVector<HistogramPoint*> ImageProcessingFactory::getHistogramFrom(vtkImageData* 
 QStringList ImageProcessingFactory::getHistogramStatisticsFrom(vtkImageData* mraImage){
     return this->getGeneralInformationAnalyser()->extractHistogramStatistics(mraImage);
 }
-
-

@@ -10,6 +10,16 @@ QStringList SystemDispatcher::getPatientsStatus(){
 
 //!---------------------------------------------------------------------------------------------------------
 //!
+//! \brief SystemDispatcher::getHistogramOfVolumeData
+//! \param img
+//! \param points
+//!
+QVector<HistogramPoint*> SystemDispatcher::getHistogramOfVolumeData(vtkImageData *img){
+   return this->imageProcessingFactory->getHistogramFrom(img);
+}
+
+//!---------------------------------------------------------------------------------------------------------
+//!
 //! \brief SystemDispatcher::getPatientInDataBase
 //! \param name
 //! \param birth

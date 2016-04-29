@@ -14,7 +14,6 @@ public:
     ImageProcessingFactory();
     eProcessingErrorCode doProcessingByCommand(IgssImage *input, IgssImage *output, int dim, QString method);
 
-
     long getTotlaNumber(vtkImageData* mraImage);
     double getMean(vtkImageData* mraImage);
     QVector<HistogramPoint*> getHistogramFrom(vtkImageData* mraImage);

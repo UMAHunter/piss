@@ -79,6 +79,9 @@ public:
     int testY();
 
 private:
+
+    vtkImageData* currentVolumeImage;
+
     QString workspaceColor;
     QString globalFontColor;
 
@@ -146,9 +149,14 @@ private:
 
 
     PlottingBoard *plottingBoard;
+    QLabel *plottingBoardIndication;
     QLabel *plottingBoardConfiguration;
+    QHBoxLayout *plottingBoardConfigurationLayout;
     QLabel* volumeDataAnalyseArea;
     QVBoxLayout *volumeDataAnalyseAreaLayout;
+
+    QPushButton* plottingButton;
+    QSpacerItem* plottingBoardConfigurationSpacer;
 
     QLabel* nameLabel;
     QLabel* birthdayLabel;
@@ -188,7 +196,6 @@ private:
     QPushButton* surgeryLaunchButton;
     QPushButton* patientsWidgetConfigurationButton;
     QPushButton* simpleModeButton;
-
 
     AlgorithmTestPlatform *algorithmTestPlatform;
 
@@ -233,6 +240,7 @@ public slots:
     void addPatient();
     void doLeftSelect();
     void doRightSelect();
+    void onPlottingButtonClicked();
 };
 
 #endif // PATIENTSWIDGET_H

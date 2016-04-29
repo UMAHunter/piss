@@ -95,6 +95,19 @@ void PatientsWidget::setConnections(){
     this->connect(this->addPatientButton,    SIGNAL(clicked()), this, SLOT(addPatient()));
     this->connect(this->leftSelectButton,    SIGNAL(clicked()), this, SLOT(doLeftSelect()));
     this->connect(this->rightSelectButton,   SIGNAL(clicked()), this, SLOT(doRightSelect()));
+    this->connect(this->plottingButton,      SIGNAL(clicked()), this, SLOT(onPlottingButtonClicked()));
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::onPlottingButtonClicked
+//!
+void PatientsWidget::onPlottingButtonClicked(){
+
+      QVector<HistogramPoint*> frequencies = this->dispatcher->getHistogramOfVolumeData(this->currentVolumeImage);
+
+      int index = plottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
+      plottingBoard->doHistogramPlotting(index,frequencies);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -461,14 +474,14 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
 //! \param imgToBeDisplayed
 //!
 void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
-
+    currentVolumeImage = imgToBeDisplayed;
     //!---------------------------------------------------------------
     //! volume data visualization
     //!---------------------------------------------------------------
     this->volumeMapper->SetInputData(imgToBeDisplayed);
     this->volumeMapper->SetBlendModeToMaximumIntensity();
     this->volume->SetMapper(volumeMapper);
-    this->volume->SetProperty(volumeProperty);
+    //this->volume->SetProperty(volumeProperty);
 
     this->renderer->AddVolume(volume);
 
@@ -830,28 +843,46 @@ void PatientsWidget::constructIHM(){
     //! area to be modified .. .. . . . . . .  . .
     //!--------------------------------------------------------------------------------------
 
-    this->plottingBoardConfiguration = new QLabel();
-    this->plottingBoardConfiguration->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
-    this->plottingBoardConfiguration->setStyleSheet("background:orange");
+    this->plottingBoardIndication = new QLabel();
+    this->plottingBoardIndication->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
+    this->plottingBoardIndication->setStyleSheet("background:transparent");
 
     this->plottingBoard = new PlottingBoard();
-    this->plottingBoard->setFixedSize(this->appWidth*0.4, this->appHeight*0.69);
-    this->plottingBoard->setWorkSpaceColor("snow");
+    this->plottingBoard->setFixedSize(this->appWidth*0.4, this->appHeight*0.65);
+    this->plottingBoard->setWorkSpaceColor(this->workspaceColor);
+    this->plottingBoard->embellshing();
+
+    this->plottingButton =  new QPushButton();
+    this->plottingButton->setIcon(QIcon(":/images/image_update.png"));
+    this->plottingButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->plottingButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->plottingButton->setFlat(true);
+
+    this->plottingBoardConfigurationSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    this->plottingBoardConfiguration = new QLabel();
+    this->plottingBoardConfiguration->setFixedSize(this->appWidth*0.4, this->appHeight*0.03);
+    this->plottingBoardConfiguration->setStyleSheet("background:transparent");
+    this->plottingBoardConfigurationLayout = new QHBoxLayout(this->plottingBoardConfiguration);
+    this->plottingBoardConfigurationLayout ->addWidget(this->plottingButton);
+    this->plottingBoardConfigurationLayout->addItem(this->plottingBoardConfigurationSpacer);
+    this->plottingBoardConfigurationLayout->setSpacing(0);
+    this->plottingBoardConfigurationLayout->setMargin(0);
 
     this->volumeDataAnalyseArea = new QLabel();
     this->volumeDataAnalyseArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.72);
     this->volumeDataAnalyseAreaLayout = new QVBoxLayout(this->volumeDataAnalyseArea);
     this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoardConfiguration);
     this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoard);
+    this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoardIndication);
     this->volumeDataAnalyseAreaLayout->setSpacing(0);
     this->volumeDataAnalyseAreaLayout->setMargin(0);
-
 
     //!--------------------------------------------------------------------------------------
     //! Patient's mri image display area
     //!--------------------------------------------------------------------------------------
     this->imageConfigurationArea = new QLabel();
-    this->imageConfigurationArea->setStyleSheet("background:orange");
+    this->imageConfigurationArea->setStyleSheet("background:"+this->workspaceColor);
     this->imageConfigurationArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.04);
 
     this->patientImageLoaded = new QVTKWidget();

@@ -26,6 +26,8 @@ public:
     QStringList getPatientsStatus();
     QString doImageProcessingByMethodType(int id, int dim, QString method);
 
+    QVector<HistogramPoint*> getHistogramOfVolumeData(vtkImageData *img);
+
     //! com
     bool launchCommunicationStackServer();
     void launchConnectBackProcess(bool flag, QString addr,int port);
