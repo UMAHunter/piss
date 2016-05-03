@@ -12,7 +12,6 @@
 class Devices
 {
 public:
-    Devices();
     void append(QString ModuleName, int Port);
     void append(int ModuleNumber, int Port);
     void append(QString ModuleName, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
@@ -47,6 +46,9 @@ private:
     int deviceCount;
     QString moduleName;
     QList <Device*> devices;
+
+public:
+    Devices();
 };
 
 #endif // PISSNETWORKENVIRONMENT_H

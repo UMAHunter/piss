@@ -1,10 +1,10 @@
+#include <QApplication>
+
 #include "pissMainWindow.h"
 #include "SystemDispatcher.h"
 #include "SystemDataBase.h"
 #include "pissCommunicationStack.h"
 #include "GlobalTime.h"
-
-#include <QApplication>
 
 
 /**
@@ -13,7 +13,8 @@
  * @param argv
  * @return
  */
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     //! -------------------------------------------------------------------------------------------
     //! application
     //! -------------------------------------------------------------------------------------------

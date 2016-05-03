@@ -524,25 +524,25 @@ void PatientsWidget::constructIHM(){
 
     this->simpleModeButton =  new QPushButton();
     this->simpleModeButton->setIcon(QIcon(":/images/fileList.png"));
-    this->simpleModeButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->simpleModeButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
     this->simpleModeButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
     this->simpleModeButton->setFlat(true);
 
     this->patientsWidgetConfigurationButton =  new QPushButton();
     this->patientsWidgetConfigurationButton->setIcon(QIcon(":/images/patientWidgetConfiguration.png"));
-    this->patientsWidgetConfigurationButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->patientsWidgetConfigurationButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
     this->patientsWidgetConfigurationButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
     this->patientsWidgetConfigurationButton->setFlat(true);
 
     this->addPatientButton =  new QPushButton();
     this->addPatientButton->setIcon(QIcon(":/images/import_patient.png"));
-    this->addPatientButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->addPatientButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
     this->addPatientButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
     this->addPatientButton->setFlat(true);
 
     this->cdRomParseButton =  new QPushButton();
     this->cdRomParseButton->setIcon(QIcon(":/images/Disk.png"));
-    this->cdRomParseButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->cdRomParseButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
     this->cdRomParseButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
     this->cdRomParseButton->setFlat(true);
 
@@ -642,7 +642,6 @@ void PatientsWidget::constructIHM(){
     this->patientHandlingWidgetLayout->setSpacing(0);
     this->patientHandlingWidgetLayout->setMargin(0);
 
-
     this->waitingPatientsQueue.append(this->firstPatientPhotoWidget->getPatientPhoto());
     this->waitingPatientsQueue.append(this->secondPatientPhotoWidget->getPatientPhoto());
     this->waitingPatientsQueue.append(this->thirdPatientPhotoWidget->getPatientPhoto());
@@ -654,7 +653,6 @@ void PatientsWidget::constructIHM(){
     this->waitingPatientsNameQueue.append(this->thirdPatientPhotoWidget->getPatientName());
     this->waitingPatientsNameQueue.append(this->fourthPatientPhotoWidget->getPatientName());
     this->waitingPatientsNameQueue.append(this->currentPatientInfo);
-
 
     //!--------------------------------------------------------------------------------------
     //!the right select button
@@ -901,10 +899,10 @@ void PatientsWidget::constructIHM(){
     //! patients widget workspace
     //! --------------------------------------------------------------------------------------
     this->patientsWidgetWorkspace = new QWidget();
-    //border: 1px solid white;
+
     this->patientsWidgetWorkspaceLayout = new QGridLayout(this->patientsWidgetWorkspace);
     this->patientsWidgetWorkspaceLayout->addWidget(patientsPhotoWidget, 0, 0);
-    this->patientsWidgetWorkspaceLayout->addWidget(this->patientImageDispalyArea, 1, 0);
+    this->patientsWidgetWorkspaceLayout->addWidget(patientImageDispalyArea, 1, 0);
     this->patientsWidgetWorkspaceLayout->addWidget(patientInfoContainer,0, 1);
     this->patientsWidgetWorkspaceLayout->addWidget(volumeDataAnalyseArea, 1, 1);
     this->patientsWidgetWorkspaceLayout->setSpacing(0);

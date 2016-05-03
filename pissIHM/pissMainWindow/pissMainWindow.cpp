@@ -40,7 +40,7 @@ void pissMainWindow::initVariable(){
     this->englishCaracterStyle = new QFont("Times", 8, QFont::AnyStyle, false);
     this->globalBackgroundColor = "dimgray";
     this->globalWorkSpaceColor = "slategray";
-    this->globalFontColor = "aliceblue";
+    this->globalFontColor = "lightgray";
 
     //! -------------------------------------------------------
     //! Des procedure afin de recuperer les tailles des ??crans;
@@ -51,17 +51,16 @@ void pissMainWindow::initVariable(){
 
     this->screen = new Screen[screen_count];
     for(unsigned char i = 0; i < screen_count; i++){
-        screen[i].screenIndex = primary_screen + i;
-        screen[i].rect = desktop->screenGeometry(primary_screen + i);
+        this->screen[i].screenIndex = primary_screen + i;
+        this->screen[i].rect = desktop->screenGeometry(primary_screen + i);
     }
 
-    primary_screen_width = screen[0].rect.width();
-    primary_screen_height = screen[0].rect.height();
+    this->primary_screen_width = screen[0].rect.width();
+    this->primary_screen_height = screen[0].rect.height();
 
-    the_tab_style =   "QTabBar::tab{background: "+globalBackgroundColor+"; color: "+globalFontColor+"; padding: "
-                      "0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
-                      "QTabBar::tab:selected {background: "+globalWorkSpaceColor+"; color: "+globalFontColor+"; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
-                      "QTabWidget::pane { border: 0; } ";
+    this->the_tab_style =   "QTabBar::tab{background: " + globalBackgroundColor + "; color: " + globalFontColor + "; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 0px solid orange; height: "+QString::number(primary_screen_height*0.03)+"px; width: "+QString::number(primary_screen_width*0.15)+"px;  } "
+                            "QTabBar::tab:selected {background: " + globalWorkSpaceColor + "; color: " + globalFontColor + "; padding: 0px; border-top: 0px solid gainsboro; border-bottom: 1px solid orange;} "
+                            "QTabWidget::pane { border: 0; }";
 
     //!----------------------------------------------------------------------------------------------------
     //! status bar area
@@ -191,14 +190,14 @@ void pissMainWindow::constructIHM(){
     replaysWidget = new ReplaysWidget();
 
     widgetsContainer = new QTabWidget();
-    widgetsContainer->setFont(QFont("Helvetica", 11, QFont::AnyStyle, false));
+    widgetsContainer->setFont(QFont("Monospace", 11, QFont::AnyStyle, false));
     //widgetsContainer->installEventFilter(new ResizeFilter(widgetsContainer));
 
     widgetsContainer->setStyleSheet(the_tab_style);
     widgetsContainer->setFixedHeight(primary_screen_height*0.82);
-    widgetsContainer->insertTab(0,ecranDesMaladies, "patient");
-    widgetsContainer->insertTab(1,surgerySystemWidget, "system");
-    widgetsContainer->insertTab(2,replaysWidget, "history");
+    widgetsContainer->insertTab(0,ecranDesMaladies, "病例");
+    widgetsContainer->insertTab(1,surgerySystemWidget, "系统");
+    widgetsContainer->insertTab(2,replaysWidget, "存档");
 
     systemInformationBoardWidget = new QWidget();
     systemInformationBoardWidgetLayout = new QVBoxLayout(systemInformationBoardWidget);
