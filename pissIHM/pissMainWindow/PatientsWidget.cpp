@@ -114,8 +114,6 @@ void PatientsWidget::flyThrough(){
 
     double p0[3];
     vessel->GetPoint(flyThroughCpt, p0);
-//    this->algorithmTestPlatform->setSystemStatus("fly throughing" + QString::number(flyThroughCpt) +
-//                                                 QString::number(p0[0])+ QString::number(p0[1]) + QString::number(p0[2]));
 
     vtkSphereSource *pos = vtkSphereSource::New();
     pos->SetRadius(0.5);
@@ -126,12 +124,13 @@ void PatientsWidget::flyThrough(){
     posMapper->SetInputConnection(pos->GetOutputPort());
     vtkActor *posActor = vtkActor::New();
     posActor->SetMapper(posMapper);
-    posActor->GetProperty()->SetColor(255, 0, 0);
+    posActor->GetProperty()->SetColor(0,255,255);
+    //this->algorithmTestPlatform->setSystemStatus("0," + QString::number(int(255*1.0*flyThroughCpt/vesselPointCount)) + ", 255");
     this->renderer->AddActor(posActor);
     this->renderer->ResetCamera();
     patientImageLoaded->update();
 
-    flyThroughCpt += 15;
+    flyThroughCpt += 10;
     if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
         this->flyThroughTimer->stop();
     }
@@ -143,8 +142,7 @@ void PatientsWidget::flyThrough(){
 //!
 void PatientsWidget::onGuidewareMovementButtonClicked(){
 
-    qDebug()<<centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
-
+    vesselPointCount = centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
 
     this->flyThroughTimer->start(0.1);
 }

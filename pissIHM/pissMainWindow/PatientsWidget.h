@@ -87,7 +87,7 @@ private:
     QTimer *flyThroughTimer;
 
     vtkPoints *vessel;
-
+    int vesselPointCount;
     vtkImageData* currentVolumeImage;
 
     QString workspaceColor;
