@@ -69,9 +69,9 @@ void PatientsWidget::initVariable(){
 
     vtkSmartPointer<vtkPiecewiseFunction> compositeOpacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
     compositeOpacity->AddPoint(0.0,   0.0);
-    compositeOpacity->AddPoint(800.0, 0.0);
-    compositeOpacity->AddPoint(1200.0,1.0);
-    compositeOpacity->AddPoint(2000.0,1.0);
+    compositeOpacity->AddPoint(1200.0, 0.0);
+    compositeOpacity->AddPoint(1600.0,0.7);
+    compositeOpacity->AddPoint(2400.0,0.7);
     this->volumeProperty->SetScalarOpacity(compositeOpacity); // composite first.
 
     vtkSmartPointer<vtkColorTransferFunction> color = vtkSmartPointer<vtkColorTransferFunction>::New();
@@ -79,10 +79,16 @@ void PatientsWidget::initVariable(){
     color->AddRGBPoint(800.0,  1.0,0.0,0.0);
     color->AddRGBPoint(1200.0, 1.0,1.0,1.0);
     color->AddRGBPoint(2000.0, 1.0,1.0,1.0);
-    this->volumeProperty->SetColor(color);
+    //this->volumeProperty->SetColor(color);
 
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFixedSize(this->appWidth, this->appHeight);
+
+    vessel = vtkPoints::New();
+
+    flyThroughTimer = new QTimer();
+    flyThroughCpt = 0;
+
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -96,6 +102,51 @@ void PatientsWidget::setConnections(){
     this->connect(this->leftSelectButton,    SIGNAL(clicked()), this, SLOT(doLeftSelect()));
     this->connect(this->rightSelectButton,   SIGNAL(clicked()), this, SLOT(doRightSelect()));
     this->connect(this->plottingButton,      SIGNAL(clicked()), this, SLOT(onPlottingButtonClicked()));
+    this->connect(this->guidewareMovementButton, SIGNAL(clicked()), this, SLOT(onGuidewareMovementButtonClicked()));
+    this->connect(this->flyThroughTimer, SIGNAL(timeout()), this, SLOT(flyThrough()));
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::flyThrough
+//!
+void PatientsWidget::flyThrough(){
+
+    double p0[3];
+    vessel->GetPoint(flyThroughCpt, p0);
+//    this->algorithmTestPlatform->setSystemStatus("fly throughing" + QString::number(flyThroughCpt) +
+//                                                 QString::number(p0[0])+ QString::number(p0[1]) + QString::number(p0[2]));
+
+    vtkSphereSource *pos = vtkSphereSource::New();
+    pos->SetRadius(0.5);
+    pos->SetThetaResolution(12);
+    pos->SetPhiResolution(6);
+    pos->SetCenter(p0[0],p0[1],p0[2]);
+    vtkPolyDataMapper *posMapper = vtkPolyDataMapper::New();
+    posMapper->SetInputConnection(pos->GetOutputPort());
+    vtkActor *posActor = vtkActor::New();
+    posActor->SetMapper(posMapper);
+    posActor->GetProperty()->SetColor(255, 0, 0);
+    this->renderer->AddActor(posActor);
+    this->renderer->ResetCamera();
+    patientImageLoaded->update();
+
+    flyThroughCpt += 15;
+    if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
+        this->flyThroughTimer->stop();
+    }
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::onGuidewareMovementButtonClicked
+//!
+void PatientsWidget::onGuidewareMovementButtonClicked(){
+
+    qDebug()<<centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
+
+
+    this->flyThroughTimer->start(0.1);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -481,10 +532,9 @@ void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
     this->volumeMapper->SetInputData(imgToBeDisplayed);
     this->volumeMapper->SetBlendModeToMaximumIntensity();
     this->volume->SetMapper(volumeMapper);
-    //this->volume->SetProperty(volumeProperty);
+    this->volume->SetProperty(volumeProperty);
 
     this->renderer->AddVolume(volume);
-
     this->renderWindow->AddRenderer(renderer);
 
     this->patientImageLoaded->SetRenderWindow(renderWindow);
@@ -806,7 +856,7 @@ void PatientsWidget::constructIHM(){
     this->remarksLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->patientInfoContainer = new QWidget();
-    this->patientInfoContainer->setStyleSheet("background-color:"+this->workspaceColor);
+    this->patientInfoContainer->setStyleSheet("border:1px solid lightgray; background-color:"+this->workspaceColor);
 
     this->patientInfoContainer->setFixedSize(this->appWidth*0.4, appHeight*0.26);
     this->patientInfoContainerLayout = new QGridLayout(patientInfoContainer);
@@ -879,9 +929,23 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     //! Patient's mri image display area
     //!--------------------------------------------------------------------------------------
+    this->imageConfigurationAreaSpacer =  new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    this->guidewareMovementButton =  new QPushButton();
+    this->guidewareMovementButton->setIcon(QIcon(":/images/title.png"));
+    this->guidewareMovementButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->guidewareMovementButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->guidewareMovementButton->setFlat(true);
+
     this->imageConfigurationArea = new QLabel();
     this->imageConfigurationArea->setStyleSheet("background:"+this->workspaceColor);
     this->imageConfigurationArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.04);
+    this->imageConfigurationAreaLayout = new QHBoxLayout(this->imageConfigurationArea);
+    this->imageConfigurationAreaLayout->addWidget(this->guidewareMovementButton);
+    this->imageConfigurationAreaLayout->addItem(this->imageConfigurationAreaSpacer);
+    this->imageConfigurationAreaLayout->setSpacing(0);
+    this->imageConfigurationAreaLayout->setMargin(0);
+
 
     this->patientImageLoaded = new QVTKWidget();
     this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.69);
@@ -891,6 +955,7 @@ void PatientsWidget::constructIHM(){
     this->patientImageDispalyAreaLayout = new QVBoxLayout(patientImageDispalyArea);
     this->patientImageDispalyAreaLayout->addWidget(this->patientImageLoaded);
     this->patientImageDispalyAreaLayout->addWidget(this->imageConfigurationArea);
+
 
     this->patientImageDispalyAreaLayout->setSpacing(0);
     this->patientImageDispalyAreaLayout->setMargin(0);

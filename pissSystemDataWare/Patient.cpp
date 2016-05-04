@@ -482,8 +482,8 @@ bool Patient::loadCenterLineFiles(QString fileName){
     for(int i = 0; i < this->centerLinePointsCount; i++){
         centerLinePoints->InsertPoint(i,
                             centerReader->get_vesselsPoints().at(i)->get_abscissa(),
-                            centerReader->get_vesselsPoints().at(i)->get_vertical(),
-                            centerReader->get_vesselsPoints().at(i)->get_sagittal());
+                            centerReader->get_vesselsPoints().at(i)->get_ordinate(),
+                            centerReader->get_vesselsPoints().at(i)->get_isometric());
     }
     return true;
 }

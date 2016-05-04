@@ -19,13 +19,12 @@ public:
     CenterLineReader();
     ~CenterLineReader();
 
-    void doReadCenterLineFile(QString centerlineFilePath, vtkPoints *vessel);
+    int doReadCenterLineFile(QString centerlineFilePath, vtkPoints *vessel);
     void doReadCenterlineFolder(QString centerlineFolderPath);
     QVector<CenterLinePoint*> get_vesselsPoints();
 
 private:
-
-     QVector<CenterLinePoint*> vesselsPoints;
+    QVector<CenterLinePoint*> vesselsPoints;
 };
 
 #endif // CENTERLINEREADER_H

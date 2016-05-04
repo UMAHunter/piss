@@ -80,6 +80,14 @@ public:
 
 private:
 
+    int flyThroughCpt;
+
+    CenterLineReader centerLineReader;
+
+    QTimer *flyThroughTimer;
+
+    vtkPoints *vessel;
+
     vtkImageData* currentVolumeImage;
 
     QString workspaceColor;
@@ -120,6 +128,13 @@ private:
 
     QLabel *patientImageDispalyArea;
     QLabel *imageConfigurationArea;
+
+    QPushButton *guidewareMovementButton;
+
+    QSpacerItem *imageConfigurationAreaSpacer;
+
+    QHBoxLayout *imageConfigurationAreaLayout;
+
     QVBoxLayout *patientImageDispalyAreaLayout;
 
     QVTKWidget* patientImageLoaded;
@@ -241,6 +256,8 @@ public slots:
     void doLeftSelect();
     void doRightSelect();
     void onPlottingButtonClicked();
+    void onGuidewareMovementButtonClicked();
+    void flyThrough();
 };
 
 #endif // PATIENTSWIDGET_H

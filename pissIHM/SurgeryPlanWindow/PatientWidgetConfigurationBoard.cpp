@@ -1,6 +1,10 @@
 #include "PatientWidgetConfigurationBoard.h"
 
 
+/**
+ * @brief PatientWidgetConfigurationBoard::PatientWidgetConfigurationBoard
+ * @param _patient
+ */
 PatientWidgetConfigurationBoard::PatientWidgetConfigurationBoard(Patient *_patient) : QWidget(){
     this->patient = _patient;
 
@@ -13,9 +17,12 @@ PatientWidgetConfigurationBoard::PatientWidgetConfigurationBoard(Patient *_patie
     doThresholdSegementationPlottingBoardPlotting();
 }
 
+//!
+//! \brief PatientWidgetConfigurationBoard::~PatientWidgetConfigurationBoard
+//!
 PatientWidgetConfigurationBoard::~PatientWidgetConfigurationBoard(){}
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief PatientWidgetConfigurationBoard::printButtonStates
 //!

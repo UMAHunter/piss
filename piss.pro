@@ -116,7 +116,8 @@ SOURCES +=  main.cpp\
     pissIHM/pissMainWindow/CommunicationStatesContainer.cpp \
     pissConnectionFactory/Device.cpp \
     pissConnectionFactory/Devices.cpp \
-    pissConnectionFactory/igtClient.cpp
+    pissConnectionFactory/igtClient.cpp \
+    pissSystemDataWare/AcquisitionPoint.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -187,7 +188,8 @@ HEADERS  += \
     pissIHM/pissMainWindow/CommunicationStatesContainer.h \
     pissConnectionFactory/Device.h \
     pissConnectionFactory/Devices.h \
-    pissConnectionFactory/igtClient.h
+    pissConnectionFactory/igtClient.h \
+    pissSystemDataWare/AcquisitionPoint.h
 
 
 # CTK lib.....

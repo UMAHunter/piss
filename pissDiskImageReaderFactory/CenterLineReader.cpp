@@ -15,18 +15,22 @@ CenterLineReader::~CenterLineReader()
 //! \brief CenterLineReader::doReadCenterLineFile
 //! \param centerlineFilePath
 //!
-void CenterLineReader::doReadCenterLineFile(QString centerlineFilePath, vtkPoints *vessel){
+int CenterLineReader::doReadCenterLineFile(QString centerlineFilePath, vtkPoints *vessel){
 
     QFile file(centerlineFilePath);
     if(!file.open(QIODevice::ReadOnly|QIODevice::Text)){
         qDebug()<<"sorry,can't open the file!"<<endl;
     }
+
+    int cpt = 0;
     while(!file.atEnd()){
         QByteArray line=file.readLine();
         QString str(line);
         QStringList parame=str.split(" ");
         vessel->InsertNextPoint(parame[0].toDouble(0), parame[1].toDouble(0), parame[2].toDouble(0));
+        cpt++;
     }
+    return cpt;
 }
 
 //! -------------------------------------------------------------------------------------------------
@@ -77,8 +81,8 @@ void CenterLineReader::doReadCenterlineFolder(QString centerlineFolderPath){
 
             CenterLinePoint *p = new CenterLinePoint();
             p->set_abscissa(parame[0].toDouble(0));
-            p->set_vertical(parame[1].toDouble(0));
-            p->set_sagittal(parame[2].toDouble(0));//1.26
+            p->set_ordinate(parame[1].toDouble(0));
+            p->set_isometric(parame[2].toDouble(0));//1.26
             //qDebug()<<parame[0].toDouble(0)<<parame[1].toDouble(0)<<parame[2].toDouble(0);
             vesselsPoints.append(p);
             pointscount++;
