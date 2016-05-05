@@ -104,6 +104,15 @@ void PatientsWidget::setConnections(){
     this->connect(this->plottingButton,      SIGNAL(clicked()), this, SLOT(onPlottingButtonClicked()));
     this->connect(this->guidewareMovementButton, SIGNAL(clicked()), this, SLOT(onGuidewareMovementButtonClicked()));
     this->connect(this->flyThroughTimer, SIGNAL(timeout()), this, SLOT(flyThrough()));
+    this->connect(this->cutButton, SIGNAL(clicked()), this, SLOT(onCutButtonClicked()));
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::onCutButtonClicked
+//!
+void PatientsWidget::onCutButtonClicked(){
+    this->algorithmTestPlatform->setSystemStatus( this->cuttingLayerOption->text()/*.toInt()*/);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -143,7 +152,8 @@ void PatientsWidget::flyThrough(){
 void PatientsWidget::onGuidewareMovementButtonClicked(){
 
     vesselPointCount = centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
-
+    this->cuttingLayerOption->setMinimum(0);
+    this->cuttingLayerOption->setMaximum(vesselPointCount-1);
     this->flyThroughTimer->start(0.1);
 }
 
@@ -572,26 +582,26 @@ void PatientsWidget::constructIHM(){
 
     this->simpleModeButton =  new QPushButton();
     this->simpleModeButton->setIcon(QIcon(":/images/fileList.png"));
-    this->simpleModeButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
-    this->simpleModeButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
+    this->simpleModeButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.027));
+    this->simpleModeButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.03);
     this->simpleModeButton->setFlat(true);
 
     this->patientsWidgetConfigurationButton =  new QPushButton();
     this->patientsWidgetConfigurationButton->setIcon(QIcon(":/images/patientWidgetConfiguration.png"));
-    this->patientsWidgetConfigurationButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
-    this->patientsWidgetConfigurationButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
+    this->patientsWidgetConfigurationButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.027));
+    this->patientsWidgetConfigurationButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.03);
     this->patientsWidgetConfigurationButton->setFlat(true);
 
     this->addPatientButton =  new QPushButton();
     this->addPatientButton->setIcon(QIcon(":/images/import_patient.png"));
-    this->addPatientButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
-    this->addPatientButton->setFixedSize(this->appWidth*0.020, this->appHeight*0.03);
+    this->addPatientButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.027));
+    this->addPatientButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.03);
     this->addPatientButton->setFlat(true);
 
     this->cdRomParseButton =  new QPushButton();
     this->cdRomParseButton->setIcon(QIcon(":/images/Disk.png"));
-    this->cdRomParseButton->setIconSize(QSize(this->appWidth*0.018,this->appHeight*0.027));
-    this->cdRomParseButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->cdRomParseButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.027));
+    this->cdRomParseButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.03);
     this->cdRomParseButton->setFlat(true);
 
     this->controlBarSpacer = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -614,24 +624,24 @@ void PatientsWidget::constructIHM(){
     this->downBlackArea->setStyleSheet("background-color:transparent;border:0px solid beige");
 
     this->leftBlackArea = new QWidget();
-    this->leftBlackArea->setFixedWidth(this->appWidth*0.17);
+    this->leftBlackArea->setFixedWidth(this->appWidth*0.03);
     this->leftBlackArea->setStyleSheet("background-color:transparent;border:0px solid beige");
 
     this->rightBlackArea = new QWidget();
-    this->rightBlackArea->setFixedWidth(this->appWidth*0.02);
+    this->rightBlackArea->setFixedWidth(this->appWidth*0.03);
     this->rightBlackArea->setStyleSheet("background-color:transparent;border:0px solid beige");
 
     this->firstPatientPhotoWidget = new PatientItem(appWidth,appHeight);
-    this->firstPatientPhotoWidget->setFixedSize(this->appWidth*0.07, this->appHeight*0.22);
+    this->firstPatientPhotoWidget->setFixedSize(this->appWidth*0.06, this->appHeight*0.22);
 
     this->secondPatientPhotoWidget = new PatientItem(appWidth,appHeight);
-    this->secondPatientPhotoWidget->setFixedSize(this->appWidth*0.07, this->appHeight*0.22);
+    this->secondPatientPhotoWidget->setFixedSize(this->appWidth*0.06, this->appHeight*0.22);
 
     this->thirdPatientPhotoWidget = new PatientItem(appWidth,appHeight);
-    this->thirdPatientPhotoWidget->setFixedSize(this->appWidth*0.07, this->appHeight*0.22);
+    this->thirdPatientPhotoWidget->setFixedSize(this->appWidth*0.06, this->appHeight*0.22);
 
     this->fourthPatientPhotoWidget = new PatientItem(appWidth,appHeight);
-    this->fourthPatientPhotoWidget->setFixedSize(this->appWidth*0.07, this->appHeight*0.22);
+    this->fourthPatientPhotoWidget->setFixedSize(this->appWidth*0.06, this->appHeight*0.22);
 
     this->waittingPatientPhotoes = new QWidget();
     this->waittingPatientPhotoes->setStyleSheet("background-color:transparent;border:0px solid beige");
@@ -661,14 +671,14 @@ void PatientsWidget::constructIHM(){
     this->currentPatientInfo = new QLabel();
     this->currentPatientInfo->setStyleSheet("background-color: rgba(0, 0, 0, 100); color:"+globalFontColor);
     this->currentPatientInfo->setFont(*this->caracterStyle);
-    this->currentPatientInfo->setFixedSize(this->appWidth*0.09, this->appHeight*0.03);
+    this->currentPatientInfo->setFixedSize(this->appWidth*0.08, this->appHeight*0.03);
     this->currentPatientInfo->setAlignment(Qt::AlignCenter);
 
     this->patientPhotoBlankArea = new QWidget();
 
     this->currentPatientPhoto = new QLabel();
     this->currentPatientPhoto->setStyleSheet(this->photoLabelStyleSheet);
-    this->currentPatientPhoto->setFixedSize(this->appWidth*0.09, this->appHeight*0.21);
+    this->currentPatientPhoto->setFixedSize(this->appWidth*0.08, this->appHeight*0.21);
     this->currentPatientPhotoLayout = new QVBoxLayout(this->currentPatientPhoto);
     this->currentPatientPhotoLayout->addWidget(this->currentPatientInfo);
     this->currentPatientPhotoLayout->addWidget(this->patientPhotoBlankArea);
@@ -679,11 +689,11 @@ void PatientsWidget::constructIHM(){
     this->surgeryLaunchButton->setText(QString::fromLocal8Bit("launch"));
     this->surgeryLaunchButton->setFont(QFont("Times",13,QFont::AnyStyle, false));
     this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid lightgray;color:aliceblue");
-    this->surgeryLaunchButton->setFixedSize(this->appWidth*0.09, this->appHeight*0.05);
+    this->surgeryLaunchButton->setFixedSize(this->appWidth*0.08, this->appHeight*0.05);
 
     this->patientHandlingWidget = new QWidget();
     this->patientHandlingWidget->setStyleSheet("background-color:transparent; border:0px solid aliceblue; ");
-    this->patientHandlingWidget->setFixedSize(this->appWidth*0.09, this->appHeight*0.26);
+    this->patientHandlingWidget->setFixedSize(this->appWidth*0.08, this->appHeight*0.26);
     this->patientHandlingWidgetLayout = new QVBoxLayout(patientHandlingWidget);
     this->patientHandlingWidgetLayout->addWidget(currentPatientPhoto);
     this->patientHandlingWidgetLayout->addWidget(surgeryLaunchButton);
@@ -703,16 +713,16 @@ void PatientsWidget::constructIHM(){
     this->waitingPatientsNameQueue.append(this->currentPatientInfo);
 
     //!--------------------------------------------------------------------------------------
-    //!the right select button
+    //!the selection buttons
     //!--------------------------------------------------------------------------------------
     this->leftSelectButton = new QPushButton();
-    this->leftSelectButton->setFixedSize(this->appWidth*0.015,this->appHeight*0.26);
+    this->leftSelectButton->setFixedSize(this->appWidth*0.01,this->appHeight*0.26);
     this->leftSelectButton->setIcon(QIcon(":/images/splitter_left.png"));
     this->leftSelectButton->setStyleSheet("background-color:transparent; border:0px solid aliceblue; ");
     this->leftSelectButton->setFlat(true);
 
     this->rightSelectButton = new QPushButton();
-    this->rightSelectButton->setFixedSize(this->appWidth*0.015,this->appHeight*0.26);
+    this->rightSelectButton->setFixedSize(this->appWidth*0.01,this->appHeight*0.26);
     this->rightSelectButton->setIcon(QIcon(":/images/splitter_right.png"));
     this->rightSelectButton->setStyleSheet("background-color:transparent; border:0px solid aliceblue;");
     this->rightSelectButton->setFlat(true);
@@ -721,7 +731,7 @@ void PatientsWidget::constructIHM(){
     //!patient photo widget: there are 3 photoes of waitting patients and 1 current patient
     //!--------------------------------------------------------------------------------------
     this->patientsPhotoWidget = new QLabel();
-    this->patientsPhotoWidget->setFixedSize(this->appWidth*0.6, this->appHeight*0.26);
+    this->patientsPhotoWidget->setFixedSize(this->appWidth*0.4, this->appHeight*0.26);
     this->patientsPhotoWidgetLayout = new QHBoxLayout(this->patientsPhotoWidget);
     this->patientsPhotoWidgetLayout->addWidget(waittingPatientsAndBlackAreaWindow);
     this->patientsPhotoWidgetLayout->addWidget(leftSelectButton);
@@ -729,134 +739,132 @@ void PatientsWidget::constructIHM(){
     this->patientsPhotoWidgetLayout->addWidget(rightSelectButton);
     this->patientsPhotoWidgetLayout->setSpacing(0);
     this->patientsPhotoWidgetLayout->setMargin(0);
-
     //!--------------------------------------------------------------------------------------
     //!the information of the current patient
     //!--------------------------------------------------------------------------------------
     this->nameLabel = new QLabel("name: ");
-    this->nameLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
+    this->nameLabel->setFixedSize(appWidth*0.04, appHeight*0.03);
     this->nameLabel->setFont(*this->caracterFontStyle);
     this->nameLabel->setStyleSheet(this->labelStyleSheet);
 
     this->birthdayLabel = new QLabel("birth: ");
-    this->birthdayLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
+    this->birthdayLabel->setFixedSize(appWidth*0.04, appHeight*0.03);
     this->birthdayLabel->setFont(*this->caracterFontStyle);
     this->birthdayLabel->setStyleSheet(this->labelStyleSheet);
 
     this->sexualLabel = new QLabel("sex: ");
-    this->sexualLabel->setFixedSize(appWidth*0.06, appHeight*0.03);
+    this->sexualLabel->setFixedSize(appWidth*0.04, appHeight*0.03);
     this->sexualLabel->setFont(*this->caracterFontStyle);
     this->sexualLabel->setStyleSheet(this->labelStyleSheet);
 
     this->ageLabel = new QLabel("age: ");
-    this->ageLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->ageLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->ageLabel->setFont(*this->caracterFontStyle);
     this->ageLabel->setStyleSheet(this->labelStyleSheet);
 
     this->idNumberLabel = new QLabel("number: ");
-    this->idNumberLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->idNumberLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->idNumberLabel->setFont(*this->caracterFontStyle);
     this->idNumberLabel->setStyleSheet(this->labelStyleSheet);
 
     this->marryLabel = new QLabel("marriage: ");
-    this->marryLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->marryLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->marryLabel->setFont(*this->caracterFontStyle);
     this->marryLabel->setStyleSheet(this->labelStyleSheet);
 
     this->nationLabel = new QLabel("nationality: ");
-    this->nationLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->nationLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->nationLabel->setFont(*this->caracterFontStyle);
     this->nationLabel->setStyleSheet(this->labelStyleSheet);
 
     this->professionalLabel = new QLabel("professionnel: ");
-    this->professionalLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->professionalLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->professionalLabel->setFont(*this->caracterFontStyle);
     this->professionalLabel->setStyleSheet(this->labelStyleSheet);
 
     this->leadDoctorLabel = new QLabel("doctor: ");
-    this->leadDoctorLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->leadDoctorLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->leadDoctorLabel->setFont(*this->caracterFontStyle);
     this->leadDoctorLabel->setStyleSheet(this->labelStyleSheet);
 
     this->therapyTimeLabel = new QLabel("therapy date: ");
-    this->therapyTimeLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->therapyTimeLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->therapyTimeLabel->setFont(*this->caracterFontStyle);
     this->therapyTimeLabel->setStyleSheet(this->labelStyleSheet);
 
     this->drugAllergyLabel = new QLabel("drug allergy: ");
-    this->drugAllergyLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->drugAllergyLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->drugAllergyLabel->setFont(*this->caracterFontStyle);
     this->drugAllergyLabel->setStyleSheet(this->labelStyleSheet);
 
     this->remarksLabel = new QLabel("ps: ");
-    this->remarksLabel->setFixedSize(appWidth*0.06,appHeight*0.03);
+    this->remarksLabel->setFixedSize(appWidth*0.04,appHeight*0.03);
     this->remarksLabel->setFont(*this->caracterFontStyle);
     this->remarksLabel->setStyleSheet(this->labelStyleSheet);
 
     this->nameLineEdit = new QLineEdit();
-    this->nameLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->nameLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->nameLineEdit->setFont(*this->caracterFontStyle);
     this->nameLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->birthdayLineEdit = new QLineEdit();
-    this->birthdayLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->birthdayLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->birthdayLineEdit->setFont(*this->caracterFontStyle);
     this->birthdayLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->sexualLineEdit = new QLineEdit();
-    this->sexualLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->sexualLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->sexualLineEdit->setFont(*this->caracterFontStyle);
     this->sexualLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->ageLineEdit = new QLineEdit();
-    this->ageLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->ageLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->ageLineEdit->setFont(*this->caracterFontStyle);
     this->ageLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->idNumberEdit = new QLineEdit();
-    this->idNumberEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->idNumberEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->idNumberEdit->setFont(*this->caracterFontStyle);
     this->idNumberEdit->setStyleSheet(this->labelStyleSheet);
 
     this->marryLineEdit = new QLineEdit();
-    this->marryLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->marryLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->marryLineEdit->setFont(*this->caracterFontStyle);
     this->marryLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->nationLineEdit = new QLineEdit();
-    this->nationLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->nationLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->nationLineEdit->setFont(*this->caracterFontStyle);
     this->nationLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->professionalLineEdit = new QLineEdit();
-    this->professionalLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->professionalLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->professionalLineEdit->setFont(*this->caracterFontStyle);
     this->professionalLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->leadDoctorEdit = new QLineEdit();
-    this->leadDoctorEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->leadDoctorEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->leadDoctorEdit->setFont(*this->caracterFontStyle);
     this->leadDoctorEdit->setStyleSheet(this->labelStyleSheet);
 
     this->therapyTimeEdit = new QLineEdit();
-    this->therapyTimeEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->therapyTimeEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->therapyTimeEdit->setFont(*this->caracterFontStyle);
     this->therapyTimeEdit->setStyleSheet(this->labelStyleSheet);
 
     this->drugAllergyLineEdit = new QLineEdit();
-    this->drugAllergyLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->drugAllergyLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->drugAllergyLineEdit->setFont(*this->caracterFontStyle);
     this->drugAllergyLineEdit->setStyleSheet(this->labelStyleSheet);
 
     this->remarksLineEdit = new QLineEdit();
-    this->remarksLineEdit->setFixedSize(appWidth*0.14, appHeight*0.03);
+    this->remarksLineEdit->setFixedSize(appWidth*0.1, appHeight*0.03);
     this->remarksLineEdit->setFont(*this->caracterFontStyle);
     this->remarksLineEdit->setStyleSheet(this->labelStyleSheet);
 
-    this->patientInfoContainer = new QWidget();
-    this->patientInfoContainer->setStyleSheet("border:1px solid lightgray; background-color:"+this->workspaceColor);
-
-    this->patientInfoContainer->setFixedSize(this->appWidth*0.4, appHeight*0.26);
+    this->patientInfoContainer = new QLabel();
+    this->patientInfoContainer->setStyleSheet("background-color:red");
+    this->patientInfoContainer->setFixedSize(this->appWidth*0.28, appHeight*0.26);
     this->patientInfoContainerLayout = new QGridLayout(patientInfoContainer);
     this->patientInfoContainerLayout->addWidget(nameLabel, 0, 0);
     this->patientInfoContainerLayout->addWidget(nameLineEdit, 0, 1);
@@ -890,24 +898,24 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
 
     this->plottingBoardIndication = new QLabel();
-    this->plottingBoardIndication->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
+    this->plottingBoardIndication->setFixedSize(this->appWidth*0.32, this->appHeight*0.04);
     this->plottingBoardIndication->setStyleSheet("background:transparent");
 
     this->plottingBoard = new PlottingBoard();
-    this->plottingBoard->setFixedSize(this->appWidth*0.4, this->appHeight*0.65);
+    this->plottingBoard->setFixedSize(this->appWidth*0.32, this->appHeight*0.65);
     this->plottingBoard->setWorkSpaceColor(this->workspaceColor);
     this->plottingBoard->embellshing();
 
     this->plottingButton =  new QPushButton();
     this->plottingButton->setIcon(QIcon(":/images/image_update.png"));
-    this->plottingButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
-    this->plottingButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->plottingButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.03));
+    this->plottingButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.03);
     this->plottingButton->setFlat(true);
 
     this->plottingBoardConfigurationSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->plottingBoardConfiguration = new QLabel();
-    this->plottingBoardConfiguration->setFixedSize(this->appWidth*0.4, this->appHeight*0.03);
+    this->plottingBoardConfiguration->setFixedSize(this->appWidth*0.32, this->appHeight*0.03);
     this->plottingBoardConfiguration->setStyleSheet("background:transparent");
     this->plottingBoardConfigurationLayout = new QHBoxLayout(this->plottingBoardConfiguration);
     this->plottingBoardConfigurationLayout ->addWidget(this->plottingButton);
@@ -916,7 +924,7 @@ void PatientsWidget::constructIHM(){
     this->plottingBoardConfigurationLayout->setMargin(0);
 
     this->volumeDataAnalyseArea = new QLabel();
-    this->volumeDataAnalyseArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.72);
+    this->volumeDataAnalyseArea->setFixedSize(this->appWidth*0.32, this->appHeight*0.72);
     this->volumeDataAnalyseAreaLayout = new QVBoxLayout(this->volumeDataAnalyseArea);
     this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoardConfiguration);
     this->volumeDataAnalyseAreaLayout->addWidget(this->plottingBoard);
@@ -937,39 +945,96 @@ void PatientsWidget::constructIHM(){
 
     this->imageConfigurationArea = new QLabel();
     this->imageConfigurationArea->setStyleSheet("background:"+this->workspaceColor);
-    this->imageConfigurationArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.04);
+    this->imageConfigurationArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
     this->imageConfigurationAreaLayout = new QHBoxLayout(this->imageConfigurationArea);
     this->imageConfigurationAreaLayout->addWidget(this->guidewareMovementButton);
     this->imageConfigurationAreaLayout->addItem(this->imageConfigurationAreaSpacer);
     this->imageConfigurationAreaLayout->setSpacing(0);
     this->imageConfigurationAreaLayout->setMargin(0);
 
-
     this->patientImageLoaded = new QVTKWidget();
-    this->patientImageLoaded->setFixedSize(this->appWidth*0.6, this->appHeight*0.69);
+    this->patientImageLoaded->setFixedSize(this->appWidth*0.4, this->appHeight*0.68);
 
     this->patientImageDispalyArea = new QLabel();
-    this->patientImageDispalyArea->setFixedSize(this->appWidth*0.6, this->appHeight*0.72);
+    this->patientImageDispalyArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.72);
     this->patientImageDispalyAreaLayout = new QVBoxLayout(patientImageDispalyArea);
     this->patientImageDispalyAreaLayout->addWidget(this->patientImageLoaded);
     this->patientImageDispalyAreaLayout->addWidget(this->imageConfigurationArea);
-
-
     this->patientImageDispalyAreaLayout->setSpacing(0);
     this->patientImageDispalyAreaLayout->setMargin(0);
+
+    //! -----------------------------------------------------------------------------------------------------------------
+    //!
+    //!cpr
+    //!
+    this->curvePlanReformationArea = new QLabel();
+    this->curvePlanReformationArea->setFixedWidth(this->appWidth*0.32);
+    //this->curvePlanReformationArea->setStyleSheet("background:cyan");
+
+    //! ------------------------------------------------------------------------------------------------------------------
+    //!
+    //! fly thourht cam
+    //!
+    this->flyThroughDisplayArea = new QVTKWidget();
+    this->flyThroughDisplayArea->setFixedSize(this->appWidth*0.27, this->appHeight*0.68);
+
+    this->flyThroughtConfigurationBarSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    this->cutButton =  new QPushButton();
+    this->cutButton->setIcon(QIcon(":/images/couteau.png"));
+    this->cutButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
+    this->cutButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->cutButton->setFlat(true);
+
+    this->cuttingLayerOption = new QSpinBox();
+    this->cuttingLayerOption->setFixedSize(this->appWidth*0.03, this->appHeight*0.03);
+    this->cuttingLayerOption->setStyleSheet("QSpinBox {background:"+this->workspaceColor+";border: 1 solide lightgray; color:beige;;selection-background-color: black;}"
+                                            "QSpinBox::up-arrow {image: url(:/images/up_arrow.png);width: 5px;height: 5px;}"
+                                            "QSpinBox::down-arrow {image: url(:/images/down_arrow.png);width: 5px;height: 5px; }");
+
+    this->flyThroughtConfigurationBar = new QLabel();
+    this->flyThroughtConfigurationBar->setFixedSize(this->appWidth*0.27, this->appHeight*0.04);
+    this->flyThroughtConfigurationBarLayout = new QHBoxLayout(this->flyThroughtConfigurationBar);
+    this->flyThroughtConfigurationBarLayout->addWidget(this->cutButton);
+    this->flyThroughtConfigurationBarLayout->addWidget(this->cuttingLayerOption);
+    this->flyThroughtConfigurationBarLayout->addItem(this->flyThroughtConfigurationBarSpacer);
+    this->flyThroughtConfigurationBarLayout->setSpacing(0);
+    this->flyThroughtConfigurationBarLayout->setMargin(0);
+
+    this->flyThroughtArea = new QLabel();
+    this->flyThroughtArea->setFixedSize(this->appWidth*0.27, this->appHeight*0.72);
+    this->flyThroughtAreaLayout = new QVBoxLayout(this->flyThroughtArea);
+    this->flyThroughtAreaLayout->addWidget(flyThroughDisplayArea);
+    this->flyThroughtAreaLayout->addWidget(flyThroughtConfigurationBar);
+    this->flyThroughtAreaLayout->setSpacing(0);
+    this->flyThroughtAreaLayout->setMargin(0);
+
+    analyseResultDisplayArea = new QLabel();
+    analyseResultDisplayArea->setFixedWidth(this->appWidth*0.32);
+    analyseResultDisplayAreaLayout = new QVBoxLayout(analyseResultDisplayArea);
+    analyseResultDisplayAreaLayout->addWidget(this->curvePlanReformationArea);
+    analyseResultDisplayAreaLayout->addWidget(this->volumeDataAnalyseArea);
+    analyseResultDisplayAreaLayout->setSpacing(0);
+    analyseResultDisplayAreaLayout->setMargin(0);
 
     //! --------------------------------------------------------------------------------------
     //! patients widget workspace
     //! --------------------------------------------------------------------------------------
     this->patientsWidgetWorkspace = new QWidget();
-
     this->patientsWidgetWorkspaceLayout = new QGridLayout(this->patientsWidgetWorkspace);
     this->patientsWidgetWorkspaceLayout->addWidget(patientsPhotoWidget, 0, 0);
-    this->patientsWidgetWorkspaceLayout->addWidget(patientImageDispalyArea, 1, 0);
     this->patientsWidgetWorkspaceLayout->addWidget(patientInfoContainer,0, 1);
-    this->patientsWidgetWorkspaceLayout->addWidget(volumeDataAnalyseArea, 1, 1);
+    this->patientsWidgetWorkspaceLayout->addWidget(patientImageDispalyArea, 1, 0);
+    this->patientsWidgetWorkspaceLayout->addWidget(flyThroughtArea, 1, 1);
     this->patientsWidgetWorkspaceLayout->setSpacing(0);
     this->patientsWidgetWorkspaceLayout->setMargin(0);
+
+    this->medicalImageAnalyseArea = new QWidget();
+    this->medicalImageAnalyseAreaLayout = new QHBoxLayout(medicalImageAnalyseArea);
+    this->medicalImageAnalyseAreaLayout->addWidget(this->patientsWidgetWorkspace);
+    this->medicalImageAnalyseAreaLayout->addWidget(analyseResultDisplayArea);
+    this->medicalImageAnalyseAreaLayout->setSpacing(0);
+    this->medicalImageAnalyseAreaLayout->setMargin(0);
 
     //! --------------------------------------------------------------------------------------
     //! loading bar
@@ -977,13 +1042,13 @@ void PatientsWidget::constructIHM(){
     this->surgeryLoadingBar = new QProgressBar();
     this->surgeryLoadingBar->setStyleSheet("QPrgressBar{background-color:red}"
                                            "QProgressBar::chunk {background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0 green, stop: 1 white);}");
-    this->surgeryLoadingBar->setFixedSize(this->appWidth*0.6,this->appHeight*0.03);
+    this->surgeryLoadingBar->setFixedSize(this->appWidth*0.4,this->appHeight*0.03);
     this->surgeryLoadingBar->setMaximum(100);
     this->surgeryLoadingBar->setMinimum(0);
 
     this->surgeryLoadingIndicationLabel = new QLabel("status bar");
     this->surgeryLoadingIndicationLabel->setStyleSheet("background-color:transparent");
-    this->surgeryLoadingIndicationLabel->setFixedSize(this->appWidth*0.4,this->appHeight*0.03);
+    this->surgeryLoadingIndicationLabel->setFixedSize(this->appWidth*0.28,this->appHeight*0.03);
 
     this->surgeryLoadingWidget = new QWidget();
     this->surgeryLoadingWidget->setFixedHeight(this->appHeight*0.03);
@@ -998,7 +1063,7 @@ void PatientsWidget::constructIHM(){
     //!--------------------------------------------------------------------------------------
     this->patientsWidgetLayout = new QVBoxLayout(this);
     this->patientsWidgetLayout->addWidget(this->patientsWidgetToolBar);
-    this->patientsWidgetLayout->addWidget(this->patientsWidgetWorkspace);
+    this->patientsWidgetLayout->addWidget(this->medicalImageAnalyseArea);
     //this->patientsWidgetLayout->addWidget(this->surgeryLoadingWidget);
     this->patientsWidgetLayout->setSpacing(0);
     this->patientsWidgetLayout->setContentsMargins(0,0,0,0);
@@ -1030,6 +1095,8 @@ void PatientsWidget::addPatientToWidget(QString path){
             break;
      }
  }
+
+
 
  //!----------------------------------------------------------------------------------------------------
  //!

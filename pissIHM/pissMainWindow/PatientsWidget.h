@@ -20,6 +20,7 @@
 #include <QPixmap>
 #include <QBitmap>
 #include <QProgressDialog>
+#include <QSpinBox>
 
 #include "SystemDispatcher.h"
 #include "DicomCDRomReader.h"
@@ -138,6 +139,10 @@ private:
     QVBoxLayout *patientImageDispalyAreaLayout;
 
     QVTKWidget* patientImageLoaded;
+
+    QWidget*medicalImageAnalyseArea;
+    QHBoxLayout *medicalImageAnalyseAreaLayout;
+
     QWidget* patientsWidgetWorkspace;
 
     QWidget* patientHandlingWidget;
@@ -146,7 +151,7 @@ private:
     QWidget* downBlackArea;
     QWidget* leftBlackArea;
     QWidget* rightBlackArea;
-    QWidget* patientInfoContainer;
+    QLabel* patientInfoContainer;
     QWidget* surgeryLoadingWidget;
 
     PatientItem* firstPatientPhotoWidget;
@@ -185,6 +190,20 @@ private:
     QLabel* remarksLabel;
     QLabel* leadDoctorLabel;
     QLabel* therapyTimeLabel;
+
+    QLabel *curvePlanReformationArea;
+    QLabel *flyThroughtArea;
+    QVBoxLayout *flyThroughtAreaLayout;
+    QLabel *flyThroughtConfigurationBar;
+    QHBoxLayout *flyThroughtConfigurationBarLayout;
+    QVTKWidget *flyThroughDisplayArea;
+    QSpacerItem* flyThroughtConfigurationBarSpacer;
+
+    QPushButton *cutButton;
+    QSpinBox *cuttingLayerOption;
+
+    QLabel *analyseResultDisplayArea;
+    QVBoxLayout *analyseResultDisplayAreaLayout;
 
     QLineEdit* nameLineEdit;
     QLineEdit* birthdayLineEdit;
@@ -258,6 +277,7 @@ public slots:
     void onPlottingButtonClicked();
     void onGuidewareMovementButtonClicked();
     void flyThrough();
+    void onCutButtonClicked();
 };
 
 #endif // PATIENTSWIDGET_H

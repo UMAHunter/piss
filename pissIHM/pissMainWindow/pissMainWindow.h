@@ -133,10 +133,10 @@ private:
     QHBoxLayout *mainPlatformLayout;
     QGridLayout *statusBarLayout;
     QVBoxLayout *systemInformationBoardWidgetLayout;
-    QHBoxLayout *configurationBoardLayout;
+
 
     QWidget *mainPlatform;
-    QWidget *configurationBoard;
+
     QWidget *controlBoard;
     QWidget *statusBar;
     QWidget *systemInformationBoardWidget;

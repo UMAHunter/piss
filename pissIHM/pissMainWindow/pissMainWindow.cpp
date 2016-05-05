@@ -129,7 +129,7 @@ AlgorithmTestPlatform* pissMainWindow::getAlgorithmTestPlatform(){
 //! \brief pissMainWindow::globalBackgroundColorSetting
 //!
 void pissMainWindow::globalBackgroundColorSetting(){
-    configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
+    //configurationBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     controlBoard->setStyleSheet("background-color:"+this->globalBackgroundColor);
     this->algorithmTestPlatform->setBackgroundColor(this->globalBackgroundColor);
     systemInformationBoardWidget->setStyleSheet("background-color:"+this->globalBackgroundColor);
@@ -142,13 +142,6 @@ void pissMainWindow::globalBackgroundColorSetting(){
 //!
 void pissMainWindow::constructIHM(){
 
-    //!------------------------------------------------------------------------------------------
-    //! configurationBoard:
-    //!------------------------------------------------------------------------------------------
-    configurationBoard = new QWidget();
-    configurationBoard->setFixedWidth(this->primary_screen_width*0.22);
-    configurationBoardLayout = new QHBoxLayout(configurationBoard);
-
     //!----------------------------------------------------------------------------------------------------------------------------
     //! le page pour visualiser les informations des maladies, aussi pour choisir le bonne personne qui doit commencer le th??rapy
     //!----------------------------------------------------------------------------------------------------------------------------
@@ -158,7 +151,7 @@ void pissMainWindow::constructIHM(){
                                             this->patientInformationWidget,
                                             this->surgeryTimer,
                                             this->englishCaracterStyle,
-                                            this->primary_screen_width*0.765,
+                                            this->primary_screen_width*0.985,
                                             this->primary_screen_height*0.79,
                                             this->globalWorkSpaceColor,
                                             this->globalFontColor);
@@ -178,7 +171,7 @@ void pissMainWindow::constructIHM(){
     //!----------------------------------------------------------------------------------------------------------------------------
     //! surveillance sur les ??tats du system
     //!----------------------------------------------------------------------------------------------------------------------------
-    surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.846,
+    surgerySystemWidget = new SurgerySystemWidget(primary_screen_width*0.985,
                                                   primary_screen_height*0.79,
                                                   this->systemDispatcher,
                                                   this->algorithmTestPlatform,
@@ -236,7 +229,7 @@ void pissMainWindow::constructIHM(){
     //!----------------------------------------------------------------------------------------------------
     mainPlatform = new QWidget();
     mainPlatformLayout = new QHBoxLayout(mainPlatform);
-    mainPlatformLayout->addWidget(configurationBoard);
+    //mainPlatformLayout->addWidget(configurationBoard);
     mainPlatformLayout->addWidget(systemInformationBoardWidget);
     mainPlatformLayout->addWidget(controlBoard);
     mainPlatformLayout->setSpacing(0);
