@@ -89,6 +89,9 @@ void PatientsWidget::initVariable(){
     flyThroughTimer = new QTimer();
     flyThroughCpt = 0;
 
+    flyThroughRenderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+    flyThroughRenderer = vtkSmartPointer<vtkRenderer>::New();
+    flyThroughRenderWindow->AddRenderer(flyThroughRenderer);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -96,15 +99,15 @@ void PatientsWidget::initVariable(){
 //! \brief PatientsWidget::setConnections
 //!
 void PatientsWidget::setConnections(){
-    this->connect(this->cdRomParseButton,    SIGNAL(clicked()), this, SLOT(doParseCdRom()));
-    this->connect(this->surgeryLaunchButton, SIGNAL(clicked()), this, SLOT(launchSurgery()));
-    this->connect(this->addPatientButton,    SIGNAL(clicked()), this, SLOT(addPatient()));
-    this->connect(this->leftSelectButton,    SIGNAL(clicked()), this, SLOT(doLeftSelect()));
-    this->connect(this->rightSelectButton,   SIGNAL(clicked()), this, SLOT(doRightSelect()));
-    this->connect(this->plottingButton,      SIGNAL(clicked()), this, SLOT(onPlottingButtonClicked()));
-    this->connect(this->guidewareMovementButton, SIGNAL(clicked()), this, SLOT(onGuidewareMovementButtonClicked()));
-    this->connect(this->flyThroughTimer, SIGNAL(timeout()), this, SLOT(flyThrough()));
-    this->connect(this->cutButton, SIGNAL(clicked()), this, SLOT(onCutButtonClicked()));
+    this->connect(this->cdRomParseButton,        SIGNAL(clicked()),  this,  SLOT(doParseCdRom()));
+    this->connect(this->surgeryLaunchButton,     SIGNAL(clicked()),  this,  SLOT(launchSurgery()));
+    this->connect(this->addPatientButton,        SIGNAL(clicked()),  this,  SLOT(addPatient()));
+    this->connect(this->leftSelectButton,        SIGNAL(clicked()),  this,  SLOT(doLeftSelect()));
+    this->connect(this->rightSelectButton,       SIGNAL(clicked()),  this,  SLOT(doRightSelect()));
+    this->connect(this->plottingButton,          SIGNAL(clicked()),  this,  SLOT(onPlottingButtonClicked()));
+    this->connect(this->guidewareMovementButton, SIGNAL(clicked()),  this,  SLOT(onGuidewareMovementButtonClicked()));
+    this->connect(this->flyThroughTimer,         SIGNAL(timeout()),  this,  SLOT(flyThrough()));
+    this->connect(this->cutButton,               SIGNAL(clicked()),  this,  SLOT(onCutButtonClicked()));
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -134,11 +137,13 @@ void PatientsWidget::flyThrough(){
     vtkActor *posActor = vtkActor::New();
     posActor->SetMapper(posMapper);
     posActor->GetProperty()->SetColor(0,255,255);
-    //this->algorithmTestPlatform->setSystemStatus("0," + QString::number(int(255*1.0*flyThroughCpt/vesselPointCount)) + ", 255");
     this->renderer->AddActor(posActor);
     this->renderer->ResetCamera();
-    patientImageLoaded->update();
+    this->flyThroughRenderer->AddActor(posActor);
+    this->flyThroughRenderer->ResetCamera();
 
+    patientImageLoaded->update();
+    flyThroughDisplayArea->update();
     flyThroughCpt += 10;
     if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
         this->flyThroughTimer->stop();
@@ -520,6 +525,8 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
     workspaceBlue = qworkspaceColor->blue();
 
     this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->flyThroughRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+
     this->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsWidgetToolBar->setStyleSheet("background-color:"+this->workspaceColor);
     this->patientsPhotoWidget->setStyleSheet("background-color:"+this->workspaceColor);
@@ -977,6 +984,7 @@ void PatientsWidget::constructIHM(){
     //!
     this->flyThroughDisplayArea = new QVTKWidget();
     this->flyThroughDisplayArea->setFixedSize(this->appWidth*0.27, this->appHeight*0.68);
+    this->flyThroughDisplayArea->SetRenderWindow(flyThroughRenderWindow);
 
     this->flyThroughtConfigurationBarSpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
 

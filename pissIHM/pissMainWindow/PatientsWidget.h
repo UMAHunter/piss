@@ -110,6 +110,9 @@ private:
     vtkSmartPointer<vtkRenderer> renderer;
     vtkVolumeProperty*volumeProperty;
 
+    vtkSmartPointer<vtkRenderWindow> flyThroughRenderWindow;
+    vtkSmartPointer<vtkRenderer> flyThroughRenderer;
+
     QVBoxLayout* patientsWidgetLayout;
     QGridLayout* patientsWidgetWorkspaceLayout;
     QHBoxLayout* patientsPhotoWidgetLayout;
