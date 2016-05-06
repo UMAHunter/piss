@@ -169,7 +169,6 @@ void PatientsWidget::onGuidewareMovementButtonClicked(){
 void PatientsWidget::onPlottingButtonClicked(){
 
       QVector<HistogramPoint*> frequencies = this->dispatcher->getHistogramOfVolumeData(this->currentVolumeImage);
-
       int index = plottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
       plottingBoard->doHistogramPlotting(index,frequencies);
 }

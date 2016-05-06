@@ -460,13 +460,9 @@ vtkPoints*Patient::getVesselByName(QString name){
 //! \param path
 //!
 void Patient::loadVesselByPath(QString path){
-
     vtkPoints *vessel = vtkPoints::New();
     centerReader->doReadCenterLineFile(centerLineFolderPath+path, vessel);
-
     vessels[path] = vessel;
-
-    qDebug()<<vessels.keys();
 }
 
 //! --------------------------------------------------------------------------------------------------------------------------------

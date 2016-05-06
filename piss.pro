@@ -112,12 +112,12 @@ SOURCES +=  main.cpp\
             pissSystemDataWare/CArm.cpp \
             pissSystemDataWare/InterventionalTool.cpp \
             pissIHM/pissMainWindow/SystemOptions.cpp \
-    pissIHM/pissMainWindow/SystemComponentsContainer.cpp \
-    pissIHM/pissMainWindow/CommunicationStatesContainer.cpp \
-    pissConnectionFactory/Device.cpp \
-    pissConnectionFactory/Devices.cpp \
-    pissConnectionFactory/igtClient.cpp \
-    pissSystemDataWare/AcquisitionPoint.cpp
+            pissIHM/pissMainWindow/SystemComponentsContainer.cpp \
+            pissIHM/pissMainWindow/CommunicationStatesContainer.cpp \
+            pissConnectionFactory/Device.cpp \
+            pissConnectionFactory/Devices.cpp \
+            pissConnectionFactory/igtClient.cpp \
+            pissSystemDataWare/AcquisitionPoint.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
