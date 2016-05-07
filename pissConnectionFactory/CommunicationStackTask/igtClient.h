@@ -4,13 +4,14 @@
 #include <QTcpSocket>
 
 #include "pissTransmissionTask.h"
+#include "HandShakeMessage.h"
 
 
 class igtClient : public QObject
 {
     Q_OBJECT
 private:
-    QTcpSocket* socket;
+    QTcpSocket* soc;
 
     pissTransmissionTask *transmissionTask;
     QVector <OutputQueue*> *oq;

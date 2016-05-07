@@ -9,6 +9,9 @@
 #include"Device.h"
 
 
+/**
+ * @brief The Devices class
+ */
 class Devices
 {
 public:
@@ -17,16 +20,15 @@ public:
     void append(QString ModuleName, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
     void append(int ModuleNumber, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
 
-    QHostAddress ipDetect();
-
-    void setModuleName(QString ModuleName);
-    void setIpAddressByModule(QString ModuleName, QHostAddress ip);
-    void setSockettransByModule(QString ModuleName, int Sockettrans);
-    void setClientlistenportByModule(QString ModuleName, quint32 Clientlistenport);
+    void setIpAddressById(int id, QString ip);
+    void setSocketTransById(int id, int st);//-----
+    void setSocketReceptionById(int id, qintptr sr);
+    void setClientlistenportById(int id, quint32 Clientlistenport);
     void setCodeByModule(QString ModuleName, bool Code);
 
     QHostAddress getIpAddressByModule(QString ModuleName);
     QHostAddress getIpAddressByModule(int ModuleNumber);
+    QString ipDetect();
 
     int getPortByModule(QString ModuleName);
     int getPortByModule(int ModuleNumber);
@@ -37,15 +39,24 @@ public:
     quint32 getClientlistenportByModule(QString ModuleName);
     bool getCodeByModule(QString ModuleName);
 
-    void addClient();
+    int addClient();
     int getClientNumber();
 
     Device* getDeviceAt(int index);
+
+    Device* getSelf();
+    void setMyListenPort(quint32 port);
+
 private:
     QMutex mutex;
+
     int deviceCount;
-    QString moduleName;
-    QList <Device*> devices;
+
+    Device* me;
+
+    QList <Device*> incomingDevices;
+
+
 
 public:
     Devices();

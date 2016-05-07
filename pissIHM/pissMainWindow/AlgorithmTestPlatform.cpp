@@ -250,7 +250,7 @@ void AlgorithmTestPlatform::setConnections(){
 //!
 void AlgorithmTestPlatform::setSystemStatus(QString status){
 
-    systemMessage += "\n" +status;
+    systemMessage = status + "\n" + systemMessage;
 
     this->systemStatus->setText(systemMessage);
 }

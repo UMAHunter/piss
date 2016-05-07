@@ -10,8 +10,12 @@
 #include "pissServer.h"
 #include "GlobalTime.h"
 #include "igtClient.h"
+#include "SystemDataBase.h"
 
 
+/**
+ * @brief The pissCommunicationStack class
+ */
 class pissCommunicationStack
 {
 private:
@@ -24,16 +28,17 @@ private:
     pissServer *server;
     GlobalTime *globalTime;
 
+    //!
+    SystemDataBase* database;
+
 public:
     bool launchServer();
-    bool connectBack(bool flag/*first time or not*/,
-                     QString addr,
-                     int port);
+    bool connectBack(bool flag, QString addr, int port);
     bool closeServer();
-
     void clearBuffer();
+    Device* getSelf();
 
-    Devices* getNetworkEnvironment();
+    void setDatabase(SystemDataBase* database);
 
 public:
     pissCommunicationStack(GlobalTime *globalTime);

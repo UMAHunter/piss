@@ -68,10 +68,10 @@ void PatientsWidget::initVariable(){
     this->volumeProperty->SetInterpolationType(VTK_LINEAR_INTERPOLATION);
 
     vtkSmartPointer<vtkPiecewiseFunction> compositeOpacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
-    compositeOpacity->AddPoint(0.0,   0.0);
+    compositeOpacity->AddPoint(0.0,    0.0);
     compositeOpacity->AddPoint(1200.0, 0.0);
-    compositeOpacity->AddPoint(1600.0,0.7);
-    compositeOpacity->AddPoint(2400.0,0.7);
+    compositeOpacity->AddPoint(1600.0, 0.7);
+    compositeOpacity->AddPoint(2400.0, 0.7);
     this->volumeProperty->SetScalarOpacity(compositeOpacity); // composite first.
 
     vtkSmartPointer<vtkColorTransferFunction> color = vtkSmartPointer<vtkColorTransferFunction>::New();
@@ -341,52 +341,23 @@ void PatientsWidget::launchSurgery(){
         this->surgeryPlanWindow->setStartTime(this->surgeryTimer->elapsed());
     }
     else if(screen_count == 3){
-        QProgressDialog *progressDlg=new QProgressDialog(this);
-        QFont font("ZYSong18030",12);
-        progressDlg->setFont(font);
-        progressDlg->setWindowModality(Qt::WindowModal);
-        progressDlg->setMinimumDuration(5);
-        progressDlg->setWindowTitle(tr("please wait"));
-        progressDlg->setLabelText(tr("system launching......      "));
-        progressDlg->setCancelButtonText(tr("cancel"));
-        progressDlg->setRange(0,10);
 
         this->surgeryLaunchButton->setEnabled(false);
         this->surgeryLaunchButton->setStyleSheet("background-color:transparent;border:1px solid gray;color:gray");
         this->leftSelectButton->setEnabled(false);
         this->rightSelectButton->setEnabled(false);
 
-        progressDlg->setValue(1);
-        if(progressDlg->wasCanceled())
-            return;
-
         Patient *patientHandling = this->dispatcher->getPatientById(waitingPatientsIDQueue[4].toInt(0,10));
 
-        progressDlg->setValue(2);
-        if(progressDlg->wasCanceled())
-            return;
 
         this->surgeryPlanWindow->setPatientHandling(patientHandling);
         this->surgeryPlanWindow->update();
 
-        progressDlg->setValue(4);
-        if(progressDlg->wasCanceled())
-            return;
-
         this->guidewareTrackingWindow->setPatientHandling(patientHandling);
         this->guidewareTrackingWindow->update();
 
-        progressDlg->setValue(6);
-        if(progressDlg->wasCanceled())
-            return;
-
-        //this->superviseWindow->show();
-
         emit surgeryLaunchButtonCicked();
 
-        progressDlg->setValue(10);
-        if(progressDlg->wasCanceled())
-            return;
 
         //! ------------------------------------------
         //! loading task terminated......
@@ -406,8 +377,6 @@ void PatientsWidget::launchSurgery(){
         //! -------------------------------------------
         this->guidewareTrackingWindow->realTimeVideoPlay();
         this->guidewareTrackingWindow->lastFramePlay();
-        // this->guidewareTrackingWindow->VTKDisplay();
-        // this->guidewareTrackingWindow->VTKFlowDisplay();
     }
     else{
 

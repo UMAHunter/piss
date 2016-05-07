@@ -11,11 +11,11 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices){
 
     motivateConnectionRequest = true;
 
-    socket = new QTcpSocket();
+    soc = new QTcpSocket();
 
-    transmissionTask = new pissTransmissionTask(this->id, oq, devices, socket);
+    transmissionTask = new pissTransmissionTask(this->id, oq, devices, soc);
 
-    this->connect(this->socket, SIGNAL(connected()), this, SLOT(startTransfer()));
+    this->connect(this->soc, SIGNAL(connected()), this, SLOT(startTransfer()));
 }
 
 //! ---------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices){
 //!
 void igtClient::connect_request(QString addr, int port){
     motivateConnectionRequest = true;
-    socket->connectToHost(addr, port);
+    soc->connectToHost(addr, port);
 }
 
 //! ---------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ void igtClient::connect_request(QString addr, int port){
 //!
 void igtClient::connectBackRequest(QString addr, int port){
     motivateConnectionRequest = false;
-    socket->connectToHost(addr, port);
+    soc->connectToHost(addr, port);
 }
 
 //! ---------------------------------------------------------------------------------
@@ -46,8 +46,15 @@ void igtClient::connectBackRequest(QString addr, int port){
 //!
 void igtClient::startTransfer(){
 
+//    devices->setSocketTransById();
+
     if(motivateConnectionRequest){
         //!todo directly send handshake msg
+//        HandShakeMessage msg;
+//        msg.setDataType();
+//        ...
+
+        //soc->write( msg.toDatagramme().getValue())
 
         transmissionTask->launch();
     }

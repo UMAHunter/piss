@@ -11,15 +11,18 @@ pissServer::pissServer(QVector <InputQueue*> *inputQueueManager,
                        QVector <OutputQueue*> *outputQueueManager,
                        Devices *networkEnvironment,
                        DatagrammeAnalyser *datagrammeAnalyser,
-                       GlobalTime *globalTime)
+                       GlobalTime *globalTime,
+                       SystemDataBase* database)
 {
     this->serverStatus = false;
     this->id = 0;
+
     this->inputQueueManager = inputQueueManager;
     this->outputQueueManager = outputQueueManager;
-    this->networkEnvironment = networkEnvironment;
+    this->devices = networkEnvironment;
     this->datagrammeAnalyser = datagrammeAnalyser;
     this->globalTime = globalTime;
+    this->database = database;
 }
 
 //!--------------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +68,7 @@ bool pissServer::launchServer(){
         return false;
     }
 
-    serverStatus = this->listen(QHostAddress::Any, this->networkEnvironment->getPortByModule(0));
+    serverStatus = this->listen(QHostAddress::Any, this->devices->getPortByModule(0));
     return serverStatus;
 }
 
@@ -80,25 +83,24 @@ bool pissServer::getConnectionState(){
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief pissServer::incomingConnection
-//! \param socketDescriptor
+//! \param sd
 //!
-void pissServer::incomingConnection(qintptr socketDescriptor){ 
-    this->networkEnvironment->addClient();
+void pissServer::incomingConnection(qintptr sd){
 
+    //! add incoming device
+    int id = this->devices->addClient();
+    this->devices->setSocketReceptionById(id, sd);
+
+    //! generate correspondant input & output queue for the incoming device
     InputQueue *myInputQueue = new InputQueue();
-    myInputQueue->clear();
     OutputQueue *myOutputQueue = new OutputQueue();
-    myOutputQueue->clear();
 
+    //! push queue pair into global queue manager
     inputQueueManager->push_back(myInputQueue);
     outputQueueManager->push_back(myOutputQueue);
 
-    pissReceptionTask *receptionTask = new pissReceptionTask(id,
-                                                             socketDescriptor,
-                                                             datagrammeAnalyser,
-                                                             inputQueueManager,
-                                                             networkEnvironment);
-
+    //! create real time reception task
+    pissReceptionTask *receptionTask = new pissReceptionTask(id, sd, datagrammeAnalyser, inputQueueManager, devices);
     receptionTask->start();
 
     id++;

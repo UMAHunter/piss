@@ -1,5 +1,11 @@
 #include "CommunicationStatesContainer.h"
 
+
+/**
+ * @brief CommunicationStatesContainer::CommunicationStatesContainer
+ * @param width
+ * @param height
+ */
 CommunicationStatesContainer::CommunicationStatesContainer(int width, int height): QFrame()
 {
     this->width = width;
@@ -19,7 +25,7 @@ CommunicationStatesContainer::CommunicationStatesContainer(int width, int height
 void CommunicationStatesContainer::setDeviceInfo(int index, Device *device){
     QTableWidgetItem *deviceNumber = new QTableWidgetItem(QString::number(device->getDeviceNumber(), 10));
     HardwareInformation->setItem(index, 0, deviceNumber);
-    QTableWidgetItem *ipAddress = new QTableWidgetItem(device->getIpAddress().toString());
+    QTableWidgetItem *ipAddress = new QTableWidgetItem(device->getIpAddress());
     HardwareInformation->setItem(index, 1, ipAddress);
     QTableWidgetItem *portNum = new QTableWidgetItem(QString::number(device->getPortNumber(), 10));
     HardwareInformation->setItem(index, 2, portNum);

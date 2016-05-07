@@ -1,6 +1,14 @@
 #include "SurgerySystemWidget.h"
 
 
+/**
+ * @brief SurgerySystemWidget::SurgerySystemWidget
+ * @param width
+ * @param height
+ * @param systemDispatcher
+ * @param algorithmTestPlatform
+ * @param workspaceColor
+ */
 SurgerySystemWidget::SurgerySystemWidget(int width,
                                          int height,
                                          SystemDispatcher* systemDispatcher,
@@ -43,14 +51,31 @@ void SurgerySystemWidget::constructIHM(){
     stopServerButton->setFixedSize(this->width*0.02, this->height*0.03);
     stopServerButton->setFlat(true);
 
+    myIpAddress = new QLabel("ipAddress:");
+    myIpAddress->setFixedSize(this->width*0.05, this->height*0.03);
+
+    myIpAddressLineEdit = new QLineEdit();
+    myIpAddressLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
+
+    myListenPort = new QLabel("port:");
+    myListenPort->setFixedSize(this->width*0.05, this->height*0.03);
+
+    myListenPortLineEdit = new QLineEdit();
+    myListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
+
     surgerySystemControlBarItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     surgerySystemControlBar = new QWidget();
     surgerySystemControlBar->setFixedHeight(this->height*0.03);
-    //surgerySystemControlBar->setStyleSheet("background-color:pink");
     surgerySystemControlBarLayout = new QHBoxLayout(surgerySystemControlBar);
     surgerySystemControlBarLayout->addWidget(startServerButton);
     surgerySystemControlBarLayout->addWidget(stopServerButton);
+    surgerySystemControlBarLayout->addWidget(myIpAddress);
+    surgerySystemControlBarLayout->addWidget(myIpAddressLineEdit);
+    surgerySystemControlBarLayout->addWidget(myListenPort);
+    surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
+
+
     surgerySystemControlBarLayout->addItem(surgerySystemControlBarItem);
     surgerySystemControlBarLayout->setSpacing(0);
     surgerySystemControlBarLayout->setMargin(0);
@@ -112,7 +137,17 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
     else{
         this->algorithmTestPlatform->setSystemStatus("please don't click the stop button when nothing happened");
     }
+}
 
+//! ----------------------------------------------------------------------------------------------
+//!
+//! \brief SurgerySystemWidget::setSelfInfo
+//! \param addr
+//! \param port
+//!
+void SurgerySystemWidget::setSelfInfo(QString addr, int port){
+    myIpAddressLineEdit->setText(addr);
+    myListenPortLineEdit->setText(QString::number(port, 10));
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -122,10 +157,11 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
 void SurgerySystemWidget::onStartServerButtonClicked(){
 
     //! fetch ip adress display at the front table...
-    communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
+    //communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
+    this->setSelfInfo(this->systemDispatcher->getMyDeviceInfo()->getIpAddress(),
+                      this->systemDispatcher->getMyDeviceInfo()->getClientlistenport());
 
     bool ret = this->systemDispatcher->launchCommunicationStackServer();
-
 
     if(ret){
         this->algorithmTestPlatform->setSystemStatus("platform server started");

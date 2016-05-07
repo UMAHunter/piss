@@ -199,5 +199,5 @@ QString SystemDispatcher::doImageProcessingByMethodType(int id, int dim, QString
 //! \return
 //!
 Device* SystemDispatcher::getMyDeviceInfo(){
-    return this->communicationStack->getNetworkEnvironment()->getDeviceAt(0);
+    return this->communicationStack->getSelf();
 }

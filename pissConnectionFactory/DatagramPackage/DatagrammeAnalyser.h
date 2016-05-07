@@ -12,6 +12,7 @@
 #include "pissTransmissionTask.h"
 #include "GlobalTime.h"
 #include "igtClient.h"
+#include "SystemDataBase.h"
 
 
 //! Codes des erreurs remontees par les fonctions
@@ -28,7 +29,7 @@ typedef enum {
 class DatagrammeAnalyser
 {
 public:
-    DatagrammeAnalyser(QVector <OutputQueue*> *oq, QVector <InputQueue*> *iq, Devices *environment, GlobalTime *globalTime);
+    DatagrammeAnalyser(QVector <OutputQueue*> *oq, QVector <InputQueue*> *iq, Devices *environment, GlobalTime *globalTime, SystemDataBase* database);
     ~DatagrammeAnalyser();
 
     void encodage(QString modulename);
@@ -46,6 +47,8 @@ private:
 
     Devices *devices;
     GlobalTime *globalTime;
+
+    SystemDataBase* database;
 };
 
 #endif // DATAGRAMMEANALYSER_H

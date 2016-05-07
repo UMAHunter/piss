@@ -5,6 +5,7 @@
 #include "SystemMetaData.h"
 #include "ImageProcessingFactory.h"
 #include "CArm.h"
+#include "Devices.h"
 
 
 class SystemDataBase{
@@ -32,6 +33,8 @@ private:
     SystemMetaData* metaData;
     CArm* carm;
     ImageProcessingFactory* imageProcessingFactory;
+
+    Devices* devices;//setDevices.methode to be created..
 
 };
 

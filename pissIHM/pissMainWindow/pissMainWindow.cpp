@@ -43,7 +43,7 @@ void pissMainWindow::initVariable(){
     this->globalFontColor = "lightgray";
 
     //! -------------------------------------------------------
-    //! Des procedure afin de recuperer les tailles des ??crans;
+    //! Des procedure afin de recuperer les tailles des ecrans;
     //! -------------------------------------------------------
     this->desktop = QApplication::desktop();
     this->screen_count = desktop->screenCount();

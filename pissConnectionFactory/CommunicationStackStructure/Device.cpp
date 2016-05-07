@@ -1,18 +1,21 @@
 #include "Device.h"
 
-Device::Device()
-{
+
+/**
+ * @brief Device::Device
+ */
+Device::Device(){
 
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief ModuleIpConfig::setModuleNumber
 //! \param moduleNumber
 //!
-void Device::setModuleNumber(int moduleNumber){
-    this->moduleNumber = moduleNumber;
-    switch (moduleNumber){
+void Device::setId(int id){
+    this->id = id;
+    switch (id){
         case PISS:
             setName("piss");
             break;
@@ -27,17 +30,17 @@ void Device::setModuleNumber(int moduleNumber){
     }
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief ModuleIpConfig::getIpAddress
 //! \return
 //!
-QHostAddress Device::getIpAddress()
+QString Device::getIpAddress()
 {
     return this->addr;
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief ModuleIpConfig::getPort
 //! \return
@@ -47,13 +50,13 @@ int Device::getPortNumber()
     return this->portNumber;
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//! --------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief ModuleIpConfig::getModuleNumber
 //! \return
 //!
 int Device::getDeviceNumber(){
-    return this->moduleNumber;
+    return this->id;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
@@ -113,7 +116,7 @@ bool Device::getCode()
 //! \brief ModuleIpConfig::setIpAddress
 //! \param Addr
 //!
-void Device::setIpAddress(QHostAddress Addr)
+void Device::setIpAddress(QString Addr)
 {
     this->addr = Addr;
 }
@@ -143,7 +146,7 @@ void Device::setName(QString Name)
 //! \brief ModuleIpConfig::setSocketrec
 //! \param Socketrec
 //!
-void Device::setSocketrec(int Socketrec)
+void Device::setSocketrec(qintptr Socketrec)
 {
     this->socketrec = Socketrec;
 }

@@ -20,6 +20,12 @@ INCLUDEPATH += pissIHM
 
 INCLUDEPATH += pissConnectionFactory
 
+INCLUDEPATH += pissConnectionFactory/DatagramPackage
+
+INCLUDEPATH += pissConnectionFactory/CommunicationStackStructure
+
+INCLUDEPATH += pissConnectionFactory/CommunicationStackTask
+
 INCLUDEPATH += pissIHM/CurveReformationWindow
 
 INCLUDEPATH += pissIHM/GuiComponentLib
@@ -96,17 +102,15 @@ SOURCES +=  main.cpp\
             pissDiskImageReaderFactory/CenterLineReader.cpp \
             pissIHM/ControlConsoleWindow/ControlConsoleWindow.cpp \
             pissIHM/pissMainWindow/SurgeryLoadingWindow.cpp \
-            pissConnectionFactory/pissServer.cpp \
-            pissConnectionFactory/CDatagramme.cpp \
-            pissConnectionFactory/InputQueue.cpp \
-            pissConnectionFactory/OutputQueue.cpp \
-            pissConnectionFactory/DatagrammeAnalyser.cpp \
+            pissConnectionFactory/CommunicationStackTask/pissServer.cpp \
+            pissConnectionFactory/CommunicationStackStructure/InputQueue.cpp \
+            pissConnectionFactory/CommunicationStackStructure/OutputQueue.cpp \
             pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.cxx \
             pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.cxx \
-            pissConnectionFactory/pissReceptionTask.cpp \
-            pissConnectionFactory/pissTransmissionTask.cpp \
-            pissConnectionFactory/pissInputInformationDecoder.cpp \
-            pissConnectionFactory/pissOutputInformationEncoder.cpp \
+            pissConnectionFactory/CommunicationStackTask/pissReceptionTask.cpp \
+            pissConnectionFactory/CommunicationStackTask/pissTransmissionTask.cpp \
+            pissConnectionFactory/CommunicationStackTask/pissInputInformationDecoder.cpp \
+            pissConnectionFactory/CommunicationStackTask/pissOutputInformationEncoder.cpp \
             pissConnectionFactory/GlobalTime.cpp \
             pissConnectionFactory/pissCommunicationStack.cpp \
             pissSystemDataWare/CArm.cpp \
@@ -114,10 +118,17 @@ SOURCES +=  main.cpp\
             pissIHM/pissMainWindow/SystemOptions.cpp \
             pissIHM/pissMainWindow/SystemComponentsContainer.cpp \
             pissIHM/pissMainWindow/CommunicationStatesContainer.cpp \
-            pissConnectionFactory/Device.cpp \
-            pissConnectionFactory/Devices.cpp \
-            pissConnectionFactory/igtClient.cpp \
-            pissSystemDataWare/AcquisitionPoint.cpp
+            pissConnectionFactory/CommunicationStackStructure/Device.cpp \
+            pissConnectionFactory/CommunicationStackStructure/Devices.cpp \
+            pissConnectionFactory/CommunicationStackTask/igtClient.cpp \
+            pissSystemDataWare/AcquisitionPoint.cpp \
+            pissConnectionFactory/DatagramPackage/CDatagramme.cpp \
+            pissConnectionFactory/DatagramPackage/DatagrammeAnalyser.cpp \
+            pissConnectionFactory/DatagramPackage/HandShakeMessage.cpp \
+            pissDiskImageReaderFactory/MatFileReader.cpp \
+            pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.cpp \
+    pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.cpp \
+    pissConnectionFactory/DatagramPackage/HelloMessage.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -168,28 +179,33 @@ HEADERS  += \
             pissDiskImageReaderFactory/CenterLineReader.h \
             pissIHM/ControlConsoleWindow/ControlConsoleWindow.h \
             pissIHM/pissMainWindow/SurgeryLoadingWindow.h \
-            pissConnectionFactory/pissServer.h \
-            pissConnectionFactory/CDatagramme.h \
-            pissConnectionFactory/InputQueue.h \
-            pissConnectionFactory/OutputQueue.h \
-            pissConnectionFactory/DatagrammeAnalyser.h \
+            pissConnectionFactory/CommunicationStackTask/pissServer.h \
+            pissConnectionFactory/CommunicationStackStructure/InputQueue.h \
+            pissConnectionFactory/CommunicationStackStructure/OutputQueue.h \
             pissImageProcessingMethods/igssMathLib/vtkFrenetSerretFrame.h \
             pissImageProcessingMethods/igssMathLib/vtkSplineDrivenImageSlicer.h \
-            pissConnectionFactory/pissReceptionTask.h \
-            pissConnectionFactory/pissTransmissionTask.h \
-            pissConnectionFactory/pissInputInformationDecoder.h \
-            pissConnectionFactory/pissOutputInformationEncoder.h \
+            pissConnectionFactory/CommunicationStackTask/pissReceptionTask.h \
+            pissConnectionFactory/CommunicationStackTask/pissTransmissionTask.h \
+            pissConnectionFactory/CommunicationStackTask/pissInputInformationDecoder.h \
+            pissConnectionFactory/CommunicationStackTask/pissOutputInformationEncoder.h \
             pissConnectionFactory/GlobalTime.h \
             pissConnectionFactory/pissCommunicationStack.h \
             pissSystemDataWare/CArm.h \
             pissSystemDataWare/InterventionalTool.h \
             pissIHM/pissMainWindow/SystemOptions.h \
-    pissIHM/pissMainWindow/SystemComponentsContainer.h \
-    pissIHM/pissMainWindow/CommunicationStatesContainer.h \
-    pissConnectionFactory/Device.h \
-    pissConnectionFactory/Devices.h \
-    pissConnectionFactory/igtClient.h \
-    pissSystemDataWare/AcquisitionPoint.h
+            pissIHM/pissMainWindow/SystemComponentsContainer.h \
+            pissIHM/pissMainWindow/CommunicationStatesContainer.h \
+            pissConnectionFactory/CommunicationStackStructure/Device.h \
+            pissConnectionFactory/CommunicationStackStructure/Devices.h \
+            pissConnectionFactory/CommunicationStackTask/igtClient.h \
+            pissSystemDataWare/AcquisitionPoint.h \
+            pissConnectionFactory/DatagramPackage/CDatagramme.h \
+            pissConnectionFactory/DatagramPackage/DatagrammeAnalyser.h \
+            pissConnectionFactory/DatagramPackage/HandShakeMessage.h \
+            pissDiskImageReaderFactory/MatFileReader.h \
+            pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.h \
+    pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.h \
+    pissConnectionFactory/DatagramPackage/HelloMessage.h
 
 
 # CTK lib.....

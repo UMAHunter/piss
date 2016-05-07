@@ -18,6 +18,8 @@ BidimentionVTKConverter::~BidimentionVTKConverter()
 //!
 void BidimentionVTKConverter::BidimensionToVtk(BidimensionnelImage* input, vtkSmartPointer<vtkImageData> output){
 
+}
+
 //    int indims[3];
 //    double inspaces[3];
 //    int numvoxels;

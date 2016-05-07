@@ -9,13 +9,23 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
 {
     this->globalTime = globalTime;
 
-    devices = new Devices();
-    devices->append(0, 10703);
+    this->devices = new Devices();
+    this->devices->setMyListenPort(10703);
 
-    datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,devices,globalTime);
-    informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,devices,datagrammeAnalyser);
-    outputInformationEncoder = new pissOutputInformationEncoder();
-    server = new pissServer(&inputQueueManager,&outputQueueManager,devices, datagrammeAnalyser,globalTime);
+    this->datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,devices,globalTime, database);
+    this->informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,devices,datagrammeAnalyser);
+    this->outputInformationEncoder = new pissOutputInformationEncoder();
+    this->server = new pissServer(&inputQueueManager,&outputQueueManager,devices, datagrammeAnalyser,globalTime, database);
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief pissCommunicationStack::setDatabase
+//! \param database
+//!
+void pissCommunicationStack::setDatabase(SystemDataBase* database){
+    this->database = database;
+    //this->database->setDevices(this->devices)
 }
 
 //! -------------------------------------------------------------------------------------------------------------------
@@ -74,6 +84,6 @@ bool pissCommunicationStack::connectBack(bool flag, QString addr, int port){
 //! \brief pissCommunicationStack::getNetworkEnvironment
 //! \return
 //!
-Devices* pissCommunicationStack::getNetworkEnvironment(){
-    return this->devices;
+Device* pissCommunicationStack::getSelf(){
+    return this->devices->getSelf();
 }

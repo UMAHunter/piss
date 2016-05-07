@@ -9,6 +9,8 @@
 #include <QPixmap>
 #include <QBrush>
 #include <QBitmap>
+#include <QLabel>
+#include <QLineEdit>
 
 #include "CommunicationStatesContainer.h"
 #include "SystemComponentsContainer.h"
@@ -31,6 +33,12 @@ private:
     QPushButton *startServerButton;
     QPushButton *stopServerButton;
 
+    QLabel *myIpAddress;
+    QLabel *myListenPort;
+
+    QLineEdit *myIpAddressLineEdit;
+    QLineEdit *myListenPortLineEdit;
+
     QSpacerItem *surgerySystemControlBarItem;
 
     QHBoxLayout *surgerySystemControlBarLayout;
@@ -51,6 +59,7 @@ public:
     void setConnections();
     void closeSystem();
     void drawBackground();
+    void setSelfInfo(QString addr, int port);
 
 public slots:
     void onStartServerButtonClicked();

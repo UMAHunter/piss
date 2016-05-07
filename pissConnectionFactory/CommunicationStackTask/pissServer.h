@@ -9,6 +9,8 @@
 #include "pissReceptionTask.h"
 #include "DatagrammeAnalyser.h"
 #include "pissInputInformationDecoder.h"
+#include "SystemDataBase.h"
+
 
 /**
  * @brief The pissServer class
@@ -19,9 +21,10 @@ class pissServer : public QTcpServer
 public:
     pissServer(QVector <InputQueue*> *inputQueueManager,
                QVector <OutputQueue*> *outputQueueManager,
-               Devices* networkEnvironment,
+               Devices* devices,
                DatagrammeAnalyser *datagrammeAnalyser,
-               GlobalTime *globalTime);
+               GlobalTime *globalTime,
+               SystemDataBase* database);
 
     ~pissServer();
     bool launchServer();
@@ -32,11 +35,14 @@ private:
 
     bool serverStatus;
 
-    Devices *networkEnvironment;
+    Devices *devices;
+
     QVector <InputQueue*> *inputQueueManager;
     QVector <OutputQueue*> *outputQueueManager;
     DatagrammeAnalyser *datagrammeAnalyser;
     GlobalTime *globalTime;
+
+    SystemDataBase* database;
 
 protected:
     int id;

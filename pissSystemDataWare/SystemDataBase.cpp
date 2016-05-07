@@ -1,6 +1,9 @@
 #include "SystemDataBase.h"
 
 
+/**
+ * @brief SystemDataBase::SystemDataBase
+ */
 SystemDataBase::SystemDataBase(){
     this->patients = new Patients();
     this->metaData = new SystemMetaData();
