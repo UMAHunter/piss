@@ -238,11 +238,15 @@ void GuidewareTrackingWindow::drawBackground(){
     setWorkSpaceColor(this->globalWorkSpaceColor);
 }
 
+//!--------------------------------------------------------------------------------------------------------------------------------
+//!
+//! \brief GuidewareTrackingWindow::testVtkwidget
+//!
 void GuidewareTrackingWindow::testVtkwidget(){
 
 }
 
-
+//!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief GuidewareTrackingWindow::constructionIHM
 //!
@@ -440,9 +444,6 @@ void GuidewareTrackingWindow::constructionIHM(){
 
     this->controlButtonAreaLayout->setMargin(5);
     this->controlButtonAreaLayout->setSpacing(0);
-
-
-
 
     //!----------------------------------------------------------------------------------------------------
     //! unknown area

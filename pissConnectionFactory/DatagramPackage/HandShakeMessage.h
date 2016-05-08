@@ -3,8 +3,11 @@
 
 #include "CDatagramme.h"
 
-class HandShakeMessage
-{
+
+/**
+ * @brief The HandShakeMessage class
+ */
+class HandShakeMessage{
 
 private:
 

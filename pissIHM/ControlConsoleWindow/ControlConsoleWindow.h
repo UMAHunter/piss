@@ -30,17 +30,20 @@ private:
     QFrame *realTimeTrackingWindow;
     QFrame *indicationWindow;
 
-    QPixmap *pixmap;
-
     int width;
     int height;
+    QString workspaceColor;
+    SystemDispatcher* systemDispatcher;
+    AlgorithmTestPlatform *algorithmTestPlatform;
+    QTime* surgeryTime;
 
 
 public:
     explicit ControlConsoleWindow(QRect rect,
                                   QTime* surgeryTime,
                                   SystemDispatcher* systemDispatcher,
-                                  AlgorithmTestPlatform *algorithmTestPlatform);
+                                  AlgorithmTestPlatform *algorithmTestPlatform,
+                                  QString workspaceColor);
     void initVariable();
     void displayWindow();
     void constructionIHM();

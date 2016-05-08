@@ -26,8 +26,6 @@
 
 #include <vtkBMPReader.h>
 #include <vtkOBJReader.h>
-
-
 #include <vtkSmartPointer.h>
 #include <vtkImageViewer2.h>
 #include <vtkDICOMImageReader.h>
@@ -40,10 +38,12 @@
 #include <vtkPolyDataMapper.h>
 #include <Patient.h>
 #include <vtkPNGReader.h>
-
-//#include <vtkAVIWriter.h>
 #include <BidimensionnelImage.h>
 
+
+/**
+ * @brief The GuidewareTrackingWindow class
+ */
 class GuidewareTrackingWindow : public QWidget
 {
     Q_OBJECT

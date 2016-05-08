@@ -1,8 +1,6 @@
 #ifndef SURGERYPLANWINDOW_H
 #define SURGERYPLANWINDOW_H
 
-//#include "CenterLineProcess.h"
-
 #include <QWidget>
 #include <QFrame>
 #include <QSplitter>
@@ -112,6 +110,9 @@ struct ImageOptionStates{
     bool interventionalRouteOptionState;
 };
 
+/**
+ * @brief The SurgeryPlanWindow class
+ */
 class SurgeryPlanWindow : public QWidget
 {
     Q_OBJECT

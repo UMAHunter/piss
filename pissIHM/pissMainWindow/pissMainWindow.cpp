@@ -91,7 +91,8 @@ void pissMainWindow::initVariable(){
         this->controlConsoleWindow = new ControlConsoleWindow(  screen[1].rect,
                                                                 this->surgeryTimer,
                                                                 this->systemDispatcher,
-                                                                this->algorithmTestPlatform);
+                                                                this->algorithmTestPlatform,
+                                                                this->globalWorkSpaceColor);
 
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }
@@ -104,7 +105,8 @@ void pissMainWindow::initVariable(){
         this->controlConsoleWindow = new ControlConsoleWindow(screen[1].rect,
                                                               this->surgeryTimer,
                                                               this->systemDispatcher,
-                                                              this->algorithmTestPlatform);
+                                                              this->algorithmTestPlatform,
+                                                              this->globalWorkSpaceColor);
 
         this->connect(this->controlConsoleWindow, SIGNAL(missionAccomplishiment()), this, SLOT(surgeryTerminated()));
     }

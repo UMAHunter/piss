@@ -1,7 +1,6 @@
 #include "GlobalTime.h"
 
-GlobalTime::GlobalTime()
-{
+GlobalTime::GlobalTime(){
     LARGE_INTEGER fc;
 
     if (!QueryPerformanceFrequency(&fc))
@@ -12,8 +11,7 @@ GlobalTime::GlobalTime()
 
 }
 
-UINT64 GlobalTime::GetMicroS()
-{
+UINT64 GlobalTime::GetMicroS(){
     assert(m_frequency>1000*1000);
 
     LARGE_INTEGER fc;

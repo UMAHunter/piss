@@ -1,13 +1,27 @@
 #include "ControlConsoleWindow.h"
 
+
+/**
+ * @brief ControlConsoleWindow::ControlConsoleWindow
+ * @param rect
+ * @param surgeryTime
+ * @param systemDispatcher
+ * @param algorithmTestPlatform
+ * @param workspaceColor
+ */
 ControlConsoleWindow::ControlConsoleWindow(QRect rect,
                                            QTime* surgeryTime,
                                            SystemDispatcher* systemDispatcher,
-                                           AlgorithmTestPlatform *algorithmTestPlatform) : QWidget()
+                                           AlgorithmTestPlatform *algorithmTestPlatform,
+                                           QString workspaceColor) : QWidget()
 {
     this->width = rect.width();
     this->height = rect.height();
 
+    this->surgeryTime = surgeryTime;
+    this->systemDispatcher = systemDispatcher;
+    this->algorithmTestPlatform = algorithmTestPlatform;
+    this->workspaceColor = workspaceColor;
 
     this->initVariable();
     this->constructionIHM();
@@ -15,14 +29,26 @@ ControlConsoleWindow::ControlConsoleWindow(QRect rect,
     this->drawBackground();
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::initVariable
+//!
 void ControlConsoleWindow::initVariable(){
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowStaysOnTopHint);
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::displayWindow
+//!
 void ControlConsoleWindow::displayWindow(){
     this->showFullScreen();
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::constructionIHM
+//!
 void ControlConsoleWindow::constructionIHM(){
 
     realTimeTrackingWindow = new QFrame();
@@ -54,10 +80,18 @@ void ControlConsoleWindow::constructionIHM(){
 
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::setConnections
+//!
 void ControlConsoleWindow::setConnections(){
     this->connect(missionAccomplishimentButton, SIGNAL(clicked()), this, SLOT(onMissionAccomplishimentButtonClicked()));
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::onMissionAccomplishimentButtonClicked
+//!
 void ControlConsoleWindow::onMissionAccomplishimentButtonClicked(){
     if (!(QMessageBox::information(this,tr("Igss Surgery"),tr("Do you really want to terminate the surgery?"),tr("Yes"),tr("No")))){
         qDebug()<<"onMissionAccomplishimentButtonClicked";
@@ -65,12 +99,10 @@ void ControlConsoleWindow::onMissionAccomplishimentButtonClicked(){
     }
 }
 
+//! -----------------------------------------------------------------------------------------------------------
+//!
+//! \brief ControlConsoleWindow::drawBackground
+//!
 void ControlConsoleWindow::drawBackground(){
-    pixmap = new QPixmap(":/images/background_darkBlue.png");
-    QPalette p =  this->palette();
-
-    p.setBrush(QPalette::Background, QBrush(pixmap->scaled(QSize(this->width, this->height), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    this->setPalette(p);
-    this->setMask(pixmap->mask());
+    this->setStyleSheet("background:"+this->workspaceColor);
 }
