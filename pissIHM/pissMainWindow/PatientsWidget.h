@@ -34,6 +34,8 @@
 #include "vtkPiecewiseFunction.h"
 #include "vtkColorTransferFunction.h"
 #include "PlottingBoard.h"
+#include "igsssCutter.h"
+
 
 /**
  * @brief The PatientsWidget class
@@ -82,6 +84,7 @@ public:
 private:
 
     int flyThroughCpt;
+    vtkActor *cuttingLayerOptionActor;
 
     CenterLineReader centerLineReader;
 
@@ -89,7 +92,9 @@ private:
 
     vtkPoints *vessel;
     int vesselPointCount;
-    vtkImageData* currentVolumeImage;
+
+    vtkImageData* currentVolumeData;
+    vtkImageShiftScale *shiftScaleVolumeData;
 
     QString workspaceColor;
     QString globalFontColor;
@@ -281,6 +286,7 @@ public slots:
     void onGuidewareMovementButtonClicked();
     void flyThrough();
     void onCutButtonClicked();
+    void cuttingLayerOptionChanged(int value);
 };
 
 #endif // PATIENTSWIDGET_H

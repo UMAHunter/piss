@@ -52,6 +52,8 @@ INCLUDEPATH += pissImageProcessingMethods/igssMathLib
 
 INCLUDEPATH += pissImageProcessingMethods/igssSegmentationLib
 
+INCLUDEPATH += pissImageProcessingMethods/igssCurvePlanReformationLib
+
 RESOURCES = imageresources.qrc
 
 SOURCES +=  main.cpp\
@@ -128,7 +130,8 @@ SOURCES +=  main.cpp\
             pissDiskImageReaderFactory/MatFileReader.cpp \
             pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.cpp \
     pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.cpp \
-    pissConnectionFactory/DatagramPackage/HelloMessage.cpp
+    pissConnectionFactory/DatagramPackage/HelloMessage.cpp \
+    pissImageProcessingMethods/igssCurvePlanReformationLib/igsssCutter.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -205,7 +208,8 @@ HEADERS  += \
             pissDiskImageReaderFactory/MatFileReader.h \
             pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.h \
     pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.h \
-    pissConnectionFactory/DatagramPackage/HelloMessage.h
+    pissConnectionFactory/DatagramPackage/HelloMessage.h \
+    pissImageProcessingMethods/igssCurvePlanReformationLib/igsssCutter.h
 
 
 # CTK lib.....

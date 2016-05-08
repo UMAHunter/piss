@@ -92,6 +92,11 @@ void PatientsWidget::initVariable(){
     flyThroughRenderWindow = vtkSmartPointer<vtkRenderWindow>::New();
     flyThroughRenderer = vtkSmartPointer<vtkRenderer>::New();
     flyThroughRenderWindow->AddRenderer(flyThroughRenderer);
+
+    shiftScaleVolumeData = vtkImageShiftScale::New();
+
+    cuttingLayerOptionActor = vtkActor::New();
+
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -99,15 +104,16 @@ void PatientsWidget::initVariable(){
 //! \brief PatientsWidget::setConnections
 //!
 void PatientsWidget::setConnections(){
-    this->connect(this->cdRomParseButton,        SIGNAL(clicked()),  this,  SLOT(doParseCdRom()));
-    this->connect(this->surgeryLaunchButton,     SIGNAL(clicked()),  this,  SLOT(launchSurgery()));
-    this->connect(this->addPatientButton,        SIGNAL(clicked()),  this,  SLOT(addPatient()));
-    this->connect(this->leftSelectButton,        SIGNAL(clicked()),  this,  SLOT(doLeftSelect()));
-    this->connect(this->rightSelectButton,       SIGNAL(clicked()),  this,  SLOT(doRightSelect()));
-    this->connect(this->plottingButton,          SIGNAL(clicked()),  this,  SLOT(onPlottingButtonClicked()));
-    this->connect(this->guidewareMovementButton, SIGNAL(clicked()),  this,  SLOT(onGuidewareMovementButtonClicked()));
-    this->connect(this->flyThroughTimer,         SIGNAL(timeout()),  this,  SLOT(flyThrough()));
-    this->connect(this->cutButton,               SIGNAL(clicked()),  this,  SLOT(onCutButtonClicked()));
+    this->connect(this->cdRomParseButton,        SIGNAL(clicked()),          this,  SLOT(doParseCdRom()));
+    this->connect(this->surgeryLaunchButton,     SIGNAL(clicked()),          this,  SLOT(launchSurgery()));
+    this->connect(this->addPatientButton,        SIGNAL(clicked()),          this,  SLOT(addPatient()));
+    this->connect(this->leftSelectButton,        SIGNAL(clicked()),          this,  SLOT(doLeftSelect()));
+    this->connect(this->rightSelectButton,       SIGNAL(clicked()),          this,  SLOT(doRightSelect()));
+    this->connect(this->plottingButton,          SIGNAL(clicked()),          this,  SLOT(onPlottingButtonClicked()));
+    this->connect(this->guidewareMovementButton, SIGNAL(clicked()),          this,  SLOT(onGuidewareMovementButtonClicked()));
+    this->connect(this->flyThroughTimer,         SIGNAL(timeout()),          this,  SLOT(flyThrough()));
+    this->connect(this->cutButton,               SIGNAL(clicked()),          this,  SLOT(onCutButtonClicked()));
+    this->connect(cuttingLayerOption,            SIGNAL(valueChanged(int)),  this,  SLOT(cuttingLayerOptionChanged(int)));
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -115,7 +121,51 @@ void PatientsWidget::setConnections(){
 //! \brief PatientsWidget::onCutButtonClicked
 //!
 void PatientsWidget::onCutButtonClicked(){
-    this->algorithmTestPlatform->setSystemStatus( this->cuttingLayerOption->text()/*.toInt()*/);
+    this->algorithmTestPlatform->setSystemStatus( "cut the centerline on layer: " + this->cuttingLayerOption->text()/*.toInt()*/);
+    int pos = this->cuttingLayerOption->text().toInt();
+
+    double p0[3];
+    double p1[3];
+    double p2[3];
+
+    vessel->GetPoint(pos - 1, p0);
+    vessel->GetPoint(pos, p1);
+    vessel->GetPoint(pos + 1, p2);
+
+    igsssCutter cutter;
+    vtkActor* actor = cutter.cut(p0, p1, p2, this->shiftScaleVolumeData);
+
+    this->flyThroughRenderer->AddActor(actor);
+    flyThroughDisplayArea->update();
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::cuttingLayerOptionChanged
+//! \param value
+//!
+void PatientsWidget::cuttingLayerOptionChanged(int value){
+    algorithmTestPlatform->setSystemStatus(QString::number(value));
+    double p0[3];
+    vessel->GetPoint(value, p0);
+
+    vtkSphereSource *pos = vtkSphereSource::New();
+    pos->SetRadius(0.8);
+    pos->SetThetaResolution(12);
+    pos->SetPhiResolution(6);
+    pos->SetCenter(p0[0],p0[1],p0[2]);
+
+    vtkPolyDataMapper *posMapper = vtkPolyDataMapper::New();
+    posMapper->SetInputConnection(pos->GetOutputPort());
+
+    cuttingLayerOptionActor->SetMapper(posMapper);
+    cuttingLayerOptionActor->GetProperty()->SetColor(255,0,0);
+    this->renderer->AddActor(cuttingLayerOptionActor);
+    //this->renderer->ResetCamera();
+    this->flyThroughRenderer->AddActor(cuttingLayerOptionActor);
+    //this->flyThroughRenderer->ResetCamera();
+    patientImageLoaded->update();
+    flyThroughDisplayArea->update();
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -168,7 +218,7 @@ void PatientsWidget::onGuidewareMovementButtonClicked(){
 //!
 void PatientsWidget::onPlottingButtonClicked(){
 
-      QVector<HistogramPoint*> frequencies = this->dispatcher->getHistogramOfVolumeData(this->currentVolumeImage);
+      QVector<HistogramPoint*> frequencies = this->dispatcher->getHistogramOfVolumeData(this->currentVolumeData);
       int index = plottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
       plottingBoard->doHistogramPlotting(index,frequencies);
 }
@@ -508,7 +558,18 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
 //! \param imgToBeDisplayed
 //!
 void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
-    currentVolumeImage = imgToBeDisplayed;
+    this->currentVolumeData = imgToBeDisplayed;
+
+    //! generate shift scale volume data
+    double range[2];
+    this->currentVolumeData->GetScalarRange(range);
+    this->shiftScaleVolumeData->SetShift(-1.0*range[0]);
+    this->shiftScaleVolumeData->SetScale(255.0/(range[1] - range[0]));
+    this->shiftScaleVolumeData->SetOutputScalarTypeToUnsignedChar();
+    this->shiftScaleVolumeData->SetInputData(currentVolumeData);
+    this->shiftScaleVolumeData->ReleaseDataFlagOff();
+    this->shiftScaleVolumeData->Update();
+
     //!---------------------------------------------------------------
     //! volume data visualization
     //!---------------------------------------------------------------
@@ -962,7 +1023,7 @@ void PatientsWidget::constructIHM(){
     this->cutButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
     this->cutButton->setFlat(true);
 
-    this->cuttingLayerOption = new QSpinBox();
+    cuttingLayerOption = new QSpinBox();
     this->cuttingLayerOption->setFixedSize(this->appWidth*0.03, this->appHeight*0.03);
     this->cuttingLayerOption->setStyleSheet("QSpinBox {background:"+this->workspaceColor+";border: 1 solide lightgray; color:beige;;selection-background-color: black;}"
                                             "QSpinBox::up-arrow {image: url(:/images/up_arrow.png);width: 5px;height: 5px;}"
