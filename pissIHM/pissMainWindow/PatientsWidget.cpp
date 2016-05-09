@@ -96,6 +96,12 @@ void PatientsWidget::initVariable(){
     shiftScaleVolumeData = vtkImageShiftScale::New();
 
     cuttingLayerOptionActor = vtkActor::New();
+    cam = this->renderer->GetActiveCamera();
+
+    vesselPointCount = 0;
+
+    centerlineActorSet.clear();
+    isGuidewareMovementButtonClicked = false;
 
 }
 
@@ -111,9 +117,11 @@ void PatientsWidget::setConnections(){
     this->connect(this->rightSelectButton,       SIGNAL(clicked()),          this,  SLOT(doRightSelect()));
     this->connect(this->plottingButton,          SIGNAL(clicked()),          this,  SLOT(onPlottingButtonClicked()));
     this->connect(this->guidewareMovementButton, SIGNAL(clicked()),          this,  SLOT(onGuidewareMovementButtonClicked()));
+    this->connect(this->cameraFlyThroughButton,  SIGNAL(clicked()),          this,  SLOT(onCameraFlyThroughButtonClicked()));
     this->connect(this->flyThroughTimer,         SIGNAL(timeout()),          this,  SLOT(flyThrough()));
     this->connect(this->cutButton,               SIGNAL(clicked()),          this,  SLOT(onCutButtonClicked()));
-    this->connect(cuttingLayerOption,            SIGNAL(valueChanged(int)),  this,  SLOT(cuttingLayerOptionChanged(int)));
+    this->connect(this->clearCenterLineButton,   SIGNAL(clicked()),          this,  SLOT(onClearCenterLineButtonClicked()));
+    this->connect(this->cuttingLayerOption,      SIGNAL(valueChanged(int)),  this,  SLOT(cuttingLayerOptionChanged(int)));
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -164,7 +172,7 @@ void PatientsWidget::cuttingLayerOptionChanged(int value){
     //this->renderer->ResetCamera();
     this->flyThroughRenderer->AddActor(cuttingLayerOptionActor);
     //this->flyThroughRenderer->ResetCamera();
-    patientImageLoaded->update();
+    currentPatientVolumeDataAnalyseArea->update();
     flyThroughDisplayArea->update();
 }
 
@@ -174,30 +182,120 @@ void PatientsWidget::cuttingLayerOptionChanged(int value){
 //!
 void PatientsWidget::flyThrough(){
 
-    double p0[3];
-    vessel->GetPoint(flyThroughCpt, p0);
+     if(!isGuidewareMovementButtonClicked){
+         double p0[3];
+         double foc[3];
+         vessel->GetPoint(flyThroughCpt, p0);
+         vessel->GetPoint(flyThroughCpt+10, foc);
 
-    vtkSphereSource *pos = vtkSphereSource::New();
-    pos->SetRadius(0.5);
-    pos->SetThetaResolution(12);
-    pos->SetPhiResolution(6);
-    pos->SetCenter(p0[0],p0[1],p0[2]);
-    vtkPolyDataMapper *posMapper = vtkPolyDataMapper::New();
-    posMapper->SetInputConnection(pos->GetOutputPort());
-    vtkActor *posActor = vtkActor::New();
-    posActor->SetMapper(posMapper);
-    posActor->GetProperty()->SetColor(0,255,255);
-    this->renderer->AddActor(posActor);
+         if(!flyThroughMode){
+             vtkSphereSource *pos = vtkSphereSource::New();
+             pos->SetRadius(0.5);
+             pos->SetThetaResolution(12);
+             pos->SetPhiResolution(6);
+             pos->SetCenter(p0[0],p0[1],p0[2]);
+             vtkPolyDataMapper *posMapper = vtkPolyDataMapper::New();
+             posMapper->SetInputConnection(pos->GetOutputPort());
+             vtkActor *posActor = vtkActor::New();
+             posActor->SetMapper(posMapper);
+             posActor->GetProperty()->SetColor(0,255,255);
+             centerlineActorSet.append(posActor);
+             this->renderer->AddActor(posActor);
+             this->renderer->ResetCamera();
+             this->flyThroughRenderer->AddActor(posActor);
+             this->flyThroughRenderer->ResetCamera();
+             flyThroughDisplayArea->update();
+         }
+         else{
+             cam->SetClippingRange(0.1,5);
+             cam->SetFocalPoint(foc[0],foc[1],foc[2]);
+             cam->SetPosition(p0[0],p0[1],p0[2]);
+             cam->ComputeViewPlaneNormal();
+         }
+         currentPatientVolumeDataAnalyseArea->GetRenderWindow()->Render();
+         currentPatientVolumeDataAnalyseArea->update();
+
+         flyThroughCpt += 10;
+         if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
+             this->flyThroughTimer->stop();
+             flyThroughCpt = 0;
+             if(!flyThroughMode){
+                 isGuidewareMovementButtonClicked = true;
+             }
+         }
+     }
+     else{
+         if(!flyThroughMode){
+             this->renderer->AddActor(centerlineActorSet.at(flyThroughCpt));
+             this->renderer->ResetCamera();
+             this->flyThroughRenderer->AddActor(centerlineActorSet.at(flyThroughCpt));
+             this->flyThroughRenderer->ResetCamera();
+             flyThroughDisplayArea->update();
+             currentPatientVolumeDataAnalyseArea->update();
+
+             flyThroughCpt++;
+
+             if(flyThroughCpt == centerlineActorSet.size() - 1){
+                 this->flyThroughTimer->stop();
+                 flyThroughCpt = 0;
+             }
+         }
+         else{
+             double p0[3];
+             double foc[3];
+             vessel->GetPoint(flyThroughCpt, p0);
+             vessel->GetPoint(flyThroughCpt+10, foc);
+
+             cam->SetClippingRange(0.1,5);
+             cam->SetFocalPoint(foc[0],foc[1],foc[2]);
+             cam->SetPosition(p0[0],p0[1],p0[2]);
+             cam->ComputeViewPlaneNormal();
+             currentPatientVolumeDataAnalyseArea->GetRenderWindow()->Render();
+             currentPatientVolumeDataAnalyseArea->update();
+
+             flyThroughCpt += 10;
+             if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
+                 this->flyThroughTimer->stop();
+                 flyThroughCpt = 0;
+             }
+         }
+     }
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::onClearCenterLineButtonClicked
+//!
+//!    QVector <vtkActor *> centerlineActorSet;
+//!    vtkActor *cuttingLayerOptionActor;
+//!    vtkVolume *volume;
+//!
+void PatientsWidget::onClearCenterLineButtonClicked(){
+    renderer->RemoveAllViewProps();
+    flyThroughRenderer->RemoveAllViewProps();
+    renderer->AddVolume(volume);
+
     this->renderer->ResetCamera();
-    this->flyThroughRenderer->AddActor(posActor);
     this->flyThroughRenderer->ResetCamera();
-
-    patientImageLoaded->update();
+    currentPatientVolumeDataAnalyseArea->update();
     flyThroughDisplayArea->update();
-    flyThroughCpt += 10;
-    if(flyThroughCpt >= vessel->GetNumberOfPoints() - 1){
-        this->flyThroughTimer->stop();
+}
+
+//!----------------------------------------------------------------------------------------------------
+//!
+//! \brief PatientsWidget::onCameraFlyThroughButtonClicked
+//!
+void PatientsWidget::onCameraFlyThroughButtonClicked(){
+    //! delete all the actor for center line representation if GuidewareMovementButton has been Clicked
+    onClearCenterLineButtonClicked();
+
+    flyThroughMode = true;
+    if(vesselPointCount == 0){
+        vesselPointCount = centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
+        this->cuttingLayerOption->setMinimum(0);
+        this->cuttingLayerOption->setMaximum(vesselPointCount-1);
     }
+    this->flyThroughTimer->start(10);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -206,9 +304,15 @@ void PatientsWidget::flyThrough(){
 //!
 void PatientsWidget::onGuidewareMovementButtonClicked(){
 
-    vesselPointCount = centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
-    this->cuttingLayerOption->setMinimum(0);
-    this->cuttingLayerOption->setMaximum(vesselPointCount-1);
+    onClearCenterLineButtonClicked();
+
+    flyThroughMode = false;
+
+    if(vesselPointCount == 0){
+        vesselPointCount = centerLineReader.doReadCenterLineFile("C:\\Users\\wangtseng\\Documents\\CanalyserWorkspace\\PatientsDataware\\Chen_Ritian__1986_02_02\\mra_tridimensionel__image\\centerlines\\reference0.txt", vessel);
+        this->cuttingLayerOption->setMinimum(0);
+        this->cuttingLayerOption->setMaximum(vesselPointCount-1);
+    }
     this->flyThroughTimer->start(0.1);
 }
 
@@ -581,7 +685,7 @@ void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
     this->renderer->AddVolume(volume);
     this->renderWindow->AddRenderer(renderer);
 
-    this->patientImageLoaded->SetRenderWindow(renderWindow);
+    this->currentPatientVolumeDataAnalyseArea->SetRenderWindow(renderWindow);
     this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 
     this->renderer->ResetCamera();
@@ -975,26 +1079,40 @@ void PatientsWidget::constructIHM(){
 
     this->guidewareMovementButton =  new QPushButton();
     this->guidewareMovementButton->setIcon(QIcon(":/images/title.png"));
-    this->guidewareMovementButton->setIconSize(QSize(this->appWidth*0.02,this->appHeight*0.03));
-    this->guidewareMovementButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
+    this->guidewareMovementButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.025));
+    this->guidewareMovementButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.025);
     this->guidewareMovementButton->setFlat(true);
+
+    this->cameraFlyThroughButton =  new QPushButton();
+    this->cameraFlyThroughButton->setIcon(QIcon(":/images/camera.png"));
+    this->cameraFlyThroughButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.025));
+    this->cameraFlyThroughButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.025);
+    this->cameraFlyThroughButton->setFlat(true);
+
+    this->clearCenterLineButton =  new QPushButton();
+    this->clearCenterLineButton->setIcon(QIcon(":/images/clear.png"));
+    this->clearCenterLineButton->setIconSize(QSize(this->appWidth*0.015,this->appHeight*0.025));
+    this->clearCenterLineButton->setFixedSize(this->appWidth*0.015, this->appHeight*0.025);
+    this->clearCenterLineButton->setFlat(true);
 
     this->imageConfigurationArea = new QLabel();
     this->imageConfigurationArea->setStyleSheet("background:"+this->workspaceColor);
     this->imageConfigurationArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.04);
     this->imageConfigurationAreaLayout = new QHBoxLayout(this->imageConfigurationArea);
     this->imageConfigurationAreaLayout->addWidget(this->guidewareMovementButton);
+    this->imageConfigurationAreaLayout->addWidget(this->cameraFlyThroughButton);
+    this->imageConfigurationAreaLayout->addWidget(this->clearCenterLineButton);
     this->imageConfigurationAreaLayout->addItem(this->imageConfigurationAreaSpacer);
     this->imageConfigurationAreaLayout->setSpacing(0);
     this->imageConfigurationAreaLayout->setMargin(0);
 
-    this->patientImageLoaded = new QVTKWidget();
-    this->patientImageLoaded->setFixedSize(this->appWidth*0.4, this->appHeight*0.68);
+    this->currentPatientVolumeDataAnalyseArea = new QVTKWidget();
+    this->currentPatientVolumeDataAnalyseArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.68);
 
     this->patientImageDispalyArea = new QLabel();
     this->patientImageDispalyArea->setFixedSize(this->appWidth*0.4, this->appHeight*0.72);
     this->patientImageDispalyAreaLayout = new QVBoxLayout(patientImageDispalyArea);
-    this->patientImageDispalyAreaLayout->addWidget(this->patientImageLoaded);
+    this->patientImageDispalyAreaLayout->addWidget(this->currentPatientVolumeDataAnalyseArea);
     this->patientImageDispalyAreaLayout->addWidget(this->imageConfigurationArea);
     this->patientImageDispalyAreaLayout->setSpacing(0);
     this->patientImageDispalyAreaLayout->setMargin(0);
@@ -1023,7 +1141,7 @@ void PatientsWidget::constructIHM(){
     this->cutButton->setFixedSize(this->appWidth*0.02, this->appHeight*0.03);
     this->cutButton->setFlat(true);
 
-    cuttingLayerOption = new QSpinBox();
+    this->cuttingLayerOption = new QSpinBox();
     this->cuttingLayerOption->setFixedSize(this->appWidth*0.03, this->appHeight*0.03);
     this->cuttingLayerOption->setStyleSheet("QSpinBox {background:"+this->workspaceColor+";border: 1 solide lightgray; color:beige;;selection-background-color: black;}"
                                             "QSpinBox::up-arrow {image: url(:/images/up_arrow.png);width: 5px;height: 5px;}"
