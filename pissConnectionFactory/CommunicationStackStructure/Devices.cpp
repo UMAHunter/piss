@@ -180,7 +180,7 @@ void Devices::append(int ModuleNumber,
 //! \param id
 //! \param Sockettrans
 //!
-void Devices::setSocketTransById(int id, int st)
+void Devices::setSocketTransById(int id, qintptr st)
 {
     mutex.lock();
     this->incomingDevices.at(id)->setSockettrans(st);

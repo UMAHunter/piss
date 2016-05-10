@@ -156,7 +156,7 @@ void Device::setSocketrec(qintptr Socketrec)
 //! \brief ModuleIpConfig::setSocketTrans
 //! \param SocketTrans
 //!
-void Device::setSockettrans(int Sockettrans)
+void Device::setSockettrans(qintptr Sockettrans)
 {
     this->sockettrans = Sockettrans;
 }

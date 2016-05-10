@@ -13,7 +13,7 @@
 #include "GlobalTime.h"
 #include "igtClient.h"
 #include "SystemDataBase.h"
-
+#include "HandShakeMessage.h"
 
 //! Codes des erreurs remontees par les fonctions
 typedef enum {

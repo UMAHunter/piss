@@ -32,7 +32,7 @@ public:
     void setPortNumber(int p);
     void setName(QString Name);
     void setSocketrec(qintptr Socketrec);
-    void setSockettrans(int Sockettrans);
+    void setSockettrans(qintptr Sockettrans);
     void setClientlistenport(quint32 Clientlistenport);
     void setCode(bool Code);
     void setId(int id);
