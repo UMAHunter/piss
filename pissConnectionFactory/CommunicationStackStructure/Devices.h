@@ -21,7 +21,7 @@ public:
     void append(int ModuleNumber, int Port, QString addr, int Socketrec, quint32 Clientlistenport, quint8 Code);
 
     void setIpAddressById(int id, QString ip);
-    void setSocketTransById(int id, int st);//-----
+    void setSocketTransById(int id, qintptr st);
     void setSocketReceptionById(int id, qintptr sr);
     void setClientlistenportById(int id, quint32 Clientlistenport);
     void setCodeByModule(QString ModuleName, bool Code);

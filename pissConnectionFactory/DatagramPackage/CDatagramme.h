@@ -14,14 +14,13 @@ public:
     ~CDatagramme();
 
     void setValue(QByteArray* value);
-    void modifierTimestamp(qint32 time);
+    void setTimestamp(qint32 time);
     void printSelf();
 
-    int getID();
-    int getDLC();
-    int getModuleNumber();
-
+    unsigned char getDataType();
+    unsigned char getDeviceId();
     QString getTimestamp();
+    int getDLC();
     QByteArray *getValue();
 
 private:

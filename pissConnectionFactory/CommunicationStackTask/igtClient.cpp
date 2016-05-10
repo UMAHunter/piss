@@ -8,7 +8,7 @@
  */
 igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices){
     this->id = id;
-
+    this->devices = devices;
     motivateConnectionRequest = true;
 
     soc = new QTcpSocket();
@@ -46,7 +46,7 @@ void igtClient::connectBackRequest(QString addr, int port){
 //!
 void igtClient::startTransfer(){
 
-//    devices->setSocketTransById();
+    devices->setSocketTransById(id, soc->socketDescriptor());
 
     if(motivateConnectionRequest){
         //!todo directly send handshake msg
