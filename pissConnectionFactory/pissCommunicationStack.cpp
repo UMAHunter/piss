@@ -54,7 +54,7 @@ bool pissCommunicationStack::closeServer(){
 //!
 bool pissCommunicationStack::launchServer(){
     informationDecodeTask->start();
-    outputInformationEncoder->start();
+    //outputInformationEncoder->start();
     return server->launchServer();
 }
 

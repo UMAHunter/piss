@@ -46,6 +46,7 @@ public:
 
     Device* getSelf();
     void setMyListenPort(quint32 port);
+    int getMyListenPort();
 
 private:
     QMutex mutex;

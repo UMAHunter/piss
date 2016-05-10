@@ -67,8 +67,8 @@ bool pissServer::launchServer(){
         msgBox.exec();
         return false;
     }
-
-    serverStatus = this->listen(QHostAddress::Any, this->devices->getPortByModule(0));
+    qDebug()<<this->devices->getMyListenPort();
+    serverStatus = this->listen(QHostAddress::Any, this->devices->getMyListenPort());
     return serverStatus;
 }
 
@@ -86,7 +86,7 @@ bool pissServer::getConnectionState(){
 //! \param sd
 //!
 void pissServer::incomingConnection(qintptr sd){
-
+    qDebug()<<"incomingConnection";
     //! add incoming device
     int id = this->devices->addClient();
     this->devices->setSocketReceptionById(id, sd);

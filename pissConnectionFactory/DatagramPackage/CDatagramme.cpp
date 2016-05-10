@@ -68,5 +68,5 @@ QString CDatagramme::getTimestamp()
 
 int CDatagramme::getDLC()
 {
-    return this->value->size() - 8;
+    return unsigned char(this->value->at(11))*256 + unsigned char(this->value->at(10)) ;
 }

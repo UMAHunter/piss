@@ -45,6 +45,7 @@ void pissInputInformationDecoder::run()
             for(unsigned char cpt = 0; cpt < inputQueueManager->size(); cpt++){
                 int length = inputQueueManager->at(cpt)->getLength();
                 if(length > 0){
+                    qDebug()<<"new message decoding";
                     datagrammeAnalyser->decodage(cpt, inputQueueManager->at(cpt)->fetchFirstDatagramme());
                     inputQueueManager->at(cpt)->deleteFirstDatagramme();
                 }
@@ -58,6 +59,7 @@ void pissInputInformationDecoder::run()
         }
 
         inputMutex.unlock();
-        usleep(20);
+        usleep(2000);
+        //qDebug()<<"pissInputInformationDecoder";
     }
 }

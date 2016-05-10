@@ -76,6 +76,20 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! handshake msg format: + + +
 //!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
+    qDebug()<<"decode handshakemsg task"<<datagramme->getValue()->length();
+
+    long long i = datagramme->getValue()->at(6)*long long(pow(2,32))+
+            datagramme->getValue()->at(5)*long long(pow(2,24))
+           +datagramme->getValue()->at(4)*long long(pow(2,16))
+           +datagramme->getValue()->at(3)*long long(pow(2,8))
+           +datagramme->getValue()->at(2);
+    qDebug()<<i<<datagramme->getDLC();
+    for(int cpt = 0 ; cpt <datagramme->getDLC(); cpt++ ){
+        qDebug()<<unsigned char(datagramme->getValue()->at(cpt));
+    }
+
+
+
 //    HandShakeMessage *msg = new HandShakeMessage();
 //    msg->decodeDatagram(datagramme);
 

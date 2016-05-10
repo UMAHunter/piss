@@ -287,6 +287,15 @@ int Devices::getPortByModule(QString ModuleName)
 
 //--------------------------------------------------------------------------------------------------------------------------------
 //!
+//! \brief Devices::getMyListenPort
+//! \return
+//!
+int Devices::getMyListenPort(){
+    return this->me->getClientlistenport();
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------
+//!
 //! \brief pissNetworkEnvironment::getPortByModule
 //! \param ModuleNumber
 //! \return
