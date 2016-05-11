@@ -19,7 +19,7 @@ public:
 
     unsigned char getDataType();
     unsigned char getDeviceId();
-    QString getTimestamp();
+    unsigned long long getTimestamp();
     int getDLC();
     QByteArray *getValue();
 

@@ -1,5 +1,6 @@
 #include "DatagrammeAnalyser.h"
 
+
 DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
                                        QVector <InputQueue*> *iq,
                                        Devices* environment,
@@ -42,7 +43,7 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
             decodeHelloMessage(id, datagramme);
             break;
         }
-        case HandShakeMessage:{
+        case HandShakeMsg:{
             qDebug()<<"HandShakeMessage";
             decodeHandShakeMessage(id, datagramme);
             break;
@@ -76,25 +77,11 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! handshake msg format: + + +
 //!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
-    qDebug()<<"decode handshakemsg task"<<datagramme->getValue()->length();
+    HandShakeMessage msg;
+    msg.decodeDatagram(datagramme);
 
-    long long i = datagramme->getValue()->at(6)*long long(pow(2,32))+
-            datagramme->getValue()->at(5)*long long(pow(2,24))
-           +datagramme->getValue()->at(4)*long long(pow(2,16))
-           +datagramme->getValue()->at(3)*long long(pow(2,8))
-           +datagramme->getValue()->at(2);
-    qDebug()<<i<<datagramme->getDLC();
-    for(int cpt = 0 ; cpt <datagramme->getDLC(); cpt++ ){
-        qDebug()<<unsigned char(datagramme->getValue()->at(cpt));
-    }
-
-
-
-//    HandShakeMessage *msg = new HandShakeMessage();
-//    msg->decodeDatagram(datagramme);
-
-//    igtClient *client = new igtClient(id, this->oq, this->devices);
-//    client->connectBackRequest(msg.ip, msg.port);
+    igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
+    client->connectBackRequest(msg.getIp(), msg.getPort());
 
   //  this->database->notify();
 }

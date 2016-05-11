@@ -14,11 +14,12 @@
 #include "igtClient.h"
 #include "SystemDataBase.h"
 #include "HandShakeMessage.h"
+#include "HandShakeCommitMessage.h"
 
 //! Codes des erreurs remontees par les fonctions
 typedef enum {
     HelloMessage = 0,
-    HandShakeMessage,
+    HandShakeMsg,
     CTImage
 }DatagrammeIdentifierCode;
 
@@ -38,7 +39,8 @@ public:
     void decodeHelloMessage(int id, CDatagramme *datagramme);
     void decodeHandShakeMessage(int id, CDatagramme *datagramme);
     void decodeCTImage(CDatagramme *datagramme);
-    int getDatagrammeLength();
+    //int getDatagrammeLength();
+
 private:
     DatagrammeIdentifierCode identifierCode;
 
