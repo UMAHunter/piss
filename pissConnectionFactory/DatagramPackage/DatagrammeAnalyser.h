@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QVector>
 #include <QByteArray>
+#include <QPair>
+#include <QList>
 #include "InputQueue.h"
 #include "OutputQueue.h"
 #include "CDatagramme.h"
@@ -20,6 +22,7 @@
 typedef enum {
     HelloMessage = 0,
     HandShakeMsg,
+    HandShakeCommitMsg,
     CTImage
 }DatagrammeIdentifierCode;
 
@@ -38,7 +41,9 @@ public:
 
     void decodeHelloMessage(int id, CDatagramme *datagramme);
     void decodeHandShakeMessage(int id, CDatagramme *datagramme);
+    void decodeHandShakeCommitMessage(int id, CDatagramme *datagramme);
     void decodeCTImage(CDatagramme *datagramme);
+    void setConnectBackRequestWaitingPair(int waitingId, qintptr waitingSocket);
     //int getDatagrammeLength();
 
 private:
@@ -51,6 +56,8 @@ private:
     GlobalTime *globalTime;
 
     SystemDataBase* database;
+
+    QList<QPair<int, qintptr> > waitingList;
 };
 
 #endif // DATAGRAMMEANALYSER_H

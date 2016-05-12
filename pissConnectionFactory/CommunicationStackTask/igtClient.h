@@ -8,6 +8,7 @@
 #include "Devices.h"
 #include "Device.h"
 #include "GlobalTime.h"
+//#include "DatagrammeAnalyser.h"
 
 class igtClient : public QObject
 {
@@ -18,14 +19,13 @@ private:
     pissTransmissionTask *transmissionTask;
     QVector <OutputQueue*> *oq;
     Devices* devices;
-
+    //DatagrammeAnalyser *datagrammeAnalyser;
     bool motivateConnectionRequest;
     int id;
     GlobalTime *globalTime;
 public:
-    void connect_request(QString addr, int port);
+    qintptr connect_request(QString addr, int port);
     void connectBackRequest(QString addr, int port);
-    QByteArray* test();
 
 public slots:
     void startTransfer();

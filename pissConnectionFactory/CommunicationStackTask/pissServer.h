@@ -45,7 +45,6 @@ private:
     SystemDataBase* database;
 
 protected:
-    int id;
     void incomingConnection(qintptr socket);
 };
 

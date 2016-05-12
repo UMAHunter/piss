@@ -2,8 +2,6 @@
 #define HANDSHAKEMESSAGE_H
 
 #include "CDatagramme.h"
-#include "QString"
-#include "QByteArray"
 
 /**
  * @brief The HandShakeMessage class

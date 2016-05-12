@@ -48,6 +48,11 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
             decodeHandShakeMessage(id, datagramme);
             break;
         }
+        case HandShakeCommitMsg:{
+            qDebug()<<"HandShakeCommitMsg";
+            decodeHandShakeCommitMessage(id, datagramme);
+            break;
+        }
         case CTImage:{
             qDebug()<<"CTImage";
             decodeCTImage(datagramme);
@@ -88,6 +93,19 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
 
 //! ----------------------------------------------------------------------------------------
 //!
+//! \brief DatagrammeAnalyser::decodeHandShakeCommitMessage
+//! \param id
+//! \param datagramme
+//!
+void DatagrammeAnalyser::decodeHandShakeCommitMessage(int id, CDatagramme *datagramme){
+//    HandShakeCommitMessage msg;
+//    msg.decodeDatagram(datagramme);
+
+    devices->setSocketTransById(id, waitingList.at(id).second);
+}
+
+//! ----------------------------------------------------------------------------------------
+//!
 //! \brief DatagrammeAnalyser::decodeCTImage
 //! \param datagramme
 //!
@@ -95,3 +113,9 @@ void DatagrammeAnalyser::decodeCTImage(CDatagramme *datagramme){
 
 }
 
+void DatagrammeAnalyser::setConnectBackRequestWaitingPair(int waitingId, qintptr waitingSocket){
+    QPair<int, qintptr> pair;
+    pair.first = waitingId;
+    pair.second = waitingSocket;
+    waitingList.append(pair);
+}

@@ -57,8 +57,6 @@ private:
 
     QList <Device*> incomingDevices;
 
-
-
 public:
     Devices();
 };

@@ -10,7 +10,7 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, Globa
     this->id = id;
     this->devices = devices;
     this->globalTime = globalTime;
-    motivateConnectionRequest = true;
+    this->motivateConnectionRequest = true;
 
     soc = new QTcpSocket();
 
@@ -25,10 +25,11 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, Globa
 //! \param addr
 //! \param port
 //!
-void igtClient::connect_request(QString addr, int port){
+qintptr igtClient::connect_request(QString addr, int port){
     motivateConnectionRequest = true;
     soc->connectToHost(addr, port);
     qDebug()<<addr<<port;
+    return soc->socketDescriptor();
 }
 
 //! ---------------------------------------------------------------------------------
@@ -48,27 +49,28 @@ void igtClient::connectBackRequest(QString addr, int port){
 //!
 void igtClient::startTransfer(){
 
-    devices->setSocketTransById(id, soc->socketDescriptor());
+    //devices->setSocketTransById(id, soc->socketDescriptor());
 
     if(motivateConnectionRequest){
+        //! datagrammeAnalyser->setWaiting
+        HandShakeMessage *msg = new HandShakeMessage();
 
-//        HandShakeMessage *msg = new HandShakeMessage();
+        msg->setDataType(1);
+        msg->setDeviceId(id);
+        msg->setTimestamp(globalTime->GetMicroS());
+        msg->setDLC(38);
+        msg->setDeviceName("communication stack");
+        msg->setLocalIP(127, 12, 15, 30);
+        msg->setLocalPort(2630);
 
-//        msg->setDataType(1);
-//        msg->setDeviceId(0);
-//        msg->setTimestamp(globalTime->GetMicroS());
-//        msg->setDLC(38);
-//        msg->setDeviceName("communication stack");
-//        msg->setLocalIP(127, 12, 15, 30);
-//        msg->setLocalPort(2630);
-
-//        soc->write(msg->toCDatagram());
-//        soc->flush();
+        soc->write(msg->toCDatagram());
+        soc->flush();
         //soc->waitForBytesWritten(-1);
         transmissionTask->launch();
     }
     else{
-        qDebug()<<"back";
+        //! HandShakeCommitMessage
+        //!
         transmissionTask->launch();
 
         //! genrate a handshake commit msg push into oq....

@@ -107,7 +107,7 @@ void HandShakeMessage::decodeDatagram(CDatagramme *datagram){
     this->setDeviceId(datagram->getDeviceId());
     this->setTimestamp(datagram->getTimestamp());
     this->setDLC(datagram->getDLC());
-    //msg.deviceName = datagram->getValue();//to be reviewed
+    //this->setDeviceName(datagram->getValue());
     this->setLocalIP(datagram->getValue()->at(32), datagram->getValue()->at(33), datagram->getValue()->at(34), datagram->getValue()->at(35));
     this->setLocalPort(unsigned char(datagram->getValue()->at(37))*256 + unsigned char(datagram->getValue()->at(36)));
 }
