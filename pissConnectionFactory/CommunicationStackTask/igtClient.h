@@ -8,7 +8,7 @@
 #include "Devices.h"
 #include "Device.h"
 #include "GlobalTime.h"
-//#include "DatagrammeAnalyser.h"
+#include "HandShakeCommitMessage.h"
 
 class igtClient : public QObject
 {

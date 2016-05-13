@@ -52,7 +52,6 @@ void igtClient::startTransfer(){
     //devices->setSocketTransById(id, soc->socketDescriptor());
 
     if(motivateConnectionRequest){
-        //! datagrammeAnalyser->setWaiting
         HandShakeMessage *msg = new HandShakeMessage();
 
         msg->setDataType(1);
@@ -60,23 +59,27 @@ void igtClient::startTransfer(){
         msg->setTimestamp(globalTime->GetMicroS());
         msg->setDLC(38);
         msg->setDeviceName("communication stack");
-        msg->setLocalIP(127, 12, 15, 30);
-        msg->setLocalPort(2630);
+        msg->setIP(127, 12, 15, 30);
+        msg->setPort(2630);
 
         soc->write(msg->toCDatagram());
         soc->flush();
         //soc->waitForBytesWritten(-1);
-        transmissionTask->launch();
     }
     else{
-        //! HandShakeCommitMessage
-        //!
-        transmissionTask->launch();
+        HandShakeCommitMessage *cmsg = new HandShakeCommitMessage();
+        cmsg->setDataType(2);
+        cmsg->setDeviceId(id);
+        cmsg->setTimestamp(globalTime->GetMicroS());
+        cmsg->setDLC(32);
+        cmsg->setDeviceName("platform");
 
-        //! genrate a handshake commit msg push into oq....
-        //! this->oq.at(id).append(handshake commit)
+        CDatagramme *datagram = new CDatagramme();
+        datagram->setValue(&cmsg->toCDatagram());
+
+        this->oq->at(id)->append(datagram);
     }
-
+    transmissionTask->launch();
 }
 
 

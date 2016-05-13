@@ -28,14 +28,14 @@ void HandShakeMessage::setDeviceName(QString name){
     this->deviceName = name.toStdString().c_str();
 }
 
-void HandShakeMessage::setLocalIP(char a, char b, char c, char d){
+void HandShakeMessage::setIP(char a, char b, char c, char d){
     this->ip[0] = a;
     this->ip[1] = b;
     this->ip[2] = c;
     this->ip[3] = d;
 }
 
-void HandShakeMessage::setLocalPort(int port){
+void HandShakeMessage::setPort(int port){
     this->port = port;
 }
 
@@ -87,7 +87,7 @@ QByteArray HandShakeMessage::toCDatagram(){
     buf[11] = (uchar) ((0x0000ff00 & dlc) >> 8);
 
     for(unsigned cpt = 0 ; cpt < 20; cpt++){
-        buf[12 + cpt] = deviceName[cpt];
+        buf[12 + cpt] = deviceName[12 + cpt];
     }
 
     buf[32] = ip[0];
@@ -102,13 +102,12 @@ QByteArray HandShakeMessage::toCDatagram(){
 }
 
 void HandShakeMessage::decodeDatagram(CDatagramme *datagram){
-
     this->setDataType(datagram->getDataType());
     this->setDeviceId(datagram->getDeviceId());
     this->setTimestamp(datagram->getTimestamp());
     this->setDLC(datagram->getDLC());
-    //this->setDeviceName(datagram->getValue());
-    this->setLocalIP(datagram->getValue()->at(32), datagram->getValue()->at(33), datagram->getValue()->at(34), datagram->getValue()->at(35));
-    this->setLocalPort(unsigned char(datagram->getValue()->at(37))*256 + unsigned char(datagram->getValue()->at(36)));
+    this->setDeviceName(datagram->getValue()->mid(12, 20));
+    this->setIP(datagram->getValue()->at(32), datagram->getValue()->at(33), datagram->getValue()->at(34), datagram->getValue()->at(35));
+    this->setPort(unsigned char(datagram->getValue()->at(37))*256 + unsigned char(datagram->getValue()->at(36)));
 }
 

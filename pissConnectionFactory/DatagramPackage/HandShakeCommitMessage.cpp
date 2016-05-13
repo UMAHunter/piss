@@ -80,5 +80,5 @@ void HandShakeCommitMessage::decodeDatagram(CDatagramme *datagram){
     this->setDeviceId(datagram->getDeviceId());
     this->setTimestamp(datagram->getTimestamp());
     this->setDLC(datagram->getDLC());
-    //this->setDeviceName(datagram->getValue());
+    this->setDeviceName(datagram->getValue()->mid(12, 20).toStdString().c_str());
 }

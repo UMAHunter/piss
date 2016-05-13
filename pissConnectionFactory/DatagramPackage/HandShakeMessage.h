@@ -17,8 +17,8 @@ public:
     void setTimestamp(long long timestamp);
     void setDLC(int dlc);
     void setDeviceName(QString name);
-    void setLocalIP(char a, char b, char c, char d);
-    void setLocalPort(int port);
+    void setIP(char a, char b, char c, char d);
+    void setPort(int port);
 
     unsigned char getDataType();
     unsigned char getDeviceId();
@@ -34,7 +34,7 @@ private:
     long long timestamp;
     int dlc;
     const char *deviceName;
-    char ip[4];
+    unsigned char ip[4];
     int port;
 
 public:

@@ -79,14 +79,12 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! \param id
 //! \param datagramme
 //!
-//! handshake msg format: + + +
-//!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
-    HandShakeMessage msg;
-    msg.decodeDatagram(datagramme);
+    HandShakeMessage *msg;
+    msg->decodeDatagram(datagramme);
 
     igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
-    client->connectBackRequest(msg.getIp(), msg.getPort());
+    client->connectBackRequest(msg->getIp(), msg->getPort());
 
   //  this->database->notify();
 }
@@ -98,8 +96,8 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHandShakeCommitMessage(int id, CDatagramme *datagramme){
-//    HandShakeCommitMessage msg;
-//    msg.decodeDatagram(datagramme);
+    HandShakeCommitMessage *msg;
+    msg->decodeDatagram(datagramme);
 
     devices->setSocketTransById(id, waitingList.at(id).second);
 }
