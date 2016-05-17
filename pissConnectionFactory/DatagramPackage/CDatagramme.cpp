@@ -22,9 +22,10 @@ CDatagramme::~CDatagramme(){
 //! \brief CDatagramme::setValue
 //! \param value
 //!
-void CDatagramme::setValue(QByteArray* value){
-    this->value = value;
+void CDatagramme::setValue(QByteArray* v){
+    this->value = v;
     this->totalLength = this->value->length();
+    qDebug()<<"cmsg->toCDatagram()"<<v<<this->totalLength<<int(this->value->at(0))<<int(this->value->at(1));
 }
 
 //!-------------------------------------------------------------
@@ -47,7 +48,8 @@ void CDatagramme::printSelf(){
 //! \return
 //!
 unsigned char CDatagramme::getDataType(){
-    return this->value->at(0);
+    qDebug()<<"CDatagramme::getDataType"<<this->value->size();
+    return unsigned char(this->value->at(0));
 }
 
 //!------------------------------------------------------------

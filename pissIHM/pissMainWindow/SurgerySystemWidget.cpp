@@ -63,6 +63,12 @@ void SurgerySystemWidget::constructIHM(){
     myListenPortLineEdit = new QLineEdit();
     myListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
 
+    testConnectBackButton = new QPushButton();
+    testConnectBackButton->setIcon(QIcon(":/images/title.png"));
+    testConnectBackButton->setIconSize(QSize(this->width*0.02, this->height*0.03));
+    testConnectBackButton->setFixedSize(this->width*0.02, this->height*0.03);
+    testConnectBackButton->setFlat(true);
+
     surgerySystemControlBarItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     surgerySystemControlBar = new QWidget();
@@ -74,6 +80,7 @@ void SurgerySystemWidget::constructIHM(){
     surgerySystemControlBarLayout->addWidget(myIpAddressLineEdit);
     surgerySystemControlBarLayout->addWidget(myListenPort);
     surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
+    surgerySystemControlBarLayout->addWidget(testConnectBackButton);
 
 
     surgerySystemControlBarLayout->addItem(surgerySystemControlBarItem);
@@ -114,6 +121,7 @@ void SurgerySystemWidget::constructIHM(){
 void SurgerySystemWidget::setConnections(){
     this->connect(startServerButton, SIGNAL(clicked()), this, SLOT(onStartServerButtonClicked()));
     this->connect(stopServerButton, SIGNAL(clicked()), this, SLOT(onStopServerButtonClicked()));
+    this->connect(testConnectBackButton, SIGNAL(clicked()), this, SLOT(testConnectBack()));
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -137,6 +145,10 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
     else{
         this->algorithmTestPlatform->setSystemStatus("please don't click the stop button when nothing happened");
     }
+}
+
+void SurgerySystemWidget::testConnectBack(){
+    this->systemDispatcher->launchConnectBackProcess(false, "172.20.14.18", 12630);
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -169,6 +181,8 @@ void SurgerySystemWidget::onStartServerButtonClicked(){
     else{
         this->algorithmTestPlatform->setSystemStatus("platform server can't be started");
     }
+
+    //this->systemDispatcher->launchConnectBackProcess(true, "172.20.14.18", 12630);
 }
 
 

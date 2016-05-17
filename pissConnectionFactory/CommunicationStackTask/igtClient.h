@@ -19,7 +19,6 @@ private:
     pissTransmissionTask *transmissionTask;
     QVector <OutputQueue*> *oq;
     Devices* devices;
-    //DatagrammeAnalyser *datagrammeAnalyser;
     bool motivateConnectionRequest;
     int id;
     GlobalTime *globalTime;
@@ -29,6 +28,7 @@ public:
 
 public slots:
     void startTransfer();
+    void slotDisconnected();
 
 public:
     igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, GlobalTime *globalTime);

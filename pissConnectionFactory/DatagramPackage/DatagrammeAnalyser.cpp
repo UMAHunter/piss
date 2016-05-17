@@ -9,6 +9,7 @@ DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
 {
     this->iq = iq;
     this->oq = oq;
+    qDebug()<<"DA"<<oq;
     this->devices = environment;
     this->globalTime = globalTime;
     this->database = database;
@@ -59,7 +60,6 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
             break;
         }
     }
-    qDebug()<<"end decoding process";
 }
 
 //! ----------------------------------------------------------------------------------------
@@ -80,11 +80,15 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
-    HandShakeMessage *msg;
+
+    HandShakeMessage *msg = new HandShakeMessage();
     msg->decodeDatagram(datagramme);
 
-    igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
-    client->connectBackRequest(msg->getIp(), msg->getPort());
+//    igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
+//    QString ip = msg->getIp();
+//    int port  = msg->getPort();
+//    client->connectBackRequest(ip, port);
+
 
   //  this->database->notify();
 }
@@ -96,7 +100,7 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHandShakeCommitMessage(int id, CDatagramme *datagramme){
-    HandShakeCommitMessage *msg;
+    HandShakeCommitMessage *msg = new HandShakeCommitMessage();
     msg->decodeDatagram(datagramme);
 
     devices->setSocketTransById(id, waitingList.at(id).second);

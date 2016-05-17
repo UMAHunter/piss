@@ -25,10 +25,22 @@ void HandShakeMessage::setDLC(int dlc){
 }
 
 void HandShakeMessage::setDeviceName(QString name){
-    this->deviceName = name.toStdString().c_str();
+    QByteArray qba = name.toLatin1();
+
+    if(qba.size() <= 20){
+        for(int j = 0; j < qba.size(); j++){
+            this->deviceName[j] = char(qba.at(j));
+        }
+
+        for(int k = 19; k > qba.size()-1; k--){
+            this->deviceName[k] = char(' ');
+        }
+    }
+
 }
 
-void HandShakeMessage::setIP(char a, char b, char c, char d){
+void HandShakeMessage::setIP(unsigned char a, unsigned char b, unsigned char c, unsigned char d){
+    qDebug()<<a<<b<<c<<d;
     this->ip[0] = a;
     this->ip[1] = b;
     this->ip[2] = c;
@@ -36,6 +48,7 @@ void HandShakeMessage::setIP(char a, char b, char c, char d){
 }
 
 void HandShakeMessage::setPort(int port){
+    qDebug()<<"port"<<port;
     this->port = port;
 }
 
@@ -56,11 +69,22 @@ int HandShakeMessage::getDLC(){
 }
 
 QString HandShakeMessage::getDeviceName(){
-    return this->deviceName;
+    QByteArray name;
+    name.resize(20);
+    for(int i = 0; i < 20; i++){
+        name[i] = this->deviceName[i];
+    }
+    QString dname;
+    dname.prepend(name);
+
+    return dname.trimmed();
 }
 
 QString HandShakeMessage::getIp(){    
-    return QString::number(this->ip[0]) + "." + QString::number(this->ip[1]) + "." + QString::number(this->ip[2]) + "." + QString::number(this->ip[3]);
+    return    QString::number(unsigned char(this->ip[0])) + "."
+            + QString::number(unsigned char(this->ip[1])) + "."
+            + QString::number(unsigned char(this->ip[2])) + "."
+            + QString::number(unsigned char(this->ip[3]));
 }
 
 int HandShakeMessage::getPort(){
@@ -87,7 +111,7 @@ QByteArray HandShakeMessage::toCDatagram(){
     buf[11] = (uchar) ((0x0000ff00 & dlc) >> 8);
 
     for(unsigned cpt = 0 ; cpt < 20; cpt++){
-        buf[12 + cpt] = deviceName[12 + cpt];
+        buf[12 + cpt] = deviceName[cpt];
     }
 
     buf[32] = ip[0];
@@ -107,7 +131,10 @@ void HandShakeMessage::decodeDatagram(CDatagramme *datagram){
     this->setTimestamp(datagram->getTimestamp());
     this->setDLC(datagram->getDLC());
     this->setDeviceName(datagram->getValue()->mid(12, 20));
-    this->setIP(datagram->getValue()->at(32), datagram->getValue()->at(33), datagram->getValue()->at(34), datagram->getValue()->at(35));
+    this->setIP(unsigned char(datagram->getValue()->at(32)),
+                unsigned char(datagram->getValue()->at(33)),
+                unsigned char(datagram->getValue()->at(34)),
+                unsigned char(datagram->getValue()->at(35)));
     this->setPort(unsigned char(datagram->getValue()->at(37))*256 + unsigned char(datagram->getValue()->at(36)));
 }
 

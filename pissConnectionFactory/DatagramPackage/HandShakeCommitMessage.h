@@ -27,9 +27,9 @@ public:
 private:
     unsigned char dataType;
     unsigned char deviceId;
-    long long timestamp;
+    unsigned long long timestamp;
     int dlc;
-    const char *deviceName;
+    char deviceName[20];
 
 public:
     HandShakeCommitMessage();

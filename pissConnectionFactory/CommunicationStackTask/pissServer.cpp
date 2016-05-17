@@ -55,6 +55,7 @@ bool pissServer::stopServer(){
     return false;
 }
 
+
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief pissServer::launchServer
@@ -70,6 +71,8 @@ bool pissServer::launchServer(){
     serverStatus = this->listen(QHostAddress::Any, this->devices->getMyListenPort());
     return serverStatus;
 }
+
+
 
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
@@ -98,7 +101,7 @@ void pissServer::incomingConnection(qintptr sd){
     //! push queue pair into global queue manager
     inputQueueManager->push_back(myInputQueue);
     outputQueueManager->push_back(myOutputQueue);
-
+    qDebug()<<"outputQueueManager"<<outputQueueManager->size();
     //! create real time reception task
     pissReceptionTask *receptionTask = new pissReceptionTask(id, sd, datagrammeAnalyser, inputQueueManager, devices);
     receptionTask->start();

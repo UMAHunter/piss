@@ -408,14 +408,14 @@ void pissMainWindow::readImageFromVtkConvert()
 //! \brief IgssMainWindow::closeSystem
 //!
 void pissMainWindow::closeSystem(){
-
-    if (!(QMessageBox::information(this,tr("Igss Control View"),tr("Do you really want to log out Igss Control View?"),tr("Yes"),tr("No")))){
-        this->close();
-        this->guidewareTrackingWindow->close();
-        this->surgeryPlanWindow->close();
-        systemOptionWindow->close();
-        this->surgerySystemWidget->closeSystem();
-    }
+    this->showMinimized();
+//    if (!(QMessageBox::information(this,tr("Igss Control View"),tr("Do you really want to log out Igss Control View?"),tr("Yes"),tr("No")))){
+//        this->close();
+//        this->guidewareTrackingWindow->close();
+//        this->surgeryPlanWindow->close();
+//        systemOptionWindow->close();
+//        this->surgerySystemWidget->closeSystem();
+//    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------

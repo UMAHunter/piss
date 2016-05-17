@@ -25,7 +25,18 @@ void HandShakeCommitMessage::setDLC(int dlc){
 }
 
 void HandShakeCommitMessage::setDeviceName(QString name){
-    this->deviceName = name.toStdString().c_str();
+    QByteArray qba = name.toLatin1();
+
+    if(qba.size() <= 20){
+        for(int j = 0; j < qba.size(); j++){
+            this->deviceName[j] = char(qba.at(j));
+        }
+
+        for(int k = 19; k > qba.size()-1; k--){
+            this->deviceName[k] = char(' ');
+        }
+    }
+
 }
 
 unsigned char HandShakeCommitMessage::getDataType(){
@@ -45,7 +56,15 @@ int HandShakeCommitMessage::getDLC(){
 }
 
 QString HandShakeCommitMessage::getDeviceName(){
-    return this->deviceName;
+    QByteArray name;
+    name.resize(20);
+    for(int i = 0; i < 20; i++){
+        name[i] = this->deviceName[i];
+    }
+    QString dname;
+    dname.prepend(name);
+
+    return dname.trimmed();
 }
 
 QByteArray HandShakeCommitMessage::toCDatagram(){
@@ -80,5 +99,5 @@ void HandShakeCommitMessage::decodeDatagram(CDatagramme *datagram){
     this->setDeviceId(datagram->getDeviceId());
     this->setTimestamp(datagram->getTimestamp());
     this->setDLC(datagram->getDLC());
-    this->setDeviceName(datagram->getValue()->mid(12, 20).toStdString().c_str());
+    this->setDeviceName(datagram->getValue()->mid(12, 20));
 }

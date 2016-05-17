@@ -12,6 +12,7 @@ OutputQueue::~OutputQueue()
 void OutputQueue::append(CDatagramme *datagramme)
 {
     oqMutex.lock();
+    qDebug()<<"append"<<datagramme<<datagramme->getValue();
     outputqueue.append(datagramme);
     oqMutex.unlock();
 }
@@ -31,6 +32,7 @@ void OutputQueue::deleteFrontElement()
 
 CDatagramme* OutputQueue::fetchFirstDatagramme()
 {
+    qDebug()<<"fetch"<<outputqueue.at(0)<<outputqueue.at(0)->getValue();
     CDatagramme *ret;
     oqMutex.lock();
     ret = outputqueue.at(0);

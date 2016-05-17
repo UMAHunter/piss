@@ -15,6 +15,7 @@ pissCommunicationStack::pissCommunicationStack(GlobalTime *globalTime)
     this->datagrammeAnalyser = new DatagrammeAnalyser(&outputQueueManager,&inputQueueManager,devices,globalTime, database);
     this->informationDecodeTask = new pissInputInformationDecoder(&inputQueueManager,devices,datagrammeAnalyser);
     this->outputInformationEncoder = new pissOutputInformationEncoder();
+
     this->server = new pissServer(&inputQueueManager,&outputQueueManager,devices, datagrammeAnalyser,globalTime, database);
 }
 
@@ -77,6 +78,11 @@ bool pissCommunicationStack::connectBack(bool flag, QString addr, int port){
     }
     else{
         //! connect back process
+        //int id  = devices->addClient();
+        igtClient *client = new igtClient(devices->getClientNumber()-1, &outputQueueManager, devices, globalTime);
+        this->datagrammeAnalyser->setConnectBackRequestWaitingPair(devices->getClientNumber(), client->connect_request(addr, port));
+//        /this->datagrammeAnalyser->setConnectBackRequestWaitingPair(devices->getClientNumber(),);
+
     }
 
     return true;

@@ -8,15 +8,17 @@
  */
 igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, GlobalTime *globalTime){
     this->id = id;
+    this->oq = oq;
     this->devices = devices;
     this->globalTime = globalTime;
     this->motivateConnectionRequest = true;
 
     soc = new QTcpSocket();
 
-    transmissionTask = new pissTransmissionTask(this->id, oq, devices, soc);
+    transmissionTask = new pissTransmissionTask(this->id, this->oq, devices, soc);
 
     this->connect(this->soc, SIGNAL(connected()), this, SLOT(startTransfer()));
+    this->connect(this->soc,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
 }
 
 //! ---------------------------------------------------------------------------------
@@ -28,7 +30,6 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, Globa
 qintptr igtClient::connect_request(QString addr, int port){
     motivateConnectionRequest = true;
     soc->connectToHost(addr, port);
-    qDebug()<<addr<<port;
     return soc->socketDescriptor();
 }
 
@@ -40,7 +41,13 @@ qintptr igtClient::connect_request(QString addr, int port){
 //!
 void igtClient::connectBackRequest(QString addr, int port){
     motivateConnectionRequest = false;
+    qDebug()<<soc->socketDescriptor()<<addr<<port;
     soc->connectToHost(addr, port);
+    //startTransfer();
+}
+
+void igtClient::slotDisconnected(){
+    qDebug()<<"disconnected";
 }
 
 //! ---------------------------------------------------------------------------------
@@ -48,10 +55,10 @@ void igtClient::connectBackRequest(QString addr, int port){
 //! \brief igtClient::startTransfer
 //!
 void igtClient::startTransfer(){
-
+    qDebug()<<"connected...";
     //devices->setSocketTransById(id, soc->socketDescriptor());
 
-    if(motivateConnectionRequest){
+    /*if(motivateConnectionRequest){
         HandShakeMessage *msg = new HandShakeMessage();
 
         msg->setDataType(1);
@@ -59,14 +66,15 @@ void igtClient::startTransfer(){
         msg->setTimestamp(globalTime->GetMicroS());
         msg->setDLC(38);
         msg->setDeviceName("communication stack");
-        msg->setIP(127, 12, 15, 30);
-        msg->setPort(2630);
+        msg->setIP(172, 20, 14, 150);
+        msg->setPort(10703);
 
         soc->write(msg->toCDatagram());
         soc->flush();
-        //soc->waitForBytesWritten(-1);
+        soc->waitForBytesWritten(-1);
     }
     else{
+        qDebug()<<"hand shake commit generate";
         HandShakeCommitMessage *cmsg = new HandShakeCommitMessage();
         cmsg->setDataType(2);
         cmsg->setDeviceId(id);
@@ -74,11 +82,13 @@ void igtClient::startTransfer(){
         cmsg->setDLC(32);
         cmsg->setDeviceName("platform");
 
-        CDatagramme *datagram = new CDatagramme();
-        datagram->setValue(&cmsg->toCDatagram());
+        CDatagramme *datagramme = new CDatagramme();
+        datagramme->setValue(&cmsg->toCDatagram());
+        //qDebug()<<dg.getDataType();
 
-        this->oq->at(id)->append(datagram);
-    }
+        this->oq->at(id)->append(datagramme);
+        qDebug()<<"hand shake commit push into :"<<id;
+    }*/
     transmissionTask->launch();
 }
 

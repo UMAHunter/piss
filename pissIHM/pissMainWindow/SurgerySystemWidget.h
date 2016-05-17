@@ -32,6 +32,7 @@ private:
 
     QPushButton *startServerButton;
     QPushButton *stopServerButton;
+    QPushButton *testConnectBackButton;
 
     QLabel *myIpAddress;
     QLabel *myListenPort;
@@ -64,6 +65,7 @@ public:
 public slots:
     void onStartServerButtonClicked();
     void onStopServerButtonClicked();
+    void testConnectBack();
 
 public:
      explicit SurgerySystemWidget(int width,
