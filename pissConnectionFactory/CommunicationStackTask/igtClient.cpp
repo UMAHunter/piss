@@ -39,11 +39,10 @@ qintptr igtClient::connect_request(QString addr, int port){
 //! \param addr
 //! \param port
 //!
-void igtClient::connectBackRequest(QString addr, int port){
+qintptr igtClient::connectBackRequest(QString addr, int port){
     motivateConnectionRequest = false;
-    qDebug()<<soc->socketDescriptor()<<addr<<port;
     soc->connectToHost(addr, port);
-    //startTransfer();
+    return soc->socketDescriptor();
 }
 
 void igtClient::slotDisconnected(){
@@ -58,17 +57,17 @@ void igtClient::startTransfer(){
     qDebug()<<"connected...";
     //devices->setSocketTransById(id, soc->socketDescriptor());
 
-    /*if(motivateConnectionRequest){
+    if(motivateConnectionRequest){
         HandShakeMessage *msg = new HandShakeMessage();
 
         msg->setDataType(1);
         msg->setDeviceId(id);
         msg->setTimestamp(globalTime->GetMicroS());
         msg->setDLC(38);
-        msg->setDeviceName("communication stack");
+        msg->setDeviceName("plateform image");
         msg->setIP(172, 20, 14, 150);
         msg->setPort(10703);
-
+        msg->print();
         soc->write(msg->toCDatagram());
         soc->flush();
         soc->waitForBytesWritten(-1);
@@ -88,7 +87,7 @@ void igtClient::startTransfer(){
 
         this->oq->at(id)->append(datagramme);
         qDebug()<<"hand shake commit push into :"<<id;
-    }*/
+    }
     transmissionTask->launch();
 }
 

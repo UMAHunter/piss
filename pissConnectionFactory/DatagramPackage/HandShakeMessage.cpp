@@ -8,6 +8,10 @@ HandShakeMessage::~HandShakeMessage(){
 
 }
 
+void HandShakeMessage::print(){
+    qDebug()<<this->dataType<<this->deviceId<<this->timestamp<<this->dlc<<this->deviceName<<ip[0]<<ip[1]<<ip[2]<<ip[3]<<port;
+}
+
 void HandShakeMessage::setDataType(unsigned char dataType){
     this->dataType = dataType;
 }
@@ -36,11 +40,9 @@ void HandShakeMessage::setDeviceName(QString name){
             this->deviceName[k] = char(' ');
         }
     }
-
 }
 
 void HandShakeMessage::setIP(unsigned char a, unsigned char b, unsigned char c, unsigned char d){
-    qDebug()<<a<<b<<c<<d;
     this->ip[0] = a;
     this->ip[1] = b;
     this->ip[2] = c;
@@ -48,7 +50,6 @@ void HandShakeMessage::setIP(unsigned char a, unsigned char b, unsigned char c, 
 }
 
 void HandShakeMessage::setPort(int port){
-    qDebug()<<"port"<<port;
     this->port = port;
 }
 

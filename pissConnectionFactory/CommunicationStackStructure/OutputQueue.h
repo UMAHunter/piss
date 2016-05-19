@@ -20,6 +20,7 @@ public:
 private:
     QList <CDatagramme*> outputqueue;
     QMutex oqMutex;
+    long cpt;
 };
 
 #endif // OUTPUTQUEUE_H

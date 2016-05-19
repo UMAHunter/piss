@@ -27,6 +27,7 @@ public:
     QString getDeviceName();
     QString getIp();
     int getPort();
+    void print();
 
 private:
     unsigned char dataType;

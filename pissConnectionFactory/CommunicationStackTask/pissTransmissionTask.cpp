@@ -4,7 +4,6 @@
 pissTransmissionTask::pissTransmissionTask(int id, QVector<OutputQueue *> *oq, Devices* environment, QTcpSocket* socketTransmission){
     this->id = id;
     this->oq = oq;
-    qDebug()<<"pissTransmissionTask"<<oq;
     this->devices = environment;
     this->transmissionSocket = socketTransmission;
 
@@ -27,16 +26,13 @@ void pissTransmissionTask::run(){
     while(1){
         outputMutex.lock();
         if(oq->size() > 0){
-            qDebug()<<"start transfer"<<id;
+            qDebug()<<"start transfer"<<id<<oq<<oq->at(0);
             if(oq->at(id)->getLength() > 0)
             {
-                qDebug()<<id<<"trans"<<oq->at(id)->getLength()<<oq->at(id)->fetchFirstDatagramme();
                 qDebug()<<oq->at(id)->fetchFirstDatagramme()->getValue();
-                qDebug()<<"trans";
                 this->transmissionSocket->write(*(oq->at(id)->fetchFirstDatagramme()->getValue()));
-                qDebug()<<"pre"<<oq->at(id)->fetchFirstDatagramme()->getDataType();
+                qDebug()<<"....";
                 oq->at(id)->deleteFrontElement();
-                this->transmissionSocket->waitForBytesWritten(-1);
                 frameCounter ++;
             }
             else{

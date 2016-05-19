@@ -24,7 +24,7 @@ private:
     GlobalTime *globalTime;
 public:
     qintptr connect_request(QString addr, int port);
-    void connectBackRequest(QString addr, int port);
+    qintptr connectBackRequest(QString addr, int port);
 
 public slots:
     void startTransfer();

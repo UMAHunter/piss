@@ -6,7 +6,6 @@
 #include "pissCommunicationStack.h"
 #include "GlobalTime.h"
 
-
 /**
  * @brief main procedure to generate application
  * @param argc

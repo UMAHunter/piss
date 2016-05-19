@@ -2,7 +2,7 @@
 
 InputQueue::InputQueue()
 {
-
+    clear();
 }
 
 InputQueue::~InputQueue()

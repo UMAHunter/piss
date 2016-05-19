@@ -83,7 +83,7 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
 
     HandShakeMessage *msg = new HandShakeMessage();
     msg->decodeDatagram(datagramme);
-
+    msg->print();
 //    igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
 //    QString ip = msg->getIp();
 //    int port  = msg->getPort();
@@ -103,7 +103,7 @@ void DatagrammeAnalyser::decodeHandShakeCommitMessage(int id, CDatagramme *datag
     HandShakeCommitMessage *msg = new HandShakeCommitMessage();
     msg->decodeDatagram(datagramme);
 
-    devices->setSocketTransById(id, waitingList.at(id).second);
+    //devices->setSocketTransById(id, waitingList.at(id).second);
 }
 
 //! ----------------------------------------------------------------------------------------

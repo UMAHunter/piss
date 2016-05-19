@@ -148,7 +148,7 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
 }
 
 void SurgerySystemWidget::testConnectBack(){
-    this->systemDispatcher->launchConnectBackProcess(false, "172.20.14.18", 12630);
+    this->systemDispatcher->launchConnectBackProcess(true, "172.20.14.18", 12630);
 }
 
 //! ----------------------------------------------------------------------------------------------

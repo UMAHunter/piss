@@ -71,8 +71,7 @@ bool pissCommunicationStack::connectBack(bool flag, QString addr, int port){
     if(flag){
         //! motivate connect
         //int id  = devices->addClient();
-        igtClient *client = new igtClient(devices->getClientNumber(), &outputQueueManager, devices, globalTime);
-
+        igtClient *client = new igtClient(devices->getClientNumber()-1, &outputQueueManager, devices, globalTime);
         this->datagrammeAnalyser->setConnectBackRequestWaitingPair(devices->getClientNumber(), client->connect_request(addr, port));
 
     }
@@ -81,8 +80,6 @@ bool pissCommunicationStack::connectBack(bool flag, QString addr, int port){
         //int id  = devices->addClient();
         igtClient *client = new igtClient(devices->getClientNumber()-1, &outputQueueManager, devices, globalTime);
         this->datagrammeAnalyser->setConnectBackRequestWaitingPair(devices->getClientNumber(), client->connect_request(addr, port));
-//        /this->datagrammeAnalyser->setConnectBackRequestWaitingPair(devices->getClientNumber(),);
-
     }
 
     return true;
