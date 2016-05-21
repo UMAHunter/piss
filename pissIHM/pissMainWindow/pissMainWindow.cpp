@@ -190,9 +190,9 @@ void pissMainWindow::constructIHM(){
 
     widgetsContainer->setStyleSheet(the_tab_style);
     widgetsContainer->setFixedHeight(primary_screen_height*0.82);
-    widgetsContainer->insertTab(0,ecranDesMaladies, "病例");
-    widgetsContainer->insertTab(1,surgerySystemWidget, "系统");
-    widgetsContainer->insertTab(2,replaysWidget, "存档");
+    widgetsContainer->insertTab(0,ecranDesMaladies, "patient");
+    widgetsContainer->insertTab(1,surgerySystemWidget, "system");
+    widgetsContainer->insertTab(2,replaysWidget, "documentation");
 
     systemInformationBoardWidget = new QWidget();
     systemInformationBoardWidgetLayout = new QVBoxLayout(systemInformationBoardWidget);

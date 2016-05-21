@@ -51,17 +51,21 @@ void SurgerySystemWidget::constructIHM(){
     stopServerButton->setFixedSize(this->width*0.02, this->height*0.03);
     stopServerButton->setFlat(true);
 
-    myIpAddress = new QLabel("ipAddress:");
-    myIpAddress->setFixedSize(this->width*0.05, this->height*0.03);
+    myIpAddress = new QLabel("ip:");
+    myIpAddress->setStyleSheet("background-color:gainsboro; color:aliceblue; border:0px solid gainsboro");
+    myIpAddress->setFixedSize(this->width*0.02, this->height*0.03);
 
     myIpAddressLineEdit = new QLineEdit();
-    myIpAddressLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
+    myIpAddressLineEdit->setStyleSheet("background-color:gainsboro; color:aliceblue; border:0px solid gainsboro");
+    myIpAddressLineEdit->setFixedSize(this->width*0.06, this->height*0.03);
 
     myListenPort = new QLabel("port:");
-    myListenPort->setFixedSize(this->width*0.05, this->height*0.03);
+    myListenPort->setStyleSheet("background-color:gainsboro; color:aliceblue; border:0px solid gainsboro");
+    myListenPort->setFixedSize(this->width*0.02, this->height*0.03);
 
     myListenPortLineEdit = new QLineEdit();
-    myListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
+    myListenPortLineEdit->setStyleSheet("background-color:gainsboro; color:aliceblue; border:0px solid gainsboro");
+    myListenPortLineEdit->setFixedSize(this->width*0.03, this->height*0.03);
 
     testConnectBackButton = new QPushButton();
     testConnectBackButton->setIcon(QIcon(":/images/title.png"));
@@ -81,22 +85,12 @@ void SurgerySystemWidget::constructIHM(){
     surgerySystemControlBarLayout->addWidget(myListenPort);
     surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
     surgerySystemControlBarLayout->addWidget(testConnectBackButton);
-
-
     surgerySystemControlBarLayout->addItem(surgerySystemControlBarItem);
     surgerySystemControlBarLayout->setSpacing(0);
     surgerySystemControlBarLayout->setMargin(0);
 
-    //!----------------------------------------------------------------------------------------------
-    //!
-    //!  - luo jia ming
-    //!
     systemComponentsContainer = new SystemComponentsContainer(width*0.4, this->height*0.97);
 
-    //!----------------------------------------------------------------------------------------------
-    //!
-    //!  - fan de yuan
-    //!
     communicationStatesContainer = new CommunicationStatesContainer(width*0.6, this->height*0.97);
 
     surgerySystemComponents = new QWidget();

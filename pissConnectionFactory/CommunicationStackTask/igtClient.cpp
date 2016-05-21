@@ -7,15 +7,18 @@
  * @param devices
  */
 igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, GlobalTime *globalTime){
+
     this->id = id;
     this->oq = oq;
     this->devices = devices;
     this->globalTime = globalTime;
     this->motivateConnectionRequest = true;
 
-    soc = new QTcpSocket();
+    //! instante a socket for transmission
+    this->soc = new QTcpSocket();
 
-    transmissionTask = new pissTransmissionTask(this->id, this->oq, devices, soc);
+    //! generate correspondance transmission task
+    this->transmissionTask = new pissTransmissionTask(this->id, this->oq, devices, soc);
 
     this->connect(this->soc, SIGNAL(connected()), this, SLOT(startTransfer()));
     this->connect(this->soc,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
@@ -27,10 +30,10 @@ igtClient::igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, Globa
 //! \param addr
 //! \param port
 //!
-qintptr igtClient::connect_request(QString addr, int port){
-    motivateConnectionRequest = true;
-    soc->connectToHost(addr, port);
-    return soc->socketDescriptor();
+qintptr igtClient::connectRequest(QString addr, int port){
+    this->motivateConnectionRequest = true;
+    this->soc->connectToHost(addr, port);
+    return this->soc->socketDescriptor();
 }
 
 //! ---------------------------------------------------------------------------------
@@ -40,11 +43,15 @@ qintptr igtClient::connect_request(QString addr, int port){
 //! \param port
 //!
 qintptr igtClient::connectBackRequest(QString addr, int port){
-    motivateConnectionRequest = false;
-    soc->connectToHost(addr, port);
-    return soc->socketDescriptor();
+    this->motivateConnectionRequest = false;
+    this->soc->connectToHost(addr, port);
+    return this->soc->socketDescriptor();
 }
 
+//! ---------------------------------------------------------------------------------
+//!
+//! \brief igtClient::slotDisconnected
+//!
 void igtClient::slotDisconnected(){
     qDebug()<<"disconnected";
 }
@@ -54,7 +61,8 @@ void igtClient::slotDisconnected(){
 //! \brief igtClient::startTransfer
 //!
 void igtClient::startTransfer(){
-    qDebug()<<"connected...";
+    qDebug()<<"igtClient start transfer using socket: "<<this->soc->socketDescriptor();
+
     //devices->setSocketTransById(id, soc->socketDescriptor());
 
     if(motivateConnectionRequest){
@@ -62,7 +70,7 @@ void igtClient::startTransfer(){
 
         msg->setDataType(1);
         msg->setDeviceId(id);
-        msg->setTimestamp(globalTime->GetMicroS());
+        msg->setTimestamp(globalTime->currentTime());
         msg->setDLC(38);
         msg->setDeviceName("plateform image");
         msg->setIP(172, 20, 14, 150);
@@ -77,7 +85,7 @@ void igtClient::startTransfer(){
         HandShakeCommitMessage *cmsg = new HandShakeCommitMessage();
         cmsg->setDataType(2);
         cmsg->setDeviceId(id);
-        cmsg->setTimestamp(globalTime->GetMicroS());
+        cmsg->setTimestamp(globalTime->currentTime());
         cmsg->setDLC(32);
         cmsg->setDeviceName("platform");
 
@@ -88,6 +96,7 @@ void igtClient::startTransfer(){
         this->oq->at(id)->append(datagramme);
         qDebug()<<"hand shake commit push into :"<<id;
     }
+
     transmissionTask->launch();
 }
 

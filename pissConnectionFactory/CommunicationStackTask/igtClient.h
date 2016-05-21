@@ -23,7 +23,7 @@ private:
     int id;
     GlobalTime *globalTime;
 public:
-    qintptr connect_request(QString addr, int port);
+    qintptr connectRequest(QString addr, int port);
     qintptr connectBackRequest(QString addr, int port);
 
 public slots:

@@ -34,6 +34,7 @@ private:
     unsigned char deviceId;
     long long timestamp;
     int dlc;
+
     char deviceName[20];
     unsigned char ip[4];
     int port;

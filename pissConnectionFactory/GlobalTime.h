@@ -1,16 +1,16 @@
 #ifndef GLOBALTIME_H
 #define GLOBALTIME_H
 
-#include <Windows.h>
-#include <assert.h>
-
 class GlobalTime
 {
 public:
-    GlobalTime();
-    UINT64 GetMicroS();//Œ¢√Î
+    long currentTime();
+
 private:
-    UINT64 m_frequency;
+    long m_frequency;
+
+public:
+    GlobalTime();
 };
 
 #endif // GLOBALTIME_H

@@ -1,10 +1,10 @@
 #include <QApplication>
-
 #include "pissMainWindow.h"
 #include "SystemDispatcher.h"
 #include "SystemDataBase.h"
 #include "pissCommunicationStack.h"
 #include "GlobalTime.h"
+
 
 /**
  * @brief main procedure to generate application

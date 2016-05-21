@@ -69,7 +69,7 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
-    datagramme->setTimestamp(globalTime->GetMicroS());
+    datagramme->setTimestamp(globalTime->currentTime());
     oq->at(id)->append(datagramme);
 }
 
