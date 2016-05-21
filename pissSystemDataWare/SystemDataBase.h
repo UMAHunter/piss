@@ -8,8 +8,9 @@
 #include "Devices.h"
 
 
-class SystemDataBase{
-
+class SystemDataBase:public QObject
+{
+    Q_OBJECT
 public:
     SystemDataBase();
 
@@ -28,13 +29,20 @@ public:
     IgssImage* getPatientMRAImageById(int id);
     void setImageProcessingFactory(ImageProcessingFactory* imageProcessingFactory);
 
+    void setDevices(Devices *_device);
+    Devices* getDevices(int id);
+
+public slots:
+    void updateDevices();
+
 private:
+
     Patients* patients;
     SystemMetaData* metaData;
     CArm* carm;
     ImageProcessingFactory* imageProcessingFactory;
 
-    Devices* devices;//setDevices.methode to be created..
+    Devices* devices;
 
 };
 

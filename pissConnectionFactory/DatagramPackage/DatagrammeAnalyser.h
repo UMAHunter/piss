@@ -2,6 +2,7 @@
 #define DATAGRAMMEANALYSER_H
 
 #include <QHostAddress>
+#include <QObject>
 #include <QDateTime>
 #include <QVector>
 #include <QByteArray>
@@ -30,8 +31,9 @@ typedef enum {
  * @brief The DatagrammeAnalyser class
  *
  */
-class DatagrammeAnalyser
+class DatagrammeAnalyser:public QObject
 {
+    Q_OBJECT
 public:
     DatagrammeAnalyser(QVector <OutputQueue*> *oq, QVector <InputQueue*> *iq, Devices *environment, GlobalTime *globalTime, SystemDataBase* database);
     ~DatagrammeAnalyser();
@@ -45,6 +47,9 @@ public:
     void decodeCTImage(CDatagramme *datagramme);
     void setConnectBackRequestWaitingPair(int waitingId, qintptr waitingSocket);
     //int getDatagrammeLength();
+
+signals:
+    void handshakeMessageReactProcess(QString ip, int port);
 
 private:
     DatagrammeIdentifierCode identifierCode;

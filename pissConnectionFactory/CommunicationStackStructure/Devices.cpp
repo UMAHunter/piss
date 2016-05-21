@@ -205,6 +205,7 @@ void Devices::setClientlistenportById(int id, quint32 Clientlistenport)
     mutex.lock();
     this->incomingDevices.at(id)->setClientlistenport(Clientlistenport);
     mutex.unlock();
+    emit update();
 }
 
 void Devices::setCodeByModule(QString ModuleName, bool Code)

@@ -53,8 +53,6 @@ public:
 
     void setDeviceInfo(int index, Device *device);
 
-    //void setDeviceInfo(Device *device);
-
 signals:
 
 public slots:

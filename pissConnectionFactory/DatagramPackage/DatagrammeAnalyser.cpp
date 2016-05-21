@@ -84,13 +84,11 @@ void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme)
     HandShakeMessage *msg = new HandShakeMessage();
     msg->decodeDatagram(datagramme);
     msg->print();
-//    igtClient *client = new igtClient(id, this->oq, this->devices, globalTime);
-//    QString ip = msg->getIp();
-//    int port  = msg->getPort();
-//    client->connectBackRequest(ip, port);
 
+    this->devices->setClientlistenportById(id, msg->getPort());
 
-  //  this->database->notify();
+    emit handshakeMessageReactProcess(msg->getIp(), msg->getPort());
+
 }
 
 //! ----------------------------------------------------------------------------------------

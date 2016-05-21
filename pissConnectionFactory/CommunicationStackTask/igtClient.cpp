@@ -72,7 +72,7 @@ void igtClient::startTransfer(){
         msg->setDeviceId(id);
         msg->setTimestamp(globalTime->currentTime());
         msg->setDLC(38);
-        msg->setDeviceName("plateform image");
+        msg->setDeviceName("plateform piss");
         msg->setIP(172, 20, 14, 150);
         msg->setPort(10703);
         msg->print();
@@ -81,20 +81,33 @@ void igtClient::startTransfer(){
         soc->waitForBytesWritten(-1);
     }
     else{
-        qDebug()<<"hand shake commit generate";
-        HandShakeCommitMessage *cmsg = new HandShakeCommitMessage();
-        cmsg->setDataType(2);
-        cmsg->setDeviceId(id);
-        cmsg->setTimestamp(globalTime->currentTime());
-        cmsg->setDLC(32);
-        cmsg->setDeviceName("platform");
+        HandShakeMessage *msg = new HandShakeMessage();
 
-        CDatagramme *datagramme = new CDatagramme();
-        datagramme->setValue(&cmsg->toCDatagram());
-        //qDebug()<<dg.getDataType();
+        msg->setDataType(1);
+        msg->setDeviceId(id);
+        msg->setTimestamp(globalTime->currentTime());
+        msg->setDLC(38);
+        msg->setDeviceName("plateform commit");
+        msg->setIP(172, 20, 14, 150);
+        msg->setPort(10703);
+        msg->print();
+        soc->write(msg->toCDatagram());
+        soc->flush();
+        soc->waitForBytesWritten(-1);
+//        qDebug()<<"hand shake commit generate";
+//        HandShakeCommitMessage *cmsg = new HandShakeCommitMessage();
+//        cmsg->setDataType(2);
+//        cmsg->setDeviceId(id);
+//        cmsg->setTimestamp(globalTime->currentTime());
+//        cmsg->setDLC(32);
+//        cmsg->setDeviceName("platform");
 
-        this->oq->at(id)->append(datagramme);
-        qDebug()<<"hand shake commit push into :"<<id;
+//        CDatagramme *datagramme = new CDatagramme();
+//        //datagramme->setValue(&cmsg->toCDatagram());
+//        //qDebug()<<dg.getDataType();
+
+//        this->oq->at(id)->append(datagramme);
+//        qDebug()<<"hand shake commit push into :"<<id;
     }
 
     transmissionTask->launch();

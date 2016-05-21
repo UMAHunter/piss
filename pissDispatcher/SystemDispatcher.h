@@ -14,8 +14,9 @@
 /**
  * @brief The SystemDispatcher class
  */
-class SystemDispatcher
+class SystemDispatcher:public QObject
 {
+    Q_OBJECT
 public:
     SystemDispatcher();
 

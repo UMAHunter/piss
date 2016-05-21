@@ -86,18 +86,18 @@ bool pissServer::getConnectionState(){
 //! \param sd
 //!
 void pissServer::incomingConnection(qintptr sd){
-    //! add incoming device
+    qDebug()<<"add incoming device";
     int id = this->devices->addClient();
     this->devices->setSocketReceptionById(id, sd);
 
-    //! generate correspondant input & output queue for the incoming device
+    qDebug()<<"generate correspondant input & output queue for the incoming device";
     InputQueue *myInputQueue = new InputQueue();
     OutputQueue *myOutputQueue = new OutputQueue();
 
     //! push queue pair into global queue manager
     inputQueueManager->push_back(myInputQueue);
     outputQueueManager->push_back(myOutputQueue);
-    qDebug()<<"incomingConnection"<<outputQueueManager<<outputQueueManager->at(0);
+
     //! create real time reception task
     pissReceptionTask *receptionTask = new pissReceptionTask(id, sd, datagrammeAnalyser, inputQueueManager, devices);
     receptionTask->start();

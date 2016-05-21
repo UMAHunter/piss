@@ -74,14 +74,14 @@ QByteArray HandShakeCommitMessage::toCDatagram(){
 
     buf[1] = deviceId;
 
-    buf[2] = timestamp % long long(pow(2, 8));
-    buf[3] = timestamp / long long(pow(2, 8)) % long long(pow(2, 8));
-    buf[4] = timestamp / long long(pow(2, 16)) % long long(pow(2,8));
-    buf[5] = timestamp / long long(pow(2, 24)) % long long(pow(2,8));
-    buf[6] = timestamp / long long(pow(2, 32)) % long long(pow(2,8));
-    buf[7] = timestamp / long long(pow(2, 40)) % long long(pow(2,8));
-    buf[8] = timestamp / long long(pow(2, 56)) % long long(pow(2,8));
-    buf[9] = timestamp / long long(pow(2, 64)) % long long(pow(2,8));
+    buf[2] = timestamp % (long long)(pow(2, 8));
+    buf[3] = timestamp / (long long)(pow(2, 8)) % (long long)(pow(2, 8));
+    buf[4] = timestamp / (long long)(pow(2, 16)) % (long long)(pow(2,8));
+    buf[5] = timestamp / (long long)(pow(2, 24)) % (long long)(pow(2,8));
+    buf[6] = timestamp / (long long)(pow(2, 32)) % (long long)(pow(2,8));
+    buf[7] = timestamp / (long long)(pow(2, 40)) % (long long)(pow(2,8));
+    buf[8] = timestamp / (long long)(pow(2, 56)) % (long long)(pow(2,8));
+    buf[9] = timestamp / (long long)(pow(2, 64)) % (long long)(pow(2,8));
 
     buf[10] = (uchar)  (0x000000ff & dlc);
     buf[11] = (uchar) ((0x0000ff00 & dlc) >> 8);

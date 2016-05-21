@@ -12,8 +12,9 @@
 /**
  * @brief The Devices class
  */
-class Devices
+class Devices:public QObject
 {
+    Q_OBJECT
 public:
     void append(QString ModuleName, int Port);
     void append(int ModuleNumber, int Port);
@@ -47,6 +48,9 @@ public:
     Device* getSelf();
     void setMyListenPort(quint32 port);
     int getMyListenPort();
+
+signals:
+    void update();
 
 private:
     QMutex mutex;

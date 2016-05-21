@@ -23,9 +23,9 @@ CDatagramme::~CDatagramme(){
 //! \param value
 //!
 void CDatagramme::setValue(QByteArray* v){
+    qDebug()<<v;
     this->value = v;
     this->totalLength = this->value->length();
-    qDebug()<<"cmsg->toCDatagram()"<<v<<this->totalLength<<int(this->value->at(0))<<int(this->value->at(1));
 }
 
 //!-------------------------------------------------------------
@@ -48,8 +48,10 @@ void CDatagramme::printSelf(){
 //! \return
 //!
 unsigned char CDatagramme::getDataType(){
-    qDebug()<<"CDatagramme::getDataType"<<this->value->size();
-    return unsigned char(this->value->at(0));
+    qDebug()<<this->value;
+    qDebug()<<this->value->size();
+
+    return (unsigned char)this->value->at(0);
 }
 
 //!------------------------------------------------------------
@@ -80,14 +82,14 @@ void CDatagramme::setTimestamp(qint32 time){
 //!
 unsigned long long CDatagramme::getTimestamp()
 {
-    return     unsigned char(value->at(9))*quint64(pow(2, 56))
-             + unsigned char(value->at(8))*quint64(pow(2, 48))
-             + unsigned char(value->at(7))*quint64(pow(2, 40))
-             + unsigned char(value->at(6))*quint64(pow(2, 32))
-             + unsigned char(value->at(5))*quint64(pow(2, 24))
-             + unsigned char(value->at(4))*quint64(pow(2, 16))
-             + unsigned char(value->at(3))*quint64(pow(2, 8))
-             + unsigned char(value->at(2));
+    return     (unsigned char)(value->at(9))*quint64(pow(2, 56))
+             + (unsigned char)(value->at(8))*quint64(pow(2, 48))
+             + (unsigned char)(value->at(7))*quint64(pow(2, 40))
+             + (unsigned char)(value->at(6))*quint64(pow(2, 32))
+             + (unsigned char)(value->at(5))*quint64(pow(2, 24))
+             + (unsigned char)(value->at(4))*quint64(pow(2, 16))
+             + (unsigned char)(value->at(3))*quint64(pow(2, 8))
+             + (unsigned char)(value->at(2));
 }
 
 //!------------------------------------------------------------
@@ -97,5 +99,5 @@ unsigned long long CDatagramme::getTimestamp()
 //!
 int CDatagramme::getDLC()
 {
-    return unsigned char(this->value->at(11))*256 + unsigned char(this->value->at(10));
+    return (unsigned char)(this->value->at(11))*256 + (unsigned char)(this->value->at(10));
 }

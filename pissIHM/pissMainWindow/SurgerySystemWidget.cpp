@@ -84,7 +84,7 @@ void SurgerySystemWidget::constructIHM(){
     surgerySystemControlBarLayout->addWidget(myIpAddressLineEdit);
     surgerySystemControlBarLayout->addWidget(myListenPort);
     surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
-    surgerySystemControlBarLayout->addWidget(testConnectBackButton);
+    //surgerySystemControlBarLayout->addWidget(testConnectBackButton);
     surgerySystemControlBarLayout->addItem(surgerySystemControlBarItem);
     surgerySystemControlBarLayout->setSpacing(0);
     surgerySystemControlBarLayout->setMargin(0);
@@ -163,7 +163,7 @@ void SurgerySystemWidget::setSelfInfo(QString addr, int port){
 void SurgerySystemWidget::onStartServerButtonClicked(){
 
     //! fetch ip adress display at the front table...
-    //communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
+    //communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getIncomingDevices);
     this->setSelfInfo(this->systemDispatcher->getMyDeviceInfo()->getIpAddress(),
                       this->systemDispatcher->getMyDeviceInfo()->getClientlistenport());
 

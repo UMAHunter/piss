@@ -8,6 +8,7 @@ SystemDataBase::SystemDataBase(){
     this->patients = new Patients();
     this->metaData = new SystemMetaData();
     this->carm = new CArm();
+
 }
 
 //!--------------------------------------------------------------------------------------------
@@ -118,4 +119,21 @@ int SystemDataBase::findPatientsExisted(){
 //!
 Patients* SystemDataBase::getPatientsData(){
     return this->patients;
+}
+
+//!--------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDataBase::setDevices
+//! \param _device
+//!
+void SystemDataBase::setDevices(Devices *_device){
+    this->devices = _device;
+}
+
+//!--------------------------------------------------------------------------------------------
+//!
+//! \brief SystemDataBase::updateDevices
+//!
+void SystemDataBase::updateDevices(){
+    qDebug()<<"updateDevices";
 }

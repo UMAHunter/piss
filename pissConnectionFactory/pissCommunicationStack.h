@@ -16,8 +16,9 @@
 /**
  * @brief The pissCommunicationStack class
  */
-class pissCommunicationStack
+class pissCommunicationStack:public QObject
 {
+    Q_OBJECT
 private:
     Devices *devices;
     QVector <InputQueue*> inputQueueManager;
@@ -27,10 +28,10 @@ private:
     pissOutputInformationEncoder *outputInformationEncoder;
     pissServer *server;
     GlobalTime *globalTime;
-
-    //!
     SystemDataBase* database;
 
+public slots:
+    void connectBackRequest(QString ip, int port);
 public:
     bool launchServer();
     bool connectBack(bool flag, QString addr, int port);
@@ -42,6 +43,8 @@ public:
 
 public:
     pissCommunicationStack(GlobalTime *globalTime);
+signals:
+    void notifyPort(int port);
 };
 
 #endif // PISSCOMMUNICATIONSTACK_H
