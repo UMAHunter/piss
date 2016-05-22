@@ -32,13 +32,6 @@ private:
 
     QPushButton *startServerButton;
     QPushButton *stopServerButton;
-    QPushButton *testConnectBackButton;
-
-    QLabel *myIpAddress;
-    QLabel *myListenPort;
-
-    QLineEdit *myIpAddressLineEdit;
-    QLineEdit *myListenPortLineEdit;
 
     QSpacerItem *surgerySystemControlBarItem;
 

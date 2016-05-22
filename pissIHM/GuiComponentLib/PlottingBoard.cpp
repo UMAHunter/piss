@@ -82,18 +82,18 @@ void PlottingBoard::setGridStyle(bool abscissaAxisEnable, QString abscissaGridCo
     this->xAxis->grid()->setVisible(abscissaAxisEnable);
     this->xAxis->grid()->setSubGridVisible(abscissaAxisEnable);
     if(abscissaAxisEnable){
-        this->xAxis->grid()->setPen(QPen(QColor(abscissaGridColor), 1, Qt::DotLine));
-        this->xAxis->grid()->setSubGridPen(QPen(QColor(abscissaSubGridColor), 1, Qt::DotLine));
+        this->xAxis->grid()->setPen(QPen(QColor(abscissaGridColor), 1, Qt::SolidLine));
+        this->xAxis->grid()->setSubGridPen(QPen(QColor(abscissaSubGridColor), 1, Qt::SolidLine));
     }
     this->yAxis->grid()->setVisible(ordinateAxisEnable);
     this->yAxis->grid()->setSubGridVisible(ordinateAxisEnable);
     if(ordinateAxisEnable){
-        this->yAxis->grid()->setSubGridPen(QPen(QColor(ordinateGridColor), 1, Qt::DotLine));
-        this->yAxis->grid()->setPen(QPen(QColor(ordinateSubGridColor), 1, Qt::DotLine));
+        this->yAxis->grid()->setSubGridPen(QPen(QColor(ordinateGridColor), 1, Qt::SolidLine));
+        this->yAxis->grid()->setPen(QPen(QColor(ordinateSubGridColor), 1, Qt::SolidLine));
     }
 
-    this->xAxis->grid()->setZeroLinePen(Qt::DotLine);
-    this->yAxis->grid()->setZeroLinePen(Qt::DotLine);
+    this->xAxis->grid()->setZeroLinePen(Qt::SolidLine);
+    this->yAxis->grid()->setZeroLinePen(Qt::SolidLine);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------
