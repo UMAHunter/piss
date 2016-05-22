@@ -62,31 +62,31 @@ void CommunicationStatesContainer::initVariable(){
 void CommunicationStatesContainer::constructIHM(){
 
     myInfoIndication = new QLabel("Local PC Info:");
-    myInfoIndication->setStyleSheet("background-color:red; color:"+workspaceColor+"; border:0px solid gainsboro");
+    myInfoIndication->setStyleSheet("background-color:tomato; color:"+workspaceColor+"; border:0px solid gainsboro");
     myInfoIndication->setAlignment(Qt::AlignCenter);
     myInfoIndication->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     myInfoIndication->setFixedSize(this->width*0.07, this->height*0.03);
 
     myIpAddress = new QLabel("ip:");
-    myIpAddress->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 0px 0px");
+    myIpAddress->setStyleSheet("background-color:transparent; color:tomato; border-width:0px 0px 0px 0px");
     myIpAddress->setAlignment(Qt::AlignCenter);
     myIpAddress->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     myIpAddress->setFixedSize(this->width*0.04, this->height*0.03);
 
     myIpAddressLineEdit = new QLineEdit();
-    myIpAddressLineEdit->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 1px 0px; border-color:lightgray");
+    myIpAddressLineEdit->setStyleSheet("background-color:transparent; color:tomato; border-width:0px 0px 1px 0px; border-color:lightgray");
     myIpAddressLineEdit->setAlignment(Qt::AlignCenter);
     myIpAddressLineEdit->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     myIpAddressLineEdit->setFixedSize(this->width*0.09, this->height*0.03);
 
     myListenPort = new QLabel("port:");
-    myListenPort->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 0px 0px");
+    myListenPort->setStyleSheet("background-color:transparent; color:tomato; border-width:0px 0px 0px 0px");
     myListenPort->setAlignment(Qt::AlignCenter);
     myListenPort->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     myListenPort->setFixedSize(this->width*0.04, this->height*0.03);
 
     myListenPortLineEdit = new QLineEdit();
-    myListenPortLineEdit->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 1px 0px; border-color:lightgray");
+    myListenPortLineEdit->setStyleSheet("background-color:transparent; color:tomato; border-width:0px 0px 1px 0px; border-color:lightgray");
     myListenPortLineEdit->setAlignment(Qt::AlignCenter);
     myListenPortLineEdit->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     myListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
@@ -114,25 +114,25 @@ void CommunicationStatesContainer::constructIHM(){
     targetInfoIndication->setFixedSize(this->width*0.07, this->height*0.03);
 
     targetIpAddress = new QLabel("ip:");
-    targetIpAddress->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 0px 0px");
+    targetIpAddress->setStyleSheet("background-color:transparent; color:springgreen; border-width:0px 0px 0px 0px");
     targetIpAddress->setAlignment(Qt::AlignCenter);
     targetIpAddress->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     targetIpAddress->setFixedSize(this->width*0.04, this->height*0.03);
 
     targetIpAddressLineEdit = new QLineEdit();
-    targetIpAddressLineEdit->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 1px 0px; border-color:lightgray");
+    targetIpAddressLineEdit->setStyleSheet("background-color:transparent; color:springgreen; border-width:0px 0px 1px 0px; border-color:lightgray");
     targetIpAddressLineEdit->setAlignment(Qt::AlignCenter);
     targetIpAddressLineEdit->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     targetIpAddressLineEdit->setFixedSize(this->width*0.09, this->height*0.03);
 
     targetListenPort = new QLabel("port:");
-    targetListenPort->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 0px 0px");
+    targetListenPort->setStyleSheet("background-color:transparent; color:springgreen; border-width:0px 0px 0px 0px");
     targetListenPort->setAlignment(Qt::AlignCenter);
     targetListenPort->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     targetListenPort->setFixedSize(this->width*0.04, this->height*0.03);
 
     targetListenPortLineEdit = new QLineEdit();
-    targetListenPortLineEdit->setStyleSheet("background-color:transparent; color:aliceblue; border-width:0px 0px 1px 0px; border-color:lightgray");
+    targetListenPortLineEdit->setStyleSheet("background-color:transparent; color:springgreen; border-width:0px 0px 1px 0px; border-color:lightgray");
     targetListenPortLineEdit->setAlignment(Qt::AlignCenter);
     targetListenPortLineEdit->setFont(QFont("Times", 8, QFont::AnyStyle, false));
     targetListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
