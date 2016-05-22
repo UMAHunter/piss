@@ -70,7 +70,7 @@ public:
     void displayLastFiveOrLess();
     void keyPressEvent(QKeyEvent *event);
     void displayCurrentPatinetInfo();
-    void displayBrainSegImage();
+    void visualizeCurrentVolumeData();
     void display(vtkImageData *imgToBeDisplayed);
     void setPatientHandling(Patient *patientHandling);
     void setWorkSpaceColor(QString workspaceColor);
@@ -103,7 +103,7 @@ private:
     vtkFixedPointVolumeRayCastMapper *volumeMapper;
     vtkVolumeRayCastCompositeFunction  *compositeFunction;
     vtkSmartPointer<vtkRenderWindow> renderWindow;
-    vtkSmartPointer<vtkRenderer> renderer;
+    vtkSmartPointer<vtkRenderer> originVolumeDataRenderer;
     vtkVolumeProperty*volumeProperty;
 
     vtkSmartPointer<vtkRenderWindow> flyThroughRenderWindow;
@@ -112,7 +112,8 @@ private:
     vtkImageData* currentVolumeData;
     vtkImageShiftScale *shiftScaleVolumeData;
 
-    vtkCamera *cam;
+    vtkCamera *originVolumeDataCamera;
+    vtkCamera *flyThroughCamera;
 
     QString workspaceColor;
     QString globalFontColor;

@@ -62,7 +62,7 @@ void PatientsWidget::initVariable(){
     this->compositeFunction = vtkVolumeRayCastCompositeFunction::New();
     this->volume = vtkVolume::New();
     this->renderWindow = vtkSmartPointer<vtkRenderWindow>::New() ;
-    this->renderer = vtkSmartPointer<vtkRenderer>::New();
+    this->originVolumeDataRenderer = vtkSmartPointer<vtkRenderer>::New();
     this->volumeProperty = vtkVolumeProperty::New();
     this->volumeProperty->ShadeOff();
     this->volumeProperty->SetInterpolationType(VTK_LINEAR_INTERPOLATION);
@@ -96,13 +96,16 @@ void PatientsWidget::initVariable(){
     shiftScaleVolumeData = vtkImageShiftScale::New();
 
     cuttingLayerOptionActor = vtkActor::New();
-    cam = this->renderer->GetActiveCamera();
+    originVolumeDataCamera = this->originVolumeDataRenderer->GetActiveCamera();
+    flyThroughCamera = this->flyThroughRenderer->GetActiveCamera();
 
+
+    //this->flyThroughRenderer->SetActiveCamera(originVolumeDataCamera);
+    //this->originVolumeDataRenderer->SetActiveCamera(flyThroughCamera);
     vesselPointCount = 0;
 
     centerlineActorSet.clear();
     isGuidewareMovementButtonClicked = false;
-
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -145,6 +148,7 @@ void PatientsWidget::onCutButtonClicked(){
 
     this->flyThroughRenderer->AddActor(actor);
     flyThroughDisplayArea->update();
+    //this->flyThroughRenderer->SetActiveCamera(originVolumeDataCamera);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -168,7 +172,7 @@ void PatientsWidget::cuttingLayerOptionChanged(int value){
 
     cuttingLayerOptionActor->SetMapper(posMapper);
     cuttingLayerOptionActor->GetProperty()->SetColor(255,0,0);
-    this->renderer->AddActor(cuttingLayerOptionActor);
+    this->originVolumeDataRenderer->AddActor(cuttingLayerOptionActor);
     //this->renderer->ResetCamera();
     this->flyThroughRenderer->AddActor(cuttingLayerOptionActor);
     //this->flyThroughRenderer->ResetCamera();
@@ -190,7 +194,7 @@ void PatientsWidget::flyThrough(){
 
          if(!flyThroughMode){
              vtkSphereSource *pos = vtkSphereSource::New();
-             pos->SetRadius(0.5);
+             pos->SetRadius(0.3);
              pos->SetThetaResolution(12);
              pos->SetPhiResolution(6);
              pos->SetCenter(p0[0],p0[1],p0[2]);
@@ -200,17 +204,17 @@ void PatientsWidget::flyThrough(){
              posActor->SetMapper(posMapper);
              posActor->GetProperty()->SetColor(0,255,255);
              centerlineActorSet.append(posActor);
-             this->renderer->AddActor(posActor);
-             this->renderer->ResetCamera();
+             this->originVolumeDataRenderer->AddActor(posActor);
+             this->originVolumeDataRenderer->ResetCamera();
              this->flyThroughRenderer->AddActor(posActor);
              this->flyThroughRenderer->ResetCamera();
              flyThroughDisplayArea->update();
          }
          else{
-             cam->SetClippingRange(0.1,5);
-             cam->SetFocalPoint(foc[0],foc[1],foc[2]);
-             cam->SetPosition(p0[0],p0[1],p0[2]);
-             cam->ComputeViewPlaneNormal();
+             originVolumeDataCamera->SetClippingRange(0.1,5);
+             originVolumeDataCamera->SetFocalPoint(foc[0],foc[1],foc[2]);
+             originVolumeDataCamera->SetPosition(p0[0],p0[1],p0[2]);
+             originVolumeDataCamera->ComputeViewPlaneNormal();
          }
          currentPatientVolumeDataAnalyseArea->GetRenderWindow()->Render();
          currentPatientVolumeDataAnalyseArea->update();
@@ -226,8 +230,8 @@ void PatientsWidget::flyThrough(){
      }
      else{
          if(!flyThroughMode){
-             this->renderer->AddActor(centerlineActorSet.at(flyThroughCpt));
-             this->renderer->ResetCamera();
+             this->originVolumeDataRenderer->AddActor(centerlineActorSet.at(flyThroughCpt));
+             this->originVolumeDataRenderer->ResetCamera();
              this->flyThroughRenderer->AddActor(centerlineActorSet.at(flyThroughCpt));
              this->flyThroughRenderer->ResetCamera();
              flyThroughDisplayArea->update();
@@ -246,10 +250,10 @@ void PatientsWidget::flyThrough(){
              vessel->GetPoint(flyThroughCpt, p0);
              vessel->GetPoint(flyThroughCpt+10, foc);
 
-             cam->SetClippingRange(0.1,5);
-             cam->SetFocalPoint(foc[0],foc[1],foc[2]);
-             cam->SetPosition(p0[0],p0[1],p0[2]);
-             cam->ComputeViewPlaneNormal();
+             originVolumeDataCamera->SetClippingRange(0.1,5);
+             originVolumeDataCamera->SetFocalPoint(foc[0],foc[1],foc[2]);
+             originVolumeDataCamera->SetPosition(p0[0],p0[1],p0[2]);
+             originVolumeDataCamera->ComputeViewPlaneNormal();
              currentPatientVolumeDataAnalyseArea->GetRenderWindow()->Render();
              currentPatientVolumeDataAnalyseArea->update();
 
@@ -271,11 +275,11 @@ void PatientsWidget::flyThrough(){
 //!    vtkVolume *volume;
 //!
 void PatientsWidget::onClearCenterLineButtonClicked(){
-    renderer->RemoveAllViewProps();
+    originVolumeDataRenderer->RemoveAllViewProps();
     flyThroughRenderer->RemoveAllViewProps();
-    renderer->AddVolume(volume);
+    originVolumeDataRenderer->AddVolume(volume);
 
-    this->renderer->ResetCamera();
+    this->originVolumeDataRenderer->ResetCamera();
     this->flyThroughRenderer->ResetCamera();
     currentPatientVolumeDataAnalyseArea->update();
     flyThroughDisplayArea->update();
@@ -295,7 +299,7 @@ void PatientsWidget::onCameraFlyThroughButtonClicked(){
         this->cuttingLayerOption->setMinimum(0);
         this->cuttingLayerOption->setMaximum(vesselPointCount-1);
     }
-    this->flyThroughTimer->start(10);
+    this->flyThroughTimer->start(100);
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -321,7 +325,6 @@ void PatientsWidget::onGuidewareMovementButtonClicked(){
 //! \brief PatientsWidget::onPlottingButtonClicked
 //!
 void PatientsWidget::onPlottingButtonClicked(){
-
       QVector<HistogramPoint*> frequencies = this->dispatcher->getHistogramOfVolumeData(this->currentVolumeData);
       int index = plottingBoard->addCurve("Histogram", "grayscale value", "", "cyan", 3);
       plottingBoard->doHistogramPlotting(index,frequencies);
@@ -349,7 +352,7 @@ void PatientsWidget::findPatientExisted(){
 
     this->displayLastFiveOrLess();
     this->displayCurrentPatinetInfo();
-    displayBrainSegImage();
+    visualizeCurrentVolumeData();
 }
 
 //!----------------------------------------------------------------------------------------------------
@@ -406,7 +409,7 @@ void PatientsWidget::doLeftSelect(){
 
         this->displayLastFiveOrLess();
         this->displayCurrentPatinetInfo();
-        this->displayBrainSegImage();
+        this->visualizeCurrentVolumeData();
     }
 }
 
@@ -443,7 +446,7 @@ void PatientsWidget::doRightSelect(){
 
         this->displayLastFiveOrLess();
         this->displayCurrentPatinetInfo();
-        this->displayBrainSegImage();
+        this->visualizeCurrentVolumeData();
     }
 }
 
@@ -599,7 +602,7 @@ int PatientsWidget::testY(){
 //!
 //! \brief PatientsWidget::displayBrainSegImage
 //!
-void PatientsWidget::displayBrainSegImage(){
+void PatientsWidget::visualizeCurrentVolumeData(){
 
     loadMRAImageFile(waitingPatientsMraPathQueue.at(4));
 
@@ -646,7 +649,7 @@ void PatientsWidget::setWorkSpaceColor(QString workspaceColor){
     workspaceGreen = qworkspaceColor->green();
     workspaceBlue = qworkspaceColor->blue();
 
-    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->originVolumeDataRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
     this->flyThroughRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 
     this->setStyleSheet("background-color:"+this->workspaceColor);
@@ -682,13 +685,13 @@ void PatientsWidget::display(vtkImageData *imgToBeDisplayed){
     this->volume->SetMapper(volumeMapper);
     this->volume->SetProperty(volumeProperty);
 
-    this->renderer->AddVolume(volume);
-    this->renderWindow->AddRenderer(renderer);
+    this->originVolumeDataRenderer->AddVolume(volume);
+    this->renderWindow->AddRenderer(originVolumeDataRenderer);
 
     this->currentPatientVolumeDataAnalyseArea->SetRenderWindow(renderWindow);
-    this->renderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
+    this->originVolumeDataRenderer->SetBackground((1.0*workspaceRed)/255, (1.0*workspaceGreen)/255, (1.0*workspaceBlue)/255);
 
-    this->renderer->ResetCamera();
+    this->originVolumeDataRenderer->ResetCamera();
     this->renderWindow->Render();
 }
 
@@ -706,7 +709,7 @@ void PatientsWidget::update(){
     }while(!this->patientHandling->readFinished());
 
     //this->algorithmTestPlatform->setSystemStatus("finished");
-    this->displayBrainSegImage();
+    this->visualizeCurrentVolumeData();
 }
 
 //!----------------------------------------------------------------------------------------------------
