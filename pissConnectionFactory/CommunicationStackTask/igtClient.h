@@ -5,7 +5,10 @@
 
 #include "pissTransmissionTask.h"
 #include "HandShakeMessage.h"
-
+#include "Devices.h"
+#include "Device.h"
+#include "GlobalTime.h"
+#include "HandShakeCommitMessage.h"
 
 class igtClient : public QObject
 {
@@ -16,20 +19,21 @@ private:
     pissTransmissionTask *transmissionTask;
     QVector <OutputQueue*> *oq;
     Devices* devices;
-
     bool motivateConnectionRequest;
     int id;
-
+    GlobalTime *globalTime;
 public:
-    void connect_request(QString addr, int port);
-    void connectBackRequest(QString addr, int port);
+    qintptr connectRequest(QString addr, int port);
+    qintptr connectBackRequest(QString addr, int port);
 
 public slots:
     void startTransfer();
+    void slotDisconnected();
 
 public:
-    igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices);
+    igtClient(int id, QVector <OutputQueue*> *oq, Devices* devices, GlobalTime *globalTime);
 
 };
 
 #endif // IGTCLIENT_H
+

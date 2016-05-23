@@ -1,5 +1,6 @@
 #include "DatagrammeAnalyser.h"
 
+
 DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
                                        QVector <InputQueue*> *iq,
                                        Devices* environment,
@@ -8,6 +9,7 @@ DatagrammeAnalyser::DatagrammeAnalyser(QVector <OutputQueue*> *oq,
 {
     this->iq = iq;
     this->oq = oq;
+    qDebug()<<"DA"<<oq;
     this->devices = environment;
     this->globalTime = globalTime;
     this->database = database;
@@ -42,9 +44,14 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
             decodeHelloMessage(id, datagramme);
             break;
         }
-        case HandShakeMessage:{
+        case HandShakeMsg:{
             qDebug()<<"HandShakeMessage";
             decodeHandShakeMessage(id, datagramme);
+            break;
+        }
+        case HandShakeCommitMsg:{
+            qDebug()<<"HandShakeCommitMsg";
+            decodeHandShakeCommitMessage(id, datagramme);
             break;
         }
         case CTImage:{
@@ -53,7 +60,6 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
             break;
         }
     }
-    qDebug()<<"end decoding process";
 }
 
 //! ----------------------------------------------------------------------------------------
@@ -63,7 +69,7 @@ void DatagrammeAnalyser::decodage(int id, CDatagramme *datagramme){
 //! \param datagramme
 //!
 void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
-    datagramme->setTimestamp(globalTime->GetMicroS());
+    datagramme->setTimestamp(globalTime->currentTime());
     oq->at(id)->append(datagramme);
 }
 
@@ -73,16 +79,29 @@ void DatagrammeAnalyser::decodeHelloMessage(int id, CDatagramme *datagramme){
 //! \param id
 //! \param datagramme
 //!
-//! handshake msg format: + + +
-//!
 void DatagrammeAnalyser::decodeHandShakeMessage(int id, CDatagramme *datagramme){
-//    HandShakeMessage *msg = new HandShakeMessage();
-//    msg->decodeDatagram(datagramme);
 
-//    igtClient *client = new igtClient(id, this->oq, this->devices);
-//    client->connectBackRequest(msg.ip, msg.port);
+    HandShakeMessage *msg = new HandShakeMessage();
+    msg->decodeDatagram(datagramme);
+    msg->print();
 
-  //  this->database->notify();
+    this->devices->setClientlistenportById(id, msg->getPort());
+
+    emit handshakeMessageReactProcess(msg->getIp(), msg->getPort());
+
+}
+
+//! ----------------------------------------------------------------------------------------
+//!
+//! \brief DatagrammeAnalyser::decodeHandShakeCommitMessage
+//! \param id
+//! \param datagramme
+//!
+void DatagrammeAnalyser::decodeHandShakeCommitMessage(int id, CDatagramme *datagramme){
+    HandShakeCommitMessage *msg = new HandShakeCommitMessage();
+    msg->decodeDatagram(datagramme);
+
+    //devices->setSocketTransById(id, waitingList.at(id).second);
 }
 
 //! ----------------------------------------------------------------------------------------
@@ -94,3 +113,9 @@ void DatagrammeAnalyser::decodeCTImage(CDatagramme *datagramme){
 
 }
 
+void DatagrammeAnalyser::setConnectBackRequestWaitingPair(int waitingId, qintptr waitingSocket){
+    QPair<int, qintptr> pair;
+    pair.first = waitingId;
+    pair.second = waitingSocket;
+    waitingList.append(pair);
+}

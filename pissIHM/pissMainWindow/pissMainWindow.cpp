@@ -190,9 +190,9 @@ void pissMainWindow::constructIHM(){
 
     widgetsContainer->setStyleSheet(the_tab_style);
     widgetsContainer->setFixedHeight(primary_screen_height*0.82);
-    widgetsContainer->insertTab(0,ecranDesMaladies, "病例");
-    widgetsContainer->insertTab(1,surgerySystemWidget, "系统");
-    widgetsContainer->insertTab(2,replaysWidget, "存档");
+    widgetsContainer->insertTab(0,ecranDesMaladies, "patient");
+    widgetsContainer->insertTab(1,surgerySystemWidget, "system");
+    widgetsContainer->insertTab(2,replaysWidget, "documentation");
 
     systemInformationBoardWidget = new QWidget();
     systemInformationBoardWidgetLayout = new QVBoxLayout(systemInformationBoardWidget);
@@ -408,14 +408,14 @@ void pissMainWindow::readImageFromVtkConvert()
 //! \brief IgssMainWindow::closeSystem
 //!
 void pissMainWindow::closeSystem(){
-
-    if (!(QMessageBox::information(this,tr("Igss Control View"),tr("Do you really want to log out Igss Control View?"),tr("Yes"),tr("No")))){
-        this->close();
-        this->guidewareTrackingWindow->close();
-        this->surgeryPlanWindow->close();
-        systemOptionWindow->close();
-        this->surgerySystemWidget->closeSystem();
-    }
+    this->showMinimized();
+//    if (!(QMessageBox::information(this,tr("Igss Control View"),tr("Do you really want to log out Igss Control View?"),tr("Yes"),tr("No")))){
+//        this->close();
+//        this->guidewareTrackingWindow->close();
+//        this->surgeryPlanWindow->close();
+//        systemOptionWindow->close();
+//        this->surgerySystemWidget->closeSystem();
+//    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------

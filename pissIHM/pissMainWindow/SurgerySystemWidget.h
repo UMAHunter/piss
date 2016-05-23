@@ -33,12 +33,6 @@ private:
     QPushButton *startServerButton;
     QPushButton *stopServerButton;
 
-    QLabel *myIpAddress;
-    QLabel *myListenPort;
-
-    QLineEdit *myIpAddressLineEdit;
-    QLineEdit *myListenPortLineEdit;
-
     QSpacerItem *surgerySystemControlBarItem;
 
     QHBoxLayout *surgerySystemControlBarLayout;
@@ -64,6 +58,7 @@ public:
 public slots:
     void onStartServerButtonClicked();
     void onStopServerButtonClicked();
+    void testConnectBack();
 
 public:
      explicit SurgerySystemWidget(int width,

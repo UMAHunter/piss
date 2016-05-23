@@ -52,6 +52,8 @@ INCLUDEPATH += pissImageProcessingMethods/igssMathLib
 
 INCLUDEPATH += pissImageProcessingMethods/igssSegmentationLib
 
+INCLUDEPATH += pissImageProcessingMethods/igssCurvePlanReformationLib
+
 RESOURCES = imageresources.qrc
 
 SOURCES +=  main.cpp\
@@ -124,11 +126,12 @@ SOURCES +=  main.cpp\
             pissSystemDataWare/AcquisitionPoint.cpp \
             pissConnectionFactory/DatagramPackage/CDatagramme.cpp \
             pissConnectionFactory/DatagramPackage/DatagrammeAnalyser.cpp \
-            pissConnectionFactory/DatagramPackage/HandShakeMessage.cpp \
             pissDiskImageReaderFactory/MatFileReader.cpp \
             pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.cpp \
     pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.cpp \
-    pissConnectionFactory/DatagramPackage/HelloMessage.cpp
+    pissConnectionFactory/DatagramPackage/HelloMessage.cpp \
+    pissImageProcessingMethods/igssCurvePlanReformationLib/igsssCutter.cpp \
+    pissConnectionFactory/DatagramPackage/HandShakeMessage.cpp
 
 HEADERS  += \
             pissDispatcher/SystemDispatcher.h \
@@ -201,11 +204,12 @@ HEADERS  += \
             pissSystemDataWare/AcquisitionPoint.h \
             pissConnectionFactory/DatagramPackage/CDatagramme.h \
             pissConnectionFactory/DatagramPackage/DatagrammeAnalyser.h \
-            pissConnectionFactory/DatagramPackage/HandShakeMessage.h \
             pissDiskImageReaderFactory/MatFileReader.h \
             pissImageProcessingMethods/igssGeneralLib/BidimentionVTKConverter.h \
     pissConnectionFactory/DatagramPackage/HandShakeCommitMessage.h \
-    pissConnectionFactory/DatagramPackage/HelloMessage.h
+    pissConnectionFactory/DatagramPackage/HelloMessage.h \
+    pissImageProcessingMethods/igssCurvePlanReformationLib/igsssCutter.h \
+    pissConnectionFactory/DatagramPackage/HandShakeMessage.h
 
 
 # CTK lib.....

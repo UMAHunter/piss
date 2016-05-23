@@ -15,7 +15,6 @@ pissServer::pissServer(QVector <InputQueue*> *inputQueueManager,
                        SystemDataBase* database)
 {
     this->serverStatus = false;
-    this->id = 0;
 
     this->inputQueueManager = inputQueueManager;
     this->outputQueueManager = outputQueueManager;
@@ -56,6 +55,7 @@ bool pissServer::stopServer(){
     return false;
 }
 
+
 //!--------------------------------------------------------------------------------------------------------------------------------
 //!
 //! \brief pissServer::launchServer
@@ -67,8 +67,8 @@ bool pissServer::launchServer(){
         msgBox.exec();
         return false;
     }
-
-    serverStatus = this->listen(QHostAddress::Any, this->devices->getPortByModule(0));
+    qDebug()<<this->devices->getMyListenPort();
+    serverStatus = this->listen(QHostAddress::Any, this->devices->getMyListenPort());
     return serverStatus;
 }
 
@@ -86,12 +86,11 @@ bool pissServer::getConnectionState(){
 //! \param sd
 //!
 void pissServer::incomingConnection(qintptr sd){
-
-    //! add incoming device
+    qDebug()<<"add incoming device";
     int id = this->devices->addClient();
     this->devices->setSocketReceptionById(id, sd);
 
-    //! generate correspondant input & output queue for the incoming device
+    qDebug()<<"generate correspondant input & output queue for the incoming device";
     InputQueue *myInputQueue = new InputQueue();
     OutputQueue *myOutputQueue = new OutputQueue();
 
@@ -102,6 +101,4 @@ void pissServer::incomingConnection(qintptr sd){
     //! create real time reception task
     pissReceptionTask *receptionTask = new pissReceptionTask(id, sd, datagrammeAnalyser, inputQueueManager, devices);
     receptionTask->start();
-
-    id++;
 }

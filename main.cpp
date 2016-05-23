@@ -1,5 +1,4 @@
 #include <QApplication>
-
 #include "pissMainWindow.h"
 #include "SystemDispatcher.h"
 #include "SystemDataBase.h"

@@ -51,17 +51,6 @@ void SurgerySystemWidget::constructIHM(){
     stopServerButton->setFixedSize(this->width*0.02, this->height*0.03);
     stopServerButton->setFlat(true);
 
-    myIpAddress = new QLabel("ipAddress:");
-    myIpAddress->setFixedSize(this->width*0.05, this->height*0.03);
-
-    myIpAddressLineEdit = new QLineEdit();
-    myIpAddressLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
-
-    myListenPort = new QLabel("port:");
-    myListenPort->setFixedSize(this->width*0.05, this->height*0.03);
-
-    myListenPortLineEdit = new QLineEdit();
-    myListenPortLineEdit->setFixedSize(this->width*0.05, this->height*0.03);
 
     surgerySystemControlBarItem = new QSpacerItem(20, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -70,27 +59,18 @@ void SurgerySystemWidget::constructIHM(){
     surgerySystemControlBarLayout = new QHBoxLayout(surgerySystemControlBar);
     surgerySystemControlBarLayout->addWidget(startServerButton);
     surgerySystemControlBarLayout->addWidget(stopServerButton);
-    surgerySystemControlBarLayout->addWidget(myIpAddress);
-    surgerySystemControlBarLayout->addWidget(myIpAddressLineEdit);
-    surgerySystemControlBarLayout->addWidget(myListenPort);
-    surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
-
-
+//    surgerySystemControlBarLayout->addWidget(myIpAddress);
+//    surgerySystemControlBarLayout->addWidget(myIpAddressLineEdit);
+//    surgerySystemControlBarLayout->addWidget(myListenPort);
+//    surgerySystemControlBarLayout->addWidget(myListenPortLineEdit);
+    //surgerySystemControlBarLayout->addWidget(testConnectBackButton);
     surgerySystemControlBarLayout->addItem(surgerySystemControlBarItem);
     surgerySystemControlBarLayout->setSpacing(0);
     surgerySystemControlBarLayout->setMargin(0);
 
-    //!----------------------------------------------------------------------------------------------
-    //!
-    //!  - luo jia ming
-    //!
     systemComponentsContainer = new SystemComponentsContainer(width*0.4, this->height*0.97);
 
-    //!----------------------------------------------------------------------------------------------
-    //!
-    //!  - fan de yuan
-    //!
-    communicationStatesContainer = new CommunicationStatesContainer(width*0.6, this->height*0.97);
+    communicationStatesContainer = new CommunicationStatesContainer(width*0.6, this->height*0.97, this->workspaceColor);
 
     surgerySystemComponents = new QWidget();
     surgerySystemComponents->setStyleSheet("background-color:"+this->workspaceColor+ "; border: 1px solid gainsboro; ");
@@ -114,6 +94,7 @@ void SurgerySystemWidget::constructIHM(){
 void SurgerySystemWidget::setConnections(){
     this->connect(startServerButton, SIGNAL(clicked()), this, SLOT(onStartServerButtonClicked()));
     this->connect(stopServerButton, SIGNAL(clicked()), this, SLOT(onStopServerButtonClicked()));
+    //this->connect(testConnectBackButton, SIGNAL(clicked()), this, SLOT(testConnectBack()));
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -139,6 +120,10 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
     }
 }
 
+void SurgerySystemWidget::testConnectBack(){
+    this->systemDispatcher->launchConnectBackProcess(true, "172.20.14.18", 12630);
+}
+
 //! ----------------------------------------------------------------------------------------------
 //!
 //! \brief SurgerySystemWidget::setSelfInfo
@@ -146,8 +131,8 @@ void SurgerySystemWidget::onStopServerButtonClicked(){
 //! \param port
 //!
 void SurgerySystemWidget::setSelfInfo(QString addr, int port){
-    myIpAddressLineEdit->setText(addr);
-    myListenPortLineEdit->setText(QString::number(port, 10));
+//    myIpAddressLineEdit->setText(addr);
+//    myListenPortLineEdit->setText(QString::number(port, 10));
 }
 
 //! ----------------------------------------------------------------------------------------------
@@ -157,7 +142,7 @@ void SurgerySystemWidget::setSelfInfo(QString addr, int port){
 void SurgerySystemWidget::onStartServerButtonClicked(){
 
     //! fetch ip adress display at the front table...
-    //communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getMyDeviceInfo());
+    //communicationStatesContainer->setDeviceInfo(0, this->systemDispatcher->getIncomingDevices);
     this->setSelfInfo(this->systemDispatcher->getMyDeviceInfo()->getIpAddress(),
                       this->systemDispatcher->getMyDeviceInfo()->getClientlistenport());
 
@@ -169,6 +154,8 @@ void SurgerySystemWidget::onStartServerButtonClicked(){
     else{
         this->algorithmTestPlatform->setSystemStatus("platform server can't be started");
     }
+
+    //this->systemDispatcher->launchConnectBackProcess(true, "172.20.14.18", 12630);
 }
 
 

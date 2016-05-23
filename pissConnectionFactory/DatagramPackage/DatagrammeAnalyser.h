@@ -2,9 +2,12 @@
 #define DATAGRAMMEANALYSER_H
 
 #include <QHostAddress>
+#include <QObject>
 #include <QDateTime>
 #include <QVector>
 #include <QByteArray>
+#include <QPair>
+#include <QList>
 #include "InputQueue.h"
 #include "OutputQueue.h"
 #include "CDatagramme.h"
@@ -14,11 +17,13 @@
 #include "igtClient.h"
 #include "SystemDataBase.h"
 #include "HandShakeMessage.h"
+#include "HandShakeCommitMessage.h"
 
 //! Codes des erreurs remontees par les fonctions
 typedef enum {
     HelloMessage = 0,
-    HandShakeMessage,
+    HandShakeMsg,
+    HandShakeCommitMsg,
     CTImage
 }DatagrammeIdentifierCode;
 
@@ -26,8 +31,9 @@ typedef enum {
  * @brief The DatagrammeAnalyser class
  *
  */
-class DatagrammeAnalyser
+class DatagrammeAnalyser:public QObject
 {
+    Q_OBJECT
 public:
     DatagrammeAnalyser(QVector <OutputQueue*> *oq, QVector <InputQueue*> *iq, Devices *environment, GlobalTime *globalTime, SystemDataBase* database);
     ~DatagrammeAnalyser();
@@ -37,8 +43,14 @@ public:
 
     void decodeHelloMessage(int id, CDatagramme *datagramme);
     void decodeHandShakeMessage(int id, CDatagramme *datagramme);
+    void decodeHandShakeCommitMessage(int id, CDatagramme *datagramme);
     void decodeCTImage(CDatagramme *datagramme);
-    int getDatagrammeLength();
+    void setConnectBackRequestWaitingPair(int waitingId, qintptr waitingSocket);
+    //int getDatagrammeLength();
+
+signals:
+    void handshakeMessageReactProcess(QString ip, int port);
+
 private:
     DatagrammeIdentifierCode identifierCode;
 
@@ -49,6 +61,8 @@ private:
     GlobalTime *globalTime;
 
     SystemDataBase* database;
+
+    QList<QPair<int, qintptr> > waitingList;
 };
 
 #endif // DATAGRAMMEANALYSER_H

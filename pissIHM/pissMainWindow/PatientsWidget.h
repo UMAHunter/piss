@@ -34,6 +34,8 @@
 #include "vtkPiecewiseFunction.h"
 #include "vtkColorTransferFunction.h"
 #include "PlottingBoard.h"
+#include "igsssCutter.h"
+
 
 /**
  * @brief The PatientsWidget class
@@ -68,7 +70,7 @@ public:
     void displayLastFiveOrLess();
     void keyPressEvent(QKeyEvent *event);
     void displayCurrentPatinetInfo();
-    void displayBrainSegImage();
+    void visualizeCurrentVolumeData();
     void display(vtkImageData *imgToBeDisplayed);
     void setPatientHandling(Patient *patientHandling);
     void setWorkSpaceColor(QString workspaceColor);
@@ -81,6 +83,10 @@ public:
 
 private:
 
+    bool isCameraFlyThroughButtonClicked;
+    bool isGuidewareMovementButtonClicked;
+
+    bool flyThroughMode;
     int flyThroughCpt;
 
     CenterLineReader centerLineReader;
@@ -89,7 +95,25 @@ private:
 
     vtkPoints *vessel;
     int vesselPointCount;
-    vtkImageData* currentVolumeImage;
+
+    QVector <vtkActor *> centerlineActorSet;
+    vtkActor *cuttingLayerOptionActor;
+    vtkVolume *volume;
+
+    vtkFixedPointVolumeRayCastMapper *volumeMapper;
+    vtkVolumeRayCastCompositeFunction  *compositeFunction;
+    vtkSmartPointer<vtkRenderWindow> renderWindow;
+    vtkSmartPointer<vtkRenderer> originVolumeDataRenderer;
+    vtkVolumeProperty*volumeProperty;
+
+    vtkSmartPointer<vtkRenderWindow> flyThroughRenderWindow;
+    vtkSmartPointer<vtkRenderer> flyThroughRenderer;
+
+    vtkImageData* currentVolumeData;
+    vtkImageShiftScale *shiftScaleVolumeData;
+
+    vtkCamera *originVolumeDataCamera;
+    vtkCamera *flyThroughCamera;
 
     QString workspaceColor;
     QString globalFontColor;
@@ -102,16 +126,6 @@ private:
     SystemDispatcher* dispatcher;
     SuperviseWindow *superviseWindow;
     Patient* patientHandling;
-
-    vtkFixedPointVolumeRayCastMapper *volumeMapper;
-    vtkVolumeRayCastCompositeFunction  *compositeFunction;
-    vtkVolume *volume;
-    vtkSmartPointer<vtkRenderWindow> renderWindow;
-    vtkSmartPointer<vtkRenderer> renderer;
-    vtkVolumeProperty*volumeProperty;
-
-    vtkSmartPointer<vtkRenderWindow> flyThroughRenderWindow;
-    vtkSmartPointer<vtkRenderer> flyThroughRenderer;
 
     QVBoxLayout* patientsWidgetLayout;
     QGridLayout* patientsWidgetWorkspaceLayout;
@@ -134,6 +148,8 @@ private:
     QLabel *imageConfigurationArea;
 
     QPushButton *guidewareMovementButton;
+    QPushButton *cameraFlyThroughButton;
+    QPushButton *clearCenterLineButton;
 
     QSpacerItem *imageConfigurationAreaSpacer;
 
@@ -141,7 +157,7 @@ private:
 
     QVBoxLayout *patientImageDispalyAreaLayout;
 
-    QVTKWidget* patientImageLoaded;
+    QVTKWidget* currentPatientVolumeDataAnalyseArea;
 
     QWidget*medicalImageAnalyseArea;
     QHBoxLayout *medicalImageAnalyseAreaLayout;
@@ -279,8 +295,12 @@ public slots:
     void doRightSelect();
     void onPlottingButtonClicked();
     void onGuidewareMovementButtonClicked();
+    void onCameraFlyThroughButtonClicked();
+    void onClearCenterLineButtonClicked();
+
     void flyThrough();
     void onCutButtonClicked();
+    void cuttingLayerOptionChanged(int value);
 };
 
 #endif // PATIENTSWIDGET_H

@@ -57,6 +57,7 @@ void pissReceptionTask::run()
 //!
 void pissReceptionTask::lecture()
 {
+    qDebug()<<"new message arrive";
     QByteArray input = this->soc->readAll();
     CDatagramme *datagramme = new CDatagramme();
     datagramme->setValue(&input);

@@ -22,8 +22,9 @@ CDatagramme::~CDatagramme(){
 //! \brief CDatagramme::setValue
 //! \param value
 //!
-void CDatagramme::setValue(QByteArray* value){
-    this->value = value;
+void CDatagramme::setValue(QByteArray* v){
+    qDebug()<<v;
+    this->value = v;
     this->totalLength = this->value->length();
 }
 
@@ -47,26 +48,56 @@ void CDatagramme::printSelf(){
 //! \return
 //!
 unsigned char CDatagramme::getDataType(){
-    return this->value->at(0);
+    qDebug()<<this->value;
+    qDebug()<<this->value->size();
+
+    return (unsigned char)this->value->at(0);
 }
 
+//!------------------------------------------------------------
+//!
+//! \brief CDatagramme::getDeviceId
+//! \return
+//!
 unsigned char CDatagramme::getDeviceId(){
     return this->value->at(1);
 }
 
+//!------------------------------------------------------------
+//!
+//! \brief CDatagramme::setTimestamp
+//! \param time
+//!
 void CDatagramme::setTimestamp(qint32 time){
-    (*this->value)[2] = time % int(pow(2, 8));
-    (*this->value)[3] = time / int(pow(2, 8)) % int(pow(2, 8));
-    (*this->value)[4] = time / int(pow(2, 16)) % int(pow(2,8));
-    (*this->value)[5] = time / int(pow(2, 24)) % int(pow(2,8));
+//    (*this->value)[2] = time % int(pow(2, 8));
+//    (*this->value)[3] = time / int(pow(2, 8)) % int(pow(2, 8));
+//    (*this->value)[4] = time / int(pow(2, 16)) % int(pow(2,8));
+//    (*this->value)[5] = time / int(pow(2, 24)) % int(pow(2,8));
 }
 
-QString CDatagramme::getTimestamp()
+//!------------------------------------------------------------
+//!
+//! \brief CDatagramme::getTimestamp
+//! \return
+//!
+unsigned long long CDatagramme::getTimestamp()
 {
-    return QString("%1%2%3%4").arg(quint8(this->value->at(2))).arg(quint8(this->value->at(3))).arg(quint8(this->value->at(4))).arg(quint8(this->value->at(5)));
+    return     (unsigned char)(value->at(9))*quint64(pow(2, 56))
+             + (unsigned char)(value->at(8))*quint64(pow(2, 48))
+             + (unsigned char)(value->at(7))*quint64(pow(2, 40))
+             + (unsigned char)(value->at(6))*quint64(pow(2, 32))
+             + (unsigned char)(value->at(5))*quint64(pow(2, 24))
+             + (unsigned char)(value->at(4))*quint64(pow(2, 16))
+             + (unsigned char)(value->at(3))*quint64(pow(2, 8))
+             + (unsigned char)(value->at(2));
 }
 
+//!------------------------------------------------------------
+//!
+//! \brief CDatagramme::getDLC
+//! \return
+//!
 int CDatagramme::getDLC()
 {
-    return this->value->size() - 8;
+    return (unsigned char)(this->value->at(11))*256 + (unsigned char)(this->value->at(10));
 }

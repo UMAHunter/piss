@@ -9,15 +9,16 @@
 #include "OutputQueue.h"
 
 
-class pissTransmissionTask : public QObject
+class pissTransmissionTask : public QThread
 {
     Q_OBJECT
 
 public:
-
+    void launch();
+    void run();
 
 private:
-    QTcpSocket* socketTransmission;
+    QTcpSocket* transmissionSocket;
     QVector <OutputQueue*> *oq;
     Devices *devices;
     QTimer *transmissionTimer;
@@ -26,11 +27,10 @@ private:
     int id;
 
 public:
-    pissTransmissionTask(int id, QVector <OutputQueue*> *oq, Devices* devices, QTcpSocket* socketTransmission);
+    pissTransmissionTask(int id, QVector <OutputQueue*> *oq, Devices* devices, QTcpSocket* transmissionSocket);
     ~pissTransmissionTask();
 
 public slots:
-    void launch();
     void transfer();
 };
 
